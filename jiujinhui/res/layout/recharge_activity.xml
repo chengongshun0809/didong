@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -11,6 +12,7 @@
         android:layout_height="60dp" >
 
         <TextView
+            android:id="@+id/phonenumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -19,12 +21,15 @@
             android:textColor="#000000"
             android:textSize="21sp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <zz.itcast.jiujinhui.view.CircleImageView
+            android:id="@+id/circleImabeView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/phone" />
+            android:layout_marginRight="10dp"
+            app:border_color="@color/light"
+            app:border_width="2dp" />
     </RelativeLayout>
 
     <View
@@ -82,7 +87,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-             android:id="@+id/yiqian"
+            android:id="@+id/yiqian"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_margin="6dp"
@@ -109,7 +114,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-             android:id="@+id/liangqian"
+            android:id="@+id/liangqian"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_margin="6dp"
@@ -142,7 +147,7 @@
         android:orientation="horizontal" >
 
         <RelativeLayout
-             android:id="@+id/wuqian"
+            android:id="@+id/wuqian"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_margin="6dp"
@@ -169,7 +174,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-             android:id="@+id/yiwan"
+            android:id="@+id/yiwan"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_margin="6dp"
@@ -196,7 +201,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-             android:id="@+id/sanwan"
+            android:id="@+id/sanwan"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_margin="6dp"
@@ -218,29 +223,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="15dp"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/ok" 
-                android:visibility="gone"
-                />
+                android:src="@drawable/ok"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/igray" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="40dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="选择支付方式" />
-    </RelativeLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -252,80 +238,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp" >
 
-        <LinearLayout
-            android:id="@+id/paytype_of_weixin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp" >
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/weixin" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="微信支付"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <CheckBox
-                android:id="@+id/paytype_of_weixin_ck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:focusable="false" />
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/igray" />
-<LinearLayout 
-           android:id="@+id/paytype_of_zhifubao"  
-            android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:padding="10dp"
-           android:orientation="horizontal"
-           android:gravity="center_vertical"
-           >
-           <ImageView android:layout_width="30dp"
-               android:layout_height="30dp"
-               android:src="@drawable/zhi"/>
-           <TextView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="支付宝"
-               android:layout_marginLeft="10dp"
-               android:layout_marginRight="10dp"
-               android:textSize="20sp"
-               />
-           <View android:layout_width="0dp"
-              
-               android:layout_height="match_parent"
-               android:layout_weight="1"/>
-           <CheckBox 
-               android:id="@+id/paytype_of_zhifubao_ck"  
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:focusable="false"
-               />
-       </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/igray" />
+
+        <RelativeLayout
+            
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="6dp"
+            android:background="@drawable/shape_corners"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
+            <EditText
+                android:id="@+id/other_moneny"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:gravity="center_horizontal"
+                android:hint="其他金额"
+                android:padding="10dp"
+                android:textColor="#cc0000" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/chongzhi"
@@ -333,7 +271,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/btn_recharge_shape_corners" >
 
             <TextView
@@ -345,4 +283,5 @@
                 android:textSize="20sp" />
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>
