@@ -3,12 +3,8 @@ package zz.itcast.jiujinhui.wxapi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import zz.itcast.jiujinhui.activity.LoginActivity;
-import zz.itcast.jiujinhui.activity.MainActivity;
-import zz.itcast.jiujinhui.bean.UserBean;
 import zz.itcast.jiujinhui.res.Constants;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +15,11 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
+import com.tencent.mm.sdk.modelbase.BaseReq;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.SendAuth;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -48,7 +44,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK: // 发送成功
 
-			String code1 = ((SendAuth.Resp) resp).token; // 即为所需的code
+			String code1 = ((SendAuth.Resp) resp).code; // 即为所需的code
 			// Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
 			// 拿到code,加上appid和secret拼接网址,请求数据得到包含token和openid来继续请求拿到用户数据
 			String urlstr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="

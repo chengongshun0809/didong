@@ -1,22 +1,25 @@
 package zz.itcast.jiujinhui.activity;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.lidroid.xutils.view.annotation.event.OnClick;
-import com.squareup.picasso.Picasso;
+import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.res.Util;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.squareup.picasso.Picasso;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 public class ReChargeActivity extends BaseActivity {
 
@@ -84,17 +87,26 @@ public class ReChargeActivity extends BaseActivity {
 		sp = getSharedPreferences("user", 0);
 		String headimgurl = sp.getString("headimg", null);
 		Picasso.with(this).load(headimgurl).into(circleImabeView);
+		openidString = sp.getString("openid", null);
+		unionidString = sp.getString("unionid", null);
+
 	}
+
+	private IWXAPI api;
 
 	@Override
 	public void initData() {
+
 		// TODO Auto-generated method stub
+		api = WXAPIFactory.createWXAPI(this, null);
+		api.registerApp("wxdb59e14854a747c8");
 
 	}
 
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
+		chongzhi.setOnClickListener(this);
 		wubai.setOnClickListener(this);
 		yiqian.setOnClickListener(this);
 		liangqian.setOnClickListener(this);
@@ -116,10 +128,12 @@ public class ReChargeActivity extends BaseActivity {
 					iv_drink_checked_wuqian.setVisibility(v.GONE);
 					iv_drink_checked_yiwan.setVisibility(v.GONE);
 					iv_drink_checked_sanwan.setVisibility(v.GONE);
+					total = other_moneny.getText().toString();
+
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);
 					other_moneny.requestFocus();
-					touch_flag=0;
+					touch_flag = 0;
 				}
 
 				return false;
@@ -128,6 +142,12 @@ public class ReChargeActivity extends BaseActivity {
 			}
 		});
 	}
+
+	String total = null;
+
+	private String openidString;
+
+	private String unionidString;
 
 	@Override
 	public void onClick(View v) {
@@ -140,6 +160,7 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
+			total = "500";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			break;
@@ -150,6 +171,7 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
+			total = "1000";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			break;
@@ -160,6 +182,8 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
+			total = "2000";
+
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			break;
@@ -170,6 +194,7 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.VISIBLE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
+			total = "5000";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			break;
@@ -180,6 +205,7 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.VISIBLE);
 			iv_drink_checked_sanwan.setVisibility(v.GONE);
+			total = "10000";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 
@@ -191,16 +217,95 @@ public class ReChargeActivity extends BaseActivity {
 			iv_drink_checked_wuqian.setVisibility(v.GONE);
 			iv_drink_checked_yiwan.setVisibility(v.GONE);
 			iv_drink_checked_sanwan.setVisibility(v.VISIBLE);
+			total = "30000";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			break;
-		/*
-		 * case R.id.other_moneny:
-		 * 
-		 * 
-		 * 
-		 * break;
-		 */
+
+		case R.id.chongzhi:// 微信充值
+			chongzhi.setEnabled(false);
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					String url = "https://www.4001149114.com/NLJJ/ddapp/apppay?wxopenid="
+							+ openidString
+							+ "&unionid="
+							+ unionidString
+							+ "&total=" + "1" + "&num=1";
+					// String
+					// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
+					/*
+					 * Toast.makeText(ReChargeActivity.this, "获取订单中...",
+					 * Toast.LENGTH_SHORT).show();
+					 */
+					try {
+						byte[] buf = Util.httpGet(url);
+						if (buf != null && buf.length > 0) {
+							String content = new String(buf);
+							Log.e("get server pay params:", content);
+							JSONObject json = new JSONObject(content);
+							if (null != json && !json.has("retcode")) {
+								PayReq req = new PayReq();
+								// req.appId = "wxf8b4f85f3a794e77"; // 测试用appId
+
+								/*
+								 * req.appId = json.getString("appid");
+								 * req.partnerId = json.getString("partnerid");
+								 * req.prepayId = json.getString("prepayid");
+								 * req.nonceStr = json.getString("noncestr");
+								 * req.timeStamp = json.getString("timestamp");
+								 * req.packageValue = json.getString("package");
+								 * req.sign = json.getString("sign");
+								 * req.extData = "app data"; // optional
+								 */
+								req.appId = json.getString("appid");
+								req.partnerId = json.getString("partnerid");
+								req.prepayId = json.getString("prepayid");
+								req.nonceStr = json.getString("noncestr");
+								req.timeStamp = json.getString("timestamp");
+								req.packageValue =json.getString("package");
+								req.sign = json.getString("sign");
+								req.extData = "app data"; // optional
+								/*
+								 * Toast.makeText(ReChargeActivity.this,
+								 * "正常调起支付", Toast.LENGTH_SHORT).show();
+								 */
+								// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+
+								api.sendReq(req);
+							} else {
+								Log.d("PAY_GET",
+										"返回错误" + json.getString("retmsg"));
+								/*
+								 * Toast.makeText(ReChargeActivity.this, "返回错误"
+								 * + json.getString("retmsg"),
+								 * Toast.LENGTH_SHORT).show();
+								 */
+							}
+						} else {
+							Log.d("PAY_GET", "服务器请求错误");
+							/*
+							 * Toast.makeText(ReChargeActivity.this, "服务器请求错误",
+							 * Toast.LENGTH_SHORT).show();
+							 */
+						}
+					} catch (Exception e) {
+						Log.e("PAY_GET", "异常：" + e.getMessage());
+						/*
+						 * Toast.makeText(ReChargeActivity.this, "异常：" +
+						 * e.getMessage(), Toast.LENGTH_SHORT) .show();
+						 */
+					}
+
+				}
+			}).start();
+
+			chongzhi.setEnabled(true);
+
+			break;
+
 		case R.id.tv_back:
 			finish();
 			break;

@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.SendAuth;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 
@@ -112,7 +111,7 @@ public class LoginActivity extends BaseActivity {
 						Toast.LENGTH_SHORT).show();
 			} else {
 				//微信登录
-				SendAuth.Req req=new SendAuth.Req();
+				com.tencent.mm.sdk.modelmsg.SendAuth.Req req=new com.tencent.mm.sdk.modelmsg.SendAuth.Req();
 				req.scope="snsapi_userinfo";
 				req.state="none";
 				api.sendReq(req);
