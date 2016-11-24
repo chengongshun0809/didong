@@ -1,17 +1,11 @@
 package zz.itcast.jiujinhui.fragment;
 
 import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import lecho.lib.hellocharts.gesture.ContainerScrollType;
-import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -19,15 +13,12 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.view.LineChartView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
-import android.R.string;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
@@ -122,9 +113,9 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		line.setFilled(false);// 是否填充曲线的面积
 		//line.setHasLabels(true);// 曲线的数据坐标是否加上备注
 		//
-		line.setHasPoints(true);
+		line.setHasPoints(false);
 
-		line.setPointRadius(3);
+		//line.setPointRadius(3);
 		line.setHasLabels(false);
 		line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）

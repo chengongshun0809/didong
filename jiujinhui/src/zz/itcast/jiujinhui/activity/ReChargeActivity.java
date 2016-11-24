@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.Util;
 import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -116,6 +118,7 @@ public class ReChargeActivity extends BaseActivity {
 		tv_back.setOnClickListener(this);
 		other_moneny.setOnTouchListener(new OnTouchListener() {
 			// 按住和松开的标识
+
 			int touch_flag = 0;
 
 			@Override
@@ -128,19 +131,40 @@ public class ReChargeActivity extends BaseActivity {
 					iv_drink_checked_wuqian.setVisibility(v.GONE);
 					iv_drink_checked_yiwan.setVisibility(v.GONE);
 					iv_drink_checked_sanwan.setVisibility(v.GONE);
-					total = other_moneny.getText().toString();
+					// total = other_moneny.getText().toString();
 
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);
 					other_moneny.requestFocus();
 					touch_flag = 0;
 				}
-
+				
 				return false;
-				// TODO Auto-generated method stub
-
 			}
 		});
+		other_moneny.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				total = other_moneny.getText().toString();
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 	}
 
 	String total = null;
@@ -223,7 +247,15 @@ public class ReChargeActivity extends BaseActivity {
 			break;
 
 		case R.id.chongzhi:// 微信充值
+			other_moneny.setFocusable(false);
+			other_moneny.setFocusableInTouchMode(false);
+			
 			chongzhi.setEnabled(false);
+			
+			//Log.e("是否传total的值", total);
+			Toast.makeText(ReChargeActivity.this, "正在调起微信支付",
+					Toast.LENGTH_SHORT).show();
+
 			new Thread(new Runnable() {
 
 				@Override
@@ -265,13 +297,10 @@ public class ReChargeActivity extends BaseActivity {
 								req.prepayId = json.getString("prepayid");
 								req.nonceStr = json.getString("noncestr");
 								req.timeStamp = json.getString("timestamp");
-								req.packageValue =json.getString("package");
+								req.packageValue = json.getString("package");
 								req.sign = json.getString("sign");
 								req.extData = "app data"; // optional
-								/*
-								 * Toast.makeText(ReChargeActivity.this,
-								 * "正常调起支付", Toast.LENGTH_SHORT).show();
-								 */
+
 								// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
 
 								api.sendReq(req);

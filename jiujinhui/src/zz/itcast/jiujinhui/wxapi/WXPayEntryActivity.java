@@ -47,8 +47,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 		
 		if (resp.errCode==0) {
 			//支付成功
-			Intent intent=new Intent(WXPayEntryActivity.this,ReChargeActivity.class);
-			startActivity(intent);
+			
 			finish();
 		}
 		if (resp.errCode==-1) {
