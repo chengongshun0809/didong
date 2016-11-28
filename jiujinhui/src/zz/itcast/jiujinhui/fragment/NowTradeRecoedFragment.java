@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
+import lecho.lib.hellocharts.model.Viewport;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -75,13 +77,12 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			@Override
 			public void onValueSelected(int arg0, int arg1, PointValue arg2) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getActivity(), arg1+"", 0).show();  
-				//line.setHasLabelsOnlyForSelected(true);
+				Toast.makeText(getActivity(), arg1 + "", 0).show();
+				// line.setHasLabelsOnlyForSelected(true);
 				Log.e("点击节点", arg2 + "");
 			}
 		});
 
-		
 	}
 
 	private double nowprice;
@@ -98,7 +99,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
 
 		initLineChart();
-		
+
 	}
 
 	private void initLineChart() {
@@ -111,27 +112,27 @@ public class NowTradeRecoedFragment extends BaseFragment {
 											// ValueShape.DIAMOND）
 		line.setCubic(false);// 曲线是否平滑，即是曲线还是折线
 		line.setFilled(false);// 是否填充曲线的面积
-		//line.setHasLabels(true);// 曲线的数据坐标是否加上备注
+		// line.setHasLabels(true);// 曲线的数据坐标是否加上备注
 		//
 		line.setHasPoints(false);
 
-		//line.setPointRadius(3);
+		// line.setPointRadius(3);
 		line.setHasLabels(false);
 		line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
 		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
-		//line.setHasPoints(false);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
+		// line.setHasPoints(false);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
 		line.setColor(Color.RED);
 		// 圆点半径
-		//line.setPointRadius(2);
+		// line.setPointRadius(2);
 		line.setStrokeWidth(1);// 设置折线宽度
-		
+
 		lines.add(line);
 		LineChartData data = new LineChartData();
 		data.setLines(lines);
-		//data.setValueLabelBackgroundEnabled(true);
+		// data.setValueLabelBackgroundEnabled(true);
 		data.setValueLabelsTextColor(Color.BLACK);
-          // data.setValueLabelTypeface(typeface);
+		// data.setValueLabelTypeface(typeface);
 		// 坐标轴
 		Axis axisX = new Axis(); // X轴
 		axisX.setHasTiltedLabels(true); // X坐标轴字体是斜的显示还是直的，true是斜的显示
@@ -156,18 +157,27 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		lineChart.setInteractive(false);
 		// lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
 		// lineChart.setMaxZoom((float) 2);//最大方法比例
-	
+
 		lineChart.setLineChartData(data);
-		
+
 		lineChart.setValueSelectionEnabled(true);
 		lineChart.setVisibility(View.VISIBLE);
 		// lineChart.startDataAnimation();
-		/*
-		 * Viewport v = new Viewport(lineChart.getMaximumViewport()); v.left =
-		 * 0; v.right= 5; lineChart.setCurrentViewport(v);
-		 */
-
+		 //折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
+		lineChart.setViewportCalculationEnabled(true);
+        /*lineChart.setViewportCalculationEnabled(false);
+		Viewport v = new Viewport(lineChart.getMaximumViewport());
+		v.left = 0;
+		v.right = 5;
+		lineChart.setCurrentViewport(v);
+        lineChart.setMaximumViewport(v);*/
+	/*Viewport port=initViewPort(100,0,0,120);
+	lineChart.setCurrentViewport(port);
+    lineChart.setMaximumViewport(port);*/
+	
 	}
+
+	
 
 	// X轴刻度的显示
 	private void getAxisLables() { // TODO Auto- generated method
@@ -195,6 +205,8 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
 			@Override
 			public void run() {
 				while (!stopThread) {
@@ -202,13 +214,14 @@ public class NowTradeRecoedFragment extends BaseFragment {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
 
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
-					int code;
+					
+					
 					try {
-						code = connection.getResponseCode();
+						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+								url_serviceinfo, "POST");
+					int	code = connection.getResponseCode();
 						if (code == 200) {
-							InputStream iStream = connection.getInputStream();
+							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
@@ -220,6 +233,17 @@ public class NowTradeRecoedFragment extends BaseFragment {
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally{
+						if (iStream!=null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
+						
+						
 					}
 
 				}

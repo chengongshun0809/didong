@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -157,6 +158,8 @@ public class SaleChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
+			private InputStream iStream=null;
+
 			@Override
 			public void run() {
 				while (!stopThread) {
@@ -170,7 +173,7 @@ public class SaleChartFragment extends BaseFragment {
 					try {
 						code = connection.getResponseCode();
 						if (code == 200) {
-							InputStream iStream = connection.getInputStream();
+							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
@@ -182,6 +185,16 @@ public class SaleChartFragment extends BaseFragment {
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally{
+						if (iStream!=null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
+						
 					}
 
 				}

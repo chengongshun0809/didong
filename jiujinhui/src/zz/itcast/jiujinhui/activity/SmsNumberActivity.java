@@ -55,6 +55,7 @@ public class SmsNumberActivity extends BaseActivity {
 			if (extra.equals("tixian")) {
 				Intent intent=new Intent(SmsNumberActivity.this,MyTiXianActivity.class);
 				startActivity(intent);
+				
 			}else if (extra.equals("recharge")) {
 				Intent intent1=new Intent(SmsNumberActivity.this,ReChargeActivity.class);
 				startActivity(intent1);

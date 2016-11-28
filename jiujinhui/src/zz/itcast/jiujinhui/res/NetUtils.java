@@ -95,7 +95,7 @@ public class NetUtils {
 			SSLSocketFactory ssf =NetUtils.getssf();
 			conn = (HttpsURLConnection) url.openConnection();
 			conn.setSSLSocketFactory(ssf);
-			conn.setConnectTimeout(5000);
+			conn.setConnectTimeout(200000);
 			// 设置允许输出
 			conn.setDoOutput(true);
 			conn.setRequestMethod(RequestMethod);

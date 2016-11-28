@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -218,6 +219,8 @@ public class TradeFragment extends BaseFragment {
 
 		new Thread(new Runnable() {
 
+			private InputStream is;
+
 			@Override
 			public void run() {
 			
@@ -229,7 +232,7 @@ public class TradeFragment extends BaseFragment {
 						int code = conn.getResponseCode();
 						if (code == 200) {
 
-							InputStream is = conn.getInputStream();
+							is = conn.getInputStream();
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
@@ -239,8 +242,17 @@ public class TradeFragment extends BaseFragment {
 
 					} catch (Exception e) {
 						// TODO: handle exception
-					} // TODO Auto-generated method stub
-
+					} finally{
+						if (is!=null) {
+							try {
+								is.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
+					}
+				
 				
 
 			}
@@ -284,7 +296,8 @@ public class TradeFragment extends BaseFragment {
 			String maindealgood = jsonObject.getString("maindealgood");
 			jsonObject2 = new JSONObject(maindealgood);
 			Log.e("v", jsonObject2.getString("dgid"));
-
+          /* String dgid= jsonObject2.getString("dgid");
+           sp.edit().putString("dgid", dgid).commit();*/
 			mainname = jsonObject2.getString("name");
 			Log.e("vv", jsonObject2.getString("name"));
 			maingooddealprice = jsonObject2.getDouble("realprice");
@@ -479,7 +492,7 @@ public class TradeFragment extends BaseFragment {
 				Log.e("vr", dealgoodname);
 				String goodsdealcode = jsonObject3.getString("dealcode");
 				final String dgid = jsonObject3.getString("dgid");
-
+               sp.edit().putString("dgid", dgid).commit();
 				Log.e("GD", dgid);
 				tv_name2.setText(dealgoodname);
 				dealcode.setText(goodsdealcode);

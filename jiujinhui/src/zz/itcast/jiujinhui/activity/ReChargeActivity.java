@@ -253,9 +253,10 @@ public class ReChargeActivity extends BaseActivity {
 			chongzhi.setEnabled(false);
 			
 			//Log.e("是否传total的值", total);
-			Toast.makeText(ReChargeActivity.this, "正在调起微信支付",
+			Toast.makeText(ReChargeActivity.this, "请稍等，正在跳转微信支付...",
 					Toast.LENGTH_SHORT).show();
 
+			
 			new Thread(new Runnable() {
 
 				@Override

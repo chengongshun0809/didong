@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.activity;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -177,6 +178,8 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
 			@Override
 			public void run() {
 				while (!stopThread) {
@@ -184,13 +187,13 @@ public class TradeServiceActivity extends BaseActivity {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
 
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
-					int code;
 					try {
-						code = connection.getResponseCode();
+						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+								url_serviceinfo, "POST");
+						
+						int code = connection.getResponseCode();
 						if (code == 200) {
-							InputStream iStream = connection.getInputStream();
+							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
@@ -202,6 +205,17 @@ public class TradeServiceActivity extends BaseActivity {
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally{
+						if (iStream!=null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
+						
+						
 					}
 
 				}
@@ -349,6 +363,18 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	protected void UpdateUI() {
 		df = new DecimalFormat("#0.00");
 

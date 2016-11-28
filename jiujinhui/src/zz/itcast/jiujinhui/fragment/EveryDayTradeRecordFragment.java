@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -196,6 +197,8 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
 			@Override
 			public void run() {
 				while (!stopThread) {
@@ -203,13 +206,15 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
 
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
-					int code;
-					try {
-						code = connection.getResponseCode();
+					
+					try {						
+
+						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+								url_serviceinfo, "POST");
+						
+						int code = connection.getResponseCode();
 						if (code == 200) {
-							InputStream iStream = connection.getInputStream();
+							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
@@ -221,6 +226,16 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally{
+						
+						if (iStream!=null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
 					}
 
 				}

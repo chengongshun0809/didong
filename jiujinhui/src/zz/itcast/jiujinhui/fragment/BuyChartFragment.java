@@ -1,5 +1,6 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -154,6 +156,8 @@ public class BuyChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
 			@Override
 			public void run() {
 				while (!stopThread) {
@@ -161,13 +165,14 @@ public class BuyChartFragment extends BaseFragment {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
 
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
-					int code;
+					
 					try {
-						code = connection.getResponseCode();
+						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
+								url_serviceinfo, "POST");
+						
+						int code = connection.getResponseCode();
 						if (code == 200) {
-							InputStream iStream = connection.getInputStream();
+							iStream = connection.getInputStream();
 							String infojson = NetUtils.readString(iStream);
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
@@ -179,6 +184,14 @@ public class BuyChartFragment extends BaseFragment {
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally{
+						
+						try {
+							iStream.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 				}

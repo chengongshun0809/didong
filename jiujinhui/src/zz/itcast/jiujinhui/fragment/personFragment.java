@@ -1,5 +1,12 @@
 package zz.itcast.jiujinhui.fragment;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import org.json.JSONObject;
+
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.activity.DrinkRecordActivity;
 import zz.itcast.jiujinhui.activity.MyTiXianActivity;
@@ -9,8 +16,10 @@ import zz.itcast.jiujinhui.activity.SmsNumberActivity;
 import zz.itcast.jiujinhui.activity.TiXianRecordActivity;
 import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
+import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -53,6 +62,7 @@ public class personFragment extends BaseFragment {
 	private zz.itcast.jiujinhui.view.CircleImageView circleImabeView;
 
 	private SharedPreferences sp;
+	private Boolean firstClick_recharge;
 
 
 	@Override
@@ -77,12 +87,18 @@ public class personFragment extends BaseFragment {
  		person_jiubi.setText(jiubinum+"");
 	}
 		
+	  
 	}
-
+	
 	@Override
 	public void initData() {
 		
+		
+		
 	}
+
+
+	
 
 
 	@Override
@@ -104,8 +120,7 @@ public class personFragment extends BaseFragment {
 
 	}
 
-	// 记录充值按钮是否是第一次点击
-	private Boolean firstClick_recharge = true;
+	
 
 	@Override
 	public void onClick(View v) {
@@ -132,9 +147,10 @@ public class personFragment extends BaseFragment {
 			startActivity(intent3);
 			break;
 		case R.id.tixian:// 点击提现
+		/*	firstClick_recharge = true;
 			sp.edit().putBoolean("recharge", firstClick_recharge).commit();
-			firstClick_recharge = sp.getBoolean("recharge", false);
-			if (firstClick_recharge) {
+		 Boolean	firstClick = sp.getBoolean("recharge", false);
+			if (firstClick) {
 				Intent intent8 = new Intent(getActivity(),
 						SmsNumberActivity.class);
 				intent8.putExtra("sms", "tixian");
@@ -146,16 +162,19 @@ public class personFragment extends BaseFragment {
 				Intent intent4 = new Intent(getActivity(),
 						MyTiXianActivity.class);
 				startActivity(intent4);
-			}
-
+			}*/
+			Intent intent4 = new Intent(getActivity(),
+					MyTiXianActivity.class);
+			startActivity(intent4);
 			break;
 
 		case R.id.recharge:// 点击充值
 			// TODO
-			//如果第一次进入则进短信验证页面
+		/*	//如果第一次进入则进短信验证页面
+			firstClick_recharge = true;
 			sp.edit().putBoolean("recharge", firstClick_recharge).commit();
-			firstClick_recharge = sp.getBoolean("recharge", false);
-			if (firstClick_recharge) {
+			Boolean	firstClick1 = sp.getBoolean("recharge", false);
+			if (firstClick1) {
 				// 进入短信验证页面
 				Intent intent7 = new Intent(getActivity(),
 						SmsNumberActivity.class);
@@ -169,8 +188,10 @@ public class personFragment extends BaseFragment {
 				Intent intent5 = new Intent(getActivity(),
 						ReChargeActivity.class);
 				startActivity(intent5);
-			}
-
+			}*/
+			Intent intent5 = new Intent(getActivity(),
+					ReChargeActivity.class);
+			startActivity(intent5);
 			break;
 		case R.id.personInfo:// 进入个人信息页面
 

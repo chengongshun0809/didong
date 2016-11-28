@@ -188,19 +188,25 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																												HttpException arg0,
 																												String arg1) {
 																											// TODO
-																											// Auto-generated
-																											// method
-																											// stub
+																											
+																											
+																											
 
 																										}
 
 																										@Override
 																										public void onSuccess(
-																												ResponseInfo<String> arg0) {
-																											// TODO
-																											// Auto-generated
-																											// method
-																											// stub
+																												ResponseInfo<String> responseInfo) {
+																											try {
+																												JSONObject json = new JSONObject(
+																														responseInfo.result
+																																.toString());
+																												Log.e("个人信息",json.toString() );
+																												
+																											} catch (JSONException e) {
+																												// TODO Auto-generated catch block
+																												e.printStackTrace();
+																											}
 
 																										}
 																									});
