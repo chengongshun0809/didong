@@ -57,10 +57,9 @@ public class SaleChartFragment extends BaseFragment {
 				
 				handler.sendEmptyMessage(1);
 			case 1:
-
-				
-				
 				scrolllistview();
+				handler.removeMessages(1);
+				handler.sendEmptyMessageDelayed(1, 1000);
 				
 				break; 
 			default:
@@ -104,58 +103,8 @@ public class SaleChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
-		refreshdata();
+	
 		// 获取数据
-
-		// listView.invalidate();
-		data = new ArrayList<Map<String, Object>>();
-		// 禁止listView手动滚动
-      listView.setOnTouchListener(new OnTouchListener() {
-		
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			switch (event.getAction()) {
-			
-           case MotionEvent.ACTION_MOVE:
-        	   return true;
-        	   
-			default:
-				break;
-			}
-			
-			
-			return true;
-		}
-	});
-	}
-   
-	protected void scrolllistview() {
-		// TODO Auto-generated method stub
-		// int totaloff = listView.getMeasuredHeight();
-		
-		handler.removeMessages(1);
-		if (index <3 * data.size()) {
-			listView.smoothScrollBy(10, 0);
-			index += 1;
-			handler.sendEmptyMessageDelayed(1, 1000);
-		}if (index ==3 * data.size()) {
-			
-			listView.smoothScrollToPosition(0);
-			handler.removeMessages(1);
-			handler.sendEmptyMessageDelayed(1, 500);
-			index = 0;
-		}
-			
-		
-		
-	}
-
-	// listview自动滚动
-
-	// 刷新数据
-	protected void refreshdata() {
-		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
 			private InputStream iStream=null;
@@ -200,7 +149,52 @@ public class SaleChartFragment extends BaseFragment {
 				}
 			}
 		}).start();
+		// listView.invalidate();
+		data = new ArrayList<Map<String, Object>>();
+		// 禁止listView手动滚动
+      listView.setOnTouchListener(new OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			// TODO Auto-generated method stub
+			switch (event.getAction()) {
+			
+           case MotionEvent.ACTION_MOVE:
+        	   return true;
+        	   
+			default:
+				break;
+			}
+			
+			
+			return true;
+		}
+	});
 	}
+   
+	protected void scrolllistview() {
+		// TODO Auto-generated method stub
+		// int totaloff = listView.getMeasuredHeight();
+		
+		if (index <=3 * data.size()) {
+			listView.smoothScrollBy(10, 0);
+			index += 1;
+			
+		} else {
+			index = 0;
+			listView.smoothScrollToPosition(index);
+			
+			handler.sendEmptyMessage(1);
+		}
+			
+		
+		
+	}
+
+	// listview自动滚动
+
+	// 刷新数据
+	
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub

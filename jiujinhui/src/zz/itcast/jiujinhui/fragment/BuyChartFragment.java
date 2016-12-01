@@ -59,10 +59,9 @@ public class BuyChartFragment extends BaseFragment {
 				adapter.notifyDataSetChanged();
 				handler.sendEmptyMessage(1);
 			case 1:
-
-				scrolllistview();
 				handler.removeMessages(1);
-
+				scrolllistview();
+				
 				handler.sendEmptyMessageDelayed(1, 1000);
 				
 				break;
@@ -106,7 +105,7 @@ public class BuyChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
-		refreshdata();
+	
 		// 获取数据
 
 		// listView.invalidate();
@@ -130,30 +129,6 @@ public class BuyChartFragment extends BaseFragment {
 				return true;
 			}
 		});
-	}
-
-	protected void scrolllistview() {
-		// TODO Auto-generated method stub
-		// int totaloff = listView.getMeasuredHeight();
-
-		if (index <=3 * data.size()) {
-			listView.smoothScrollBy(10, 0);
-			index += 1;
-			
-		} else {
-			index = 0;
-			listView.smoothScrollToPosition(index);
-			
-			handler.sendEmptyMessage(1);
-		}
-
-	}
-
-	// listview自动滚动
-
-	// 刷新数据
-	protected void refreshdata() {
-		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 
 			private InputStream iStream;
@@ -198,6 +173,41 @@ public class BuyChartFragment extends BaseFragment {
 			}
 		}).start();
 	}
+
+	protected void scrolllistview() {
+		// TODO Auto-generated method stub
+		// int totaloff = listView.getMeasuredHeight();
+  /* for (int i = 0; i <=3*data.size(); i++) {
+	   listView.smoothScrollBy(10, 0);
+	   if (i==3*data.size()) {
+		   listView.smoothScrollToPosition(0);
+		   
+		   i=0;
+		   handler.sendEmptyMessage(1);
+	}
+	   
+	   
+   }*/
+		
+		
+		
+		if (index <=3 * data.size()) {
+			listView.smoothScrollBy(10, 0);
+			index += 1;
+			
+		} else {
+			
+			listView.smoothScrollToPosition(0);
+			index = 0;
+			//handler.sendEmptyMessage(1);
+		}
+
+	}
+
+	// listview自动滚动
+
+	// 刷新数据
+	
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub

@@ -42,12 +42,14 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
-				refreshdata();
-				break;
+
+			
 			case 1:
 				UpdateUI();
 
+				break;
+			case 2:
+				initLineChart();
 				break;
 			default:
 				break;
@@ -68,7 +70,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 		ViewUtils.inject(this, view);
 
 		initLineChart();// 初始化
-
+		
 	}
 
 	private LineChartView lineChartView;
@@ -82,8 +84,8 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
 		getAxisPoints();//
-		initLineChart();
 
+		handler.sendEmptyMessage(2);
 	}
 
 	private void initLineChart() {
@@ -151,8 +153,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 
 		data.setValueLabelBackgroundEnabled(true);
 		data.setValueLabelsTextColor(Color.RED);
-		
-		
+
 		// 设置行为属性，支持缩放、滑动以及平移
 		lineChart.setInteractive(false);
 		lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
@@ -193,55 +194,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 	// String[] times = { "09:00", "11:30", "15:00", "22:00" };
 	private String stateString;
 
-	protected void refreshdata() {
-		// TODO Auto-generated method stub
-		new Thread(new Runnable() {
-
-			private InputStream iStream;
-
-			@Override
-			public void run() {
-				while (!stopThread) {
-
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
-
-					
-					try {						
-
-						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-								url_serviceinfo, "POST");
-						
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-							Thread.sleep(30000);
-
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}finally{
-						
-						if (iStream!=null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-						}
-					}
-
-				}
-			}
-		}).start();
-	}
+	
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
@@ -255,10 +208,10 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 				JSONObject object = (JSONObject) jsonArraylist.get(i);
 				// 开始价格
 				double beginprice = object.getDouble("beginprice");
-				beginpriceList.add((float) beginprice/100);
+				beginpriceList.add((float) beginprice / 100);
 				// 回购价
 				double buybackprice = object.getDouble("buybackprice");
-				buybackpriceList.add((float) buybackprice/100);
+				buybackpriceList.add((float) buybackprice / 100);
 
 				String dealday = object.getString("dealday");
 				timeList.add(dealday.substring(5, dealday.length()));
@@ -278,12 +231,54 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 	public void initData() {
 		// TODO Auto-generated method stub
 		// 获取数据
-		Message message = new Message();
-		message.what = 0;
-		handler.sendMessageDelayed(message, 500);
+	
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
+		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
+			@Override
+			public void run() {
+				while (!stopThread) {
+
+					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+							+ unionid + "&dgid=" + dgid;
+
+					try {
+
+						HttpsURLConnection connection = NetUtils
+								.httpsconnNoparm(url_serviceinfo, "POST");
+
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							iStream = connection.getInputStream();
+							String infojson = NetUtils.readString(iStream);
+							JSONObject jsonObject = new JSONObject(infojson);
+							// Log.e("ssssssssss", jsonObject.toString());
+							parseJson(jsonObject);
+							Thread.sleep(30000);
+							connection.disconnect();
+						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+
+						if (iStream != null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+
+				}
+			}
+		}).start();
 	}
 
 	@Override

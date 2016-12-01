@@ -17,12 +17,14 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -41,12 +43,15 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
-			case 0:
-				refreshdata();
-				break;
+			
+			
+			
 			case 1:
 				UpdateUI();
 
+				break;
+			case 2:
+				initLineChart();
 				break;
 			default:
 				break;
@@ -63,26 +68,22 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		sp = getActivity().getSharedPreferences("user", 0);
+		
 
 		ViewUtils.inject(this, view);
-		initLineChart();
-		lineChart.setOnValueTouchListener(new LineChartOnValueSelectListener() {
-
-			@Override
-			public void onValueDeselected() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onValueSelected(int arg0, int arg1, PointValue arg2) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getActivity(), arg1 + "", 0).show();
-				// line.setHasLabelsOnlyForSelected(true);
-				Log.e("点击节点", arg2 + "");
-			}
-		});
-
+		
+		
+		/*Bundle bundle=getArguments();
+		try {
+			JSONArray data=new JSONArray(bundle.getString("data"));
+			Log.e("测试", data.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		
 	}
 
 	private double nowprice;
@@ -90,7 +91,6 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	// private LineChartView lineChartView;
 	private List<PointValue> mPointValues = new ArrayList<PointValue>();
 	private List<AxisValue> axisValuesX = new ArrayList<AxisValue>();
-	private List<AxisValue> axisValuesY = new ArrayList<AxisValue>();
 
 	// 画图表
 	protected void UpdateUI() {
@@ -98,13 +98,13 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 		getAxisLables();// 获取x轴的标注 // getAyisLables();// 获取y轴的刻度;
 
-		initLineChart();
-
+		
+   handler.sendEmptyMessage(2);
 	}
 
 	private void initLineChart() {
 		line = new Line(mPointValues);
-
+		
 		List<Line> lines = new ArrayList<Line>();
 		line.setShape(ValueShape.CIRCLE);// 折线图上每个数据点的形状 这里是圆形 （有三种
 											// ：ValueShape.SQUARE
@@ -143,7 +143,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		axisX.setValues(axisValuesX); // 填充X轴的坐标值
 		data.setAxisXBottom(axisX); // x 轴在底部
 		// data.setAxisXTop(axisX); //x 轴在顶部
-		axisX.setHasLines(false); // x 轴分割
+		axisX.setHasLines(true); // x 轴分割
 
 		// Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
 		Axis axisY = new Axis().setHasLines(true); // Y轴
@@ -163,21 +163,20 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		lineChart.setValueSelectionEnabled(true);
 		lineChart.setVisibility(View.VISIBLE);
 		// lineChart.startDataAnimation();
-		 //折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
+		// 折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
 		lineChart.setViewportCalculationEnabled(true);
-        /*lineChart.setViewportCalculationEnabled(false);
-		Viewport v = new Viewport(lineChart.getMaximumViewport());
-		v.left = 0;
-		v.right = 5;
-		lineChart.setCurrentViewport(v);
-        lineChart.setMaximumViewport(v);*/
-	/*Viewport port=initViewPort(100,0,0,120);
-	lineChart.setCurrentViewport(port);
-    lineChart.setMaximumViewport(port);*/
-	
-	}
+		/*
+		 * lineChart.setViewportCalculationEnabled(false); Viewport v = new
+		 * Viewport(lineChart.getMaximumViewport()); v.left = 0; v.right = 5;
+		 * lineChart.setCurrentViewport(v); lineChart.setMaximumViewport(v);
+		 */
+		/*
+		 * Viewport port=initViewPort(100,0,0,120);
+		 * lineChart.setCurrentViewport(port);
+		 * lineChart.setMaximumViewport(port);
+		 */
 
-	
+	}
 
 	// X轴刻度的显示
 	private void getAxisLables() { // TODO Auto- generated method
@@ -185,7 +184,8 @@ public class NowTradeRecoedFragment extends BaseFragment {
 			mPointValues.add(new PointValue(i, firstpriceList.get(i)));
 			axisValuesX.add(new AxisValue(i).setValue(i).setLabel(
 					firsttimeList.get(i)));
-			axisValuesY.add(new AxisValue(i).setValue(firstpriceList.get(i)));// 添加Y轴显示的刻度值
+			// axisValuesY.add(new
+			// AxisValue(i).setValue(firstpriceList.get(i)));// 添加Y轴显示的刻度值
 
 		}
 
@@ -197,59 +197,10 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public static List<String> firsttimeList;
 	public static List<Float> firstpriceList;
 
-	// String[] times = { "09:00", "11:30", "15:00", "22:00" };
+	String[] times = { "09:00", "11:30", "15:00", "22:00" };
 	private String stateString;
 	private Line line;
 
-	protected void refreshdata() {
-		// TODO Auto-generated method stub
-		new Thread(new Runnable() {
-
-			private InputStream iStream;
-
-			@Override
-			public void run() {
-				while (!stopThread) {
-
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
-
-					
-					
-					try {
-						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-								url_serviceinfo, "POST");
-					int	code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-							Thread.sleep(30000);
-
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}finally{
-						if (iStream!=null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-						}
-						
-						
-					}
-
-				}
-			}
-		}).start();
-	}
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
@@ -282,6 +233,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 			}
 			firstpriceList.addAll(priceList);
+
 			firsttimeList.addAll(timeList);
 			Log.e("wewweew", firstpriceList + "");
 			Log.e("eeeeeeeeeeeeee", firsttimeList + "");
@@ -298,12 +250,57 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void initData() {
 		// TODO Auto-generated method stub
 		// 获取数据
-		Message message = new Message();
-		message.what = 0;
-		handler.sendMessageDelayed(message, 500);
+
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
+		new Thread(new Runnable() {
 
+			private InputStream iStream;
+
+			@Override
+			public void run() {
+				while (!stopThread) {
+
+					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+							+ unionid + "&dgid=" + dgid;
+					Log.d("unionid:   是", unionid);
+					System.err.println("unionid是：" + unionid);
+					Log.e("dgid:   是", dgid);
+					System.err.println("dgid是：" + dgid);
+					try {
+						HttpsURLConnection connection = NetUtils
+								.httpsconnNoparm(url_serviceinfo, "POST");
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							iStream = connection.getInputStream();
+							String infojson = NetUtils.readString(iStream);
+							JSONObject jsonObject = new JSONObject(infojson);
+							// Log.e("ssssssssss", jsonObject.toString());
+							parseJson(jsonObject);
+							Thread.sleep(30000);
+
+						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						if (iStream != null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+					}
+
+				}
+			}
+		}).start();
+		
+		
 	}
 
 	@Override

@@ -141,9 +141,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case 0:
-				refreshdata();
-				break;
+			
 			case 1:
 				UpdateUI();
 				scrollview.invalidate();// 定时刷新
@@ -172,57 +170,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
-	protected void refreshdata() {
-		// TODO Auto-generated method stub
-
-		// TODO Auto-generated method stub
-		new Thread(new Runnable() {
-
-			private InputStream iStream;
-
-			@Override
-			public void run() {
-				while (!stopThread) {
-
-					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
-							+ unionid + "&dgid=" + dgid;
-
-					try {
-						HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-								url_serviceinfo, "POST");
-						
-						int code = connection.getResponseCode();
-						if (code == 200) {
-							iStream = connection.getInputStream();
-							String infojson = NetUtils.readString(iStream);
-							JSONObject jsonObject = new JSONObject(infojson);
-							// Log.e("ssssssssss", jsonObject.toString());
-							parseJson(jsonObject);
-							Thread.sleep(30000);
-
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}finally{
-						if (iStream!=null) {
-							try {
-								iStream.close();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-						}
-						
-						
-					}
-
-				}
-			}
-		}).start();
-	}
-
+	
 	// 实现滚动线程
 	int j = 0;
 
@@ -232,22 +180,15 @@ public class TradeServiceActivity extends BaseActivity {
 		int totaloff = hscrollview.getMeasuredWidth();
 		// 判断宽度
 		int off = ll_scroll.getMeasuredWidth();
-		int fax = totaloff/off;
-		
-		if (j <7) {
+		int fax = totaloff / off;
+
+		if (j < 7) {
 			hscrollview.scrollBy(off, 0);
 			j = j + 1;
-		}else {
-			j=0;
-			hscrollview.scrollBy(-7*off, 0);
+		} else {
+			j = 0;
+			hscrollview.scrollBy(-7 * off, 0);
 		}
-
-		// 当前移动的水平距离
-		/*
-		 * int nowoff=
-		 * 
-		 * //总宽度 int totaloff=hscrollview.getMeasuredWidth();
-		 */
 
 		handler.removeMessages(2);
 		handler.sendEmptyMessageDelayed(2, 3000);
@@ -262,6 +203,7 @@ public class TradeServiceActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
 		// hscrollview定时滚动
+		
 
 		handler.sendEmptyMessageDelayed(2, 3000);
 
@@ -272,7 +214,7 @@ public class TradeServiceActivity extends BaseActivity {
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
 		// Log.e("ms我的unionID是：", unionid);
-
+		
 	}
 
 	@Override
@@ -313,24 +255,66 @@ public class TradeServiceActivity extends BaseActivity {
 		tabs_buysale.setShouldExpand(true);
 
 		// 获取数据
-		Message message = new Message();
-		message.what = 0;
-		handler.sendMessageDelayed(message, 500);
-		// refreshdata();
 
+		new Thread(new Runnable() {
+
+			private InputStream iStream;
+
+			@Override
+			public void run() {
+				while (!stopThread) {
+
+					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+							+ unionid + "&dgid=" + dgid;
+
+					try {
+						HttpsURLConnection connection = NetUtils
+								.httpsconnNoparm(url_serviceinfo, "POST");
+
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							iStream = connection.getInputStream();
+							String infojson = NetUtils.readString(iStream);
+							JSONObject jsonObject = new JSONObject(infojson);
+							// Log.e("ssssssssss", jsonObject.toString());
+							parseJson(jsonObject);
+							Thread.sleep(30000);
+
+						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						if (iStream != null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+					}
+
+				}
+			}
+		}).start();
+		
+		
 	}
 
 	protected void parseJson(JSONObject jsonObject) {
 		try {
-			//用户手机号
-			String phonenum=jsonObject.getString("mobile");
+			// 用户手机号
+			String phonenum = jsonObject.getString("mobile");
 			Log.e("mobile", phonenum);
 			sp.edit().putString("mobile", phonenum).commit();
-			
+
 			income = jsonObject.getDouble("income");
-			
-			//sp.edit().putFloat("jiubi", (float) (income/100)).commit();
-			String incomeing=(income/100)+"";
+
+			// sp.edit().putFloat("jiubi", (float) (income/100)).commit();
+			String incomeing = (income / 100) + "";
 			sp.edit().putString("jiubi", incomeing).commit();
 			tradeprice = jsonObject.getDouble("realprice");
 			String dealdatajson = jsonObject.getString("dealdata");
@@ -349,13 +333,12 @@ public class TradeServiceActivity extends BaseActivity {
 			// 今日涨跌
 
 			jsonArraylist = jsonObject.getJSONArray("todaydeal");
-            
+
 			Message message = new Message();
 			message.what = 1;
 			handler.sendMessage(message);
 			Log.e("shunshun", tradeprice + "");
-			
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -363,18 +346,6 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	protected void UpdateUI() {
 		df = new DecimalFormat("#0.00");
 
