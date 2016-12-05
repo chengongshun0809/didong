@@ -191,7 +191,7 @@ public class BuyChartFragment extends BaseFragment {
 		
 		
 		
-		if (index <=3 * data.size()) {
+		if (index <3 * data.size()) {
 			listView.smoothScrollBy(10, 0);
 			index += 1;
 			

@@ -72,6 +72,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 								sp.edit().putString("openid", openid).commit();
 								System.err.println("accessToken:   "
 										+ accessToken);
+								Log.e("openid", openid);
 								System.err.println("openid:   " + openid);
 								// 获取access_token，openid后，就可以用来获取更多用户信息，比如微信昵称，头像，性别等。接口为：
 								/*

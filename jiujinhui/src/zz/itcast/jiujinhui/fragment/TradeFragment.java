@@ -17,6 +17,8 @@ import zz.itcast.jiujinhui.activity.LoginActivity;
 import zz.itcast.jiujinhui.activity.TradeServiceActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -206,6 +208,7 @@ public class TradeFragment extends BaseFragment {
 	private TextView reprice;
 	private RelativeLayout jiaoyizhong;
 	private JSONObject jsonObject2;
+	private String opentime;
 
 	@Override
 	public void initData() {
@@ -299,6 +302,8 @@ public class TradeFragment extends BaseFragment {
           /* String dgid= jsonObject2.getString("dgid");
            sp.edit().putString("dgid", dgid).commit();*/
 			mainname = jsonObject2.getString("name");
+			opentime = jsonObject2.getString("subscribetime");
+			
 			Log.e("vv", jsonObject2.getString("name"));
 			maingooddealprice = jsonObject2.getDouble("realprice");
 			maindealcode = jsonObject2.getString("dealcode");
@@ -338,7 +343,34 @@ public class TradeFragment extends BaseFragment {
 			tv_name.setText(mainname);
 			tv_dealcode.setText(maindealcode);
 			tv_stock.setText(mainstock);
-
+            btn_public.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					LayoutInflater inflater = LayoutInflater.from(getActivity());
+					View openview = (View) inflater.inflate(R.layout.open_trade, null);
+					
+					
+					final AlertDialog builder = new AlertDialog.Builder(getActivity()).create();
+					builder.setView(openview, 0, 0, 0, 0);
+					builder.setCancelable(false);
+					builder.show();
+					
+					RelativeLayout okLayout=(RelativeLayout) openview.findViewById(R.id.dialog_ok);
+					TextView opentimeview=(TextView) openview.findViewById(R.id.opentime);
+					opentimeview.setText(opentime);
+					okLayout.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							builder.dismiss();
+						}
+					});
+					
+				}
+			});
 			btn_name.setText("我要认购");
 			btn_name.setTextSize(18);
 			btn_name.setTextColor(R.color.white_btn_ren);

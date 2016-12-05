@@ -73,7 +73,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="75dp"
-                android:text="6.66"
+               
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
 

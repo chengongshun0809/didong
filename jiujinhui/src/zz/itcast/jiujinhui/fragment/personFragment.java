@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
@@ -19,6 +20,8 @@ import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -63,8 +66,23 @@ public class personFragment extends BaseFragment {
 
 	private SharedPreferences sp;
 	private Boolean firstClick_recharge;
+	private String income;
 
+  Handler handler=new Handler(){
+	  
+	  public void handleMessage(android.os.Message msg) {
+		switch (msg.what) {
+		case 1:
+			 person_jiubi.setText(income);
+			break;
 
+		default:
+			break;
+		}
+		 
+		  
+	  };
+  };
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -78,18 +96,81 @@ public class personFragment extends BaseFragment {
 		// 微信昵称
 		String nickNameString = sp.getString("nickname", null);
 		NickName.setText(nickNameString);
-		
+		final String unionString=sp.getString("unionid", null);
 		//酒币
-	   String jiubinum=sp.getString("jiubi", null);
+	  /* String jiubinum=sp.getString("jiubi", null);
 	   if (jiubinum==null) {
 		rl_jiubi.setVisibility(view.GONE);
 	}else {
  		person_jiubi.setText(jiubinum+"");
-	}
+	}*/
 		
+	   new Thread(new Runnable() {
+
+			private InputStream is;
+
+			@Override
+			public void run() {
+			
+					try {
+						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
+								+ unionString + "&dgid=DG161027140008895";
+						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
+								urlpath, "GET");
+						// 若连接服务器成功，返回数据
+						int code = conn.getResponseCode();
+						if (code == 200) {
+
+							is = conn.getInputStream();
+							String json = NetUtils.readString(is);
+							// 解析json
+							parsonJson(json);
+							Thread.sleep(30000);
+							is.close();
+						}
+
+					} catch (Exception e) {
+						// TODO: handle exception
+					} finally{
+						if (is!=null) {
+							try {
+								is.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
+						}
+					}
+				
+				
+
+			}
+		}).start();
+	   
+	   
+	   
+	   
+	   
+	   
 	  
 	}
 	
+	protected void parsonJson(String json) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+			income = jsonObject.getString("income");
+			Message message=Message.obtain();
+			handler.sendEmptyMessage(1);
+			Log.e("income", income);
+			String phonenum = jsonObject.getString("mobile");
+			sp.edit().putString("mobile", phonenum).commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void initData() {
 		

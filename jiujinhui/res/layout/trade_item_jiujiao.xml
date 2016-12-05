@@ -74,13 +74,16 @@
         <LinearLayout
             android:layout_width="120dp"
             android:layout_height="fill_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+           
+             >
 
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_marginTop="35dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="21dp"
-                android:layout_marginTop="10dp"
+                
                 android:orientation="horizontal" >
 
                 <TextView
@@ -101,28 +104,12 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="10dp"
                 android:text="收储服务费"
-                android:textSize="20sp" />
-
-            <RelativeLayout
-                android:id="@+id/know_detail"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="21dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/detile_shape_corners" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="了解详情"
-                    android:textColor="#cc0000" />
-            </RelativeLayout>
+                android:textSize="15.5sp" />
         </LinearLayout>
 
         <View
@@ -237,7 +224,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
-        android:layout_marginTop="10dp"
+        
         android:background="@drawable/btn_shape_corners"
         android:visibility="gone" >
 
@@ -254,7 +241,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/igray" />
 
 </LinearLayout>

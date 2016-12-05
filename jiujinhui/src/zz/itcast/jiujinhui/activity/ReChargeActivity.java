@@ -102,7 +102,8 @@ public class ReChargeActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		api = WXAPIFactory.createWXAPI(this, null);
 		api.registerApp("wxdb59e14854a747c8");
-
+     iv_drink_checked_wubai.setVisibility(View.VISIBLE);
+     total="500";
 	}
 
 	@Override
@@ -187,6 +188,7 @@ public class ReChargeActivity extends BaseActivity {
 			total = "500";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
+			
 			break;
 		case R.id.yiqian:
 			iv_drink_checked_wubai.setVisibility(v.GONE);
@@ -247,6 +249,8 @@ public class ReChargeActivity extends BaseActivity {
 			break;
 
 		case R.id.chongzhi:// 微信充值
+			
+			
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
 			
@@ -266,7 +270,7 @@ public class ReChargeActivity extends BaseActivity {
 							+ openidString
 							+ "&unionid="
 							+ unionidString
-							+ "&total=" + "1" + "&num=1";
+							+ "&total=" + total + "&num=1";
 					// String
 					// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
 					/*

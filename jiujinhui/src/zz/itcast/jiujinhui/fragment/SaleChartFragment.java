@@ -57,8 +57,9 @@ public class SaleChartFragment extends BaseFragment {
 				
 				handler.sendEmptyMessage(1);
 			case 1:
-				scrolllistview();
+				
 				handler.removeMessages(1);
+				scrolllistview();
 				handler.sendEmptyMessageDelayed(1, 1000);
 				
 				break; 
@@ -176,15 +177,15 @@ public class SaleChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		// int totaloff = listView.getMeasuredHeight();
 		
-		if (index <=3 * data.size()) {
+		if (index <3 * data.size()) {
 			listView.smoothScrollBy(10, 0);
 			index += 1;
 			
 		} else {
-			index = 0;
-			listView.smoothScrollToPosition(index);
 			
-			handler.sendEmptyMessage(1);
+			listView.smoothScrollToPosition(0);
+			index = 0;
+			
 		}
 			
 		

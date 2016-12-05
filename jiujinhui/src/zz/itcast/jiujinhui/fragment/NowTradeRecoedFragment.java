@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -29,6 +30,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
@@ -71,19 +74,6 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		
 
 		ViewUtils.inject(this, view);
-		
-		
-		/*Bundle bundle=getArguments();
-		try {
-			JSONArray data=new JSONArray(bundle.getString("data"));
-			Log.e("测试", data.toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
-		
 	}
 
 	private double nowprice;
@@ -103,6 +93,8 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	}
 
 	private void initLineChart() {
+		
+		
 		line = new Line(mPointValues);
 		
 		List<Line> lines = new ArrayList<Line>();
@@ -118,15 +110,15 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 		// line.setPointRadius(3);
 		line.setHasLabels(false);
-		line.setHasLabelsOnlyForSelected(true);
+		//line.setHasLabelsOnlyForSelected(true);
 		// 点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
 		line.setHasLines(true);// 是否用线显示。如果为false 则没有曲线只有点显示
-		// line.setHasPoints(false);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
+		// line.setHasPoints(true);// 是否显示圆点 如果为false 则没有原点只有点显示（每个数据点都是个大的圆点）
 		line.setColor(Color.RED);
 		// 圆点半径
 		// line.setPointRadius(2);
 		line.setStrokeWidth(1);// 设置折线宽度
-
+        line.setHasLabelsOnlyForSelected(true);
 		lines.add(line);
 		LineChartData data = new LineChartData();
 		data.setLines(lines);
@@ -139,6 +131,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		axisX.setTextColor(Color.GRAY); // 设置字体颜色
 		axisX.setName("实时详情数据"); // 表格名称
 		axisX.setTextSize(10);// 设置字体大小
+		axisX.setHasSeparationLine(true);//设置是否有分割线
 		axisX.setMaxLabelChars(10); // 最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数7<=x<=mAxisXValues.length
 		axisX.setValues(axisValuesX); // 填充X轴的坐标值
 		data.setAxisXBottom(axisX); // x 轴在底部
@@ -148,23 +141,30 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		// Y轴是根据数据的大小自动设置Y轴上限(在下面我会给出固定Y轴数据个数的解决方案)
 		Axis axisY = new Axis().setHasLines(true); // Y轴
 		axisY.setName("价格");// y轴标注
-
+           axisY.setHasLines(true);
 		axisY.setTextSize(10);// 设置字体大小
+		axisY.setMaxLabelChars(4);
 		data.setAxisYLeft(axisY); // Y轴设置在左边
 		// data.setAxisYRight(axisY); //y轴设置在右边
 
 		// 设置行为属性，支持缩放、滑动以及平移
 		lineChart.setInteractive(false);
-		// lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
-		// lineChart.setMaxZoom((float) 2);//最大方法比例
-
+		lineChart.setZoomEnabled(false);
+		 /*lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
+		 lineChart.setMaxZoom((float) 4);//最大方法比例
+*/
 		lineChart.setLineChartData(data);
-
+        // lineChart.setInteractive(true);
 		lineChart.setValueSelectionEnabled(true);
+		
+		lineChart.setValueTouchEnabled(true);
 		lineChart.setVisibility(View.VISIBLE);
 		// lineChart.startDataAnimation();
 		// 折线图横纵轴坐标是否按照所给折线数据进行收缩，默认：true
-		lineChart.setViewportCalculationEnabled(true);
+		lineChart.setViewportCalculationEnabled(false);
+		 Animation animation = new AlphaAnimation(0.3f, 1.0f);
+	        animation.setDuration(2000);
+	        lineChart.startAnimation(animation);
 		/*
 		 * lineChart.setViewportCalculationEnabled(false); Viewport v = new
 		 * Viewport(lineChart.getMaximumViewport()); v.left = 0; v.right = 5;
@@ -175,6 +175,12 @@ public class NowTradeRecoedFragment extends BaseFragment {
 		 * lineChart.setCurrentViewport(port);
 		 * lineChart.setMaximumViewport(port);
 		 */
+	
+		
+		
+		
+		
+		
 
 	}
 
@@ -307,6 +313,8 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void initListener() {
 		// TODO Auto-generated method stub
 
+		mPointValues.clear();
+		
 	}
 
 	@Override
