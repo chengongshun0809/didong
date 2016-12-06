@@ -3,9 +3,6 @@ package zz.itcast.jiujinhui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BaseFragment;
 import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment;
@@ -15,8 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
+
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class DrinkRecordActivity extends BaseActivity {
 	@ViewInject(R.id.radiogroup)

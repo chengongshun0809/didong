@@ -98,7 +98,7 @@ public class BuyChartFragment extends BaseFragment {
 	private MyAdapter adapter;
 
 	private List<Map<String, Object>> data = null;
-	private Timer timer;
+
 
 	@Override
 	public void initData() {

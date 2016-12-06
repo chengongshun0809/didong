@@ -23,13 +23,17 @@
                 android:id="@+id/rb_income"
                 style="@style/tab_style"
                 android:layout_height="match_parent"
-                android:text="@string/income" />
+                android:text="@string/income"
+               
+                 />
 
             <RadioButton
                 android:id="@+id/rb_zhichu"
                 style="@style/tab_style"
                 android:layout_height="match_parent"
-                android:text="@string/zhichu" />
+                android:text="@string/zhichu" 
+                 
+                />
         </RadioGroup>
     </RelativeLayout>
     <FrameLayout

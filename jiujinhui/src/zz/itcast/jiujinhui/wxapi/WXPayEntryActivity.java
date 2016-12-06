@@ -2,6 +2,7 @@ package zz.itcast.jiujinhui.wxapi;
 
 
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.activity.MainActivity;
 import zz.itcast.jiujinhui.activity.ReChargeActivity;
 import zz.itcast.jiujinhui.res.Constants;
 import android.app.Activity;
@@ -46,7 +47,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 	public void onResp(BaseResp resp) {
 		
 		if (resp.errCode==0) {
-			Toast.makeText(WXPayEntryActivity.this, "恭喜您支付成功", Toast.LENGTH_SHORT).show();
+			Toast.makeText(WXPayEntryActivity.this, "恭喜您充值成功,可以开心购买啦", 0).show();
+			Intent intent=new Intent(WXPayEntryActivity.this,MainActivity.class);
+			startActivity(intent);
 			
 			finish();
 		}

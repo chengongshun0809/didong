@@ -66,14 +66,14 @@ public class personFragment extends BaseFragment {
 
 	private SharedPreferences sp;
 	private Boolean firstClick_recharge;
-	private String income;
+	private double income;
 
   Handler handler=new Handler(){
 	  
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
-			 person_jiubi.setText(income);
+			 person_jiubi.setText((income/100)+"");
 			break;
 
 		default:
@@ -83,6 +83,7 @@ public class personFragment extends BaseFragment {
 		  
 	  };
   };
+	
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -111,7 +112,7 @@ public class personFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-			
+				
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 								+ unionString + "&dgid=DG161027140008895";
@@ -142,9 +143,9 @@ public class personFragment extends BaseFragment {
 						}
 					}
 				
-				
+				}
 
-			}
+			
 		}).start();
 	   
 	   
@@ -159,10 +160,10 @@ public class personFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		try {
 			JSONObject jsonObject = new JSONObject(json);
-			income = jsonObject.getString("income");
+			income = jsonObject.getDouble("income");
 			Message message=Message.obtain();
 			handler.sendEmptyMessage(1);
-			Log.e("income", income);
+			
 			String phonenum = jsonObject.getString("mobile");
 			sp.edit().putString("mobile", phonenum).commit();
 		} catch (JSONException e) {
@@ -279,7 +280,6 @@ public class personFragment extends BaseFragment {
 			Intent intent = new Intent(getActivity(), PerInfoActivity.class);
 			intent.putExtra("shun", "shun");
 			startActivityForResult(intent, 0);
-
 			break;
 		
 		default:
@@ -287,5 +287,10 @@ public class personFragment extends BaseFragment {
 		}
 
 	}
+@Override
+public void onDestroy() {
+	// TODO Auto-generated method stub
 
+	super.onDestroy();
+}
 }

@@ -266,7 +266,7 @@ public class ReChargeActivity extends BaseActivity {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					String url = "https://www.4001149114.com/NLJJ/ddapp/apppay?wxopenid="
+					String url = "https://www.4001149114.com/NLJJ/ddapp/dealwinebuy?wxopenid="
 							+ openidString
 							+ "&unionid="
 							+ unionidString
@@ -277,7 +277,7 @@ public class ReChargeActivity extends BaseActivity {
 					 * Toast.makeText(ReChargeActivity.this, "获取订单中...",
 					 * Toast.LENGTH_SHORT).show();
 					 */
-					try {
+					try {	
 						byte[] buf = Util.httpGet(url);
 						if (buf != null && buf.length > 0) {
 							String content = new String(buf);
