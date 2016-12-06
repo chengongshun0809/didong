@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class DrinkIncomeFragment extends BaseFragment {
@@ -38,7 +39,8 @@ public class DrinkIncomeFragment extends BaseFragment {
 	private ListView cominglistview;
 
 	private SharedPreferences sp;
-
+	@ViewInject(R.id.Rl_jindu)
+	private RelativeLayout Rl_jindu;
 	private String unionString;
 	private MyAdapter adapter;
 	private ArrayList<Map<String, Object>> data=null;
@@ -52,6 +54,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 			case 1:
 				data.clear();
 				data.addAll(incomeslist);
+				Rl_jindu.setVisibility(View.GONE);
 				adapter = new MyAdapter();
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
@@ -249,7 +252,7 @@ public void onDestroyView() {
 		ViewUtils.inject(this,view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionString = sp.getString("unionid", null);
-		
+		Rl_jindu.setVisibility(View.VISIBLE);
 	}
 
 	@Override

@@ -36,6 +36,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TiXianRecordActivity extends BaseActivity {
@@ -48,7 +50,11 @@ public class TiXianRecordActivity extends BaseActivity {
 	private TextView tv__title;
 	@ViewInject(R.id.tv_back)
 	private ImageView tv_back;
-	
+	@ViewInject(R.id.Rl_jindu)
+	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.probar)
+	private ProgressBar probar;
+	private RelativeLayout Rl_probar;
 	private ArrayList<Map<String, Object>> data = null;
 	Handler handler = new Handler() {
 
@@ -58,6 +64,7 @@ public class TiXianRecordActivity extends BaseActivity {
 			case 1:
 				data.clear();
 				data.addAll(incomeslist);
+				Rl_jindu.setVisibility(View.GONE);
 				adapter = new MyAdapter();
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
@@ -274,6 +281,8 @@ public class TiXianRecordActivity extends BaseActivity {
 		Log.e("unionhahaha", unionString);
 		data = new ArrayList<Map<String, Object>>();
 		tv__title.setText("我的提现");
+		
+		Rl_jindu.setVisibility(View.VISIBLE);
 	}
 
 	@Override
