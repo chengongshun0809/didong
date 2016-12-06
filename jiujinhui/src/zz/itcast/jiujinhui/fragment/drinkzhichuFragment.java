@@ -215,13 +215,13 @@ public class drinkzhichuFragment extends BaseFragment {
 				}
 				
 				
-				Message message=handler.obtainMessage();
-				message.what=1;
-				handler.sendMessage(message);
+				
 			}
-			Log.e("收入", incomeslist.toString());
+			//Log.e("收入", incomeslist.toString());
 			
-
+			Message message=handler.obtainMessage();
+			message.what=1;
+			handler.sendMessage(message);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -246,7 +246,7 @@ public class drinkzhichuFragment extends BaseFragment {
 public void onDestroyView() {
 	// TODO Auto-generated method stub
 	super.onDestroyView();
-	incomeslist.clear();
+	data.clear();
 }
 	@Override
 	public int getLayoutResID() {
