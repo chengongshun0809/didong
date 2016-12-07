@@ -73,6 +73,8 @@
         <activity android:name="net.sourceforge.simcpux.wxapi.WXEntryActivity" >
         </activity>
         <activity android:name="zz.itcast.jiujinhui.activity.MyTixiandetail"></activity>
+      <activity android:name="zz.itcast.jiujinhui.activity.TixianSuccessActivity"></activity>
+        
         <!-- 微信回调activity -->
         <activity
             android:name=".wxapi.WXEntryActivity"

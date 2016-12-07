@@ -144,6 +144,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																					System.err
 																							.println("我的unionid是:   "
 																									+ unionid);
+																					Log.e("我的unionID是：", unionid);
 																					String nickname = json
 																							.getString("nickname");// 昵称
 																					String headimgurl = json

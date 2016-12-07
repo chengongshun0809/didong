@@ -2,6 +2,7 @@ package zz.itcast.jiujinhui.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -20,6 +21,7 @@ import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -83,6 +85,8 @@ public class personFragment extends BaseFragment {
 		  
 	  };
   };
+private String phonenum;
+private DecimalFormat df;
 	
 	@Override
 	public void initView(View view) {
@@ -159,13 +163,15 @@ public class personFragment extends BaseFragment {
 	protected void parsonJson(String json) {
 		// TODO Auto-generated method stub
 		try {
+			df = new DecimalFormat("#0.00");
 			JSONObject jsonObject = new JSONObject(json);
 			income = jsonObject.getDouble("income");
 			Message message=Message.obtain();
 			handler.sendEmptyMessage(1);
-			
-			String phonenum = jsonObject.getString("mobile");
+			sp.edit().putString("income", income+"").commit();
+			phonenum = jsonObject.getString("mobile");
 			sp.edit().putString("mobile", phonenum).commit();
+			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -226,6 +232,8 @@ public class personFragment extends BaseFragment {
 		case R.id.tixianRecord:// 提现记录
 			Intent intent3 = new Intent(getActivity(),
 					TiXianRecordActivity.class);
+			
+			
 			startActivity(intent3);
 			break;
 		case R.id.tixian:// 点击提现
@@ -247,6 +255,10 @@ public class personFragment extends BaseFragment {
 			}*/
 			Intent intent4 = new Intent(getActivity(),
 					MyTiXianActivity.class);
+			Bundle bundle=new Bundle();
+			bundle.putString("mobile", phonenum);
+			bundle.putString("money", df.format(income/100));
+			intent4.putExtras(bundle);
 			startActivity(intent4);
 			break;
 

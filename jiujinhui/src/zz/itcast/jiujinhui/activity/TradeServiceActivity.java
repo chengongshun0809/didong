@@ -120,6 +120,8 @@ public class TradeServiceActivity extends BaseActivity {
 	// 卖出中
 	@ViewInject(R.id.saling)
 	private TextView saling;
+	@ViewInject(R.id.xiaji)
+	private TextView xiaji;
 	// 买入中
 	@ViewInject(R.id.buying)
 	private TextView buying;
@@ -266,7 +268,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
-
+               
 					try {
 						HttpsURLConnection connection = NetUtils
 								.httpsconnNoparm(url_serviceinfo, "POST");
@@ -324,6 +326,7 @@ public class TradeServiceActivity extends BaseActivity {
 			buygooding = jsonObject2.getInt("getnum");
 			salgooding = jsonObject2.getInt("putnum");
 			leftgoodassets = jsonObject2.getInt("stock");
+			xia = jsonObject2.getString("downnum");
 			// 认购
 			rengou = jsonObject2.getInt("subnum");
 			dealnum = jsonObject2.getInt("dealnum");
@@ -352,7 +355,7 @@ public class TradeServiceActivity extends BaseActivity {
 		realpri.setText(df.format((tradeprice / 100)));
 		jiubi.setText(df.format((income / 100)));
 		totalassets = leftgoodassets + buygooding;
-
+        xiaji.setText(xia);
 		total_assets.setText(totalassets + "");
 		left_assets.setText(leftgoodassets + "");
 		buying.setText(buygooding + "");
@@ -854,6 +857,8 @@ public class TradeServiceActivity extends BaseActivity {
 	private JSONArray jsonArraylist;
 
 	private DecimalFormat df;
+
+	private String xia;
 
 	@Override
 	protected void onDestroy() {

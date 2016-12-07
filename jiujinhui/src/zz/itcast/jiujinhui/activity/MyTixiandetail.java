@@ -95,6 +95,10 @@ private RelativeLayout tixian_jieguo;
 			shuoming.setText("酒币提现失败原因: 支付失败,NAME_MISMATCH,真实姓名不一致.");
 			shuoming.setTextColor(Color.RED);
 			tixian_jieguo.setVisibility(View.GONE);
+		}else if ("1".equals(state)) {
+			tixian_jieguo.setVisibility(View.GONE);
+			shuoming.setVisibility(View.VISIBLE);
+			shuoming.setText("  提现处理中，请稍后...");
 		}
 
 	}

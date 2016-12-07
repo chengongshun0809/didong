@@ -159,10 +159,10 @@ public class TiXianRecordActivity extends BaseActivity {
 				map.put("phonenumber", phonenumber);
 				map.put("moneny", df.format(Double.valueOf(moneny)/100));
 				
-				
+				Log.e("state", state+",");
 				
 				incomeslist.add(map);
-				Log.e("map", incomeslist.toString());
+				//Log.e("map", incomeslist.toString());
 				
 				
 			}
@@ -228,6 +228,9 @@ public class TiXianRecordActivity extends BaseActivity {
 			} else if ("2".equals(incomeslist.get(position).get("state"))) {
 				holder.state.setText("失败");
 				holder.state.setTextColor(Color.RED);
+			}else if ("1".equals(incomeslist.get(position).get("state"))) {
+				holder.state.setText("处理中");
+				holder.state.setTextColor(Color.YELLOW);
 			}
 			cominglistview.setOnItemClickListener(new OnItemClickListener() {
 
