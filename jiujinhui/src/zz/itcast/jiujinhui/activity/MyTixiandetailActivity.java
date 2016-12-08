@@ -13,7 +13,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import zz.itcast.jiujinhui.R;
 
-public class MyTixiandetail extends BaseActivity {
+public class MyTixiandetailActivity extends BaseActivity {
 	@ViewInject(R.id.name)
 	private TextView nameTextView;
 	@ViewInject(R.id.phonenumber)

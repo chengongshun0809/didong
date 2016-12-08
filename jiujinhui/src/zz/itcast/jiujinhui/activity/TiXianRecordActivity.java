@@ -238,7 +238,7 @@ public class TiXianRecordActivity extends BaseActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					// TODO Auto-generated method stub
-					Intent intent=new Intent(TiXianRecordActivity.this,MyTixiandetail.class);
+					Intent intent=new Intent(TiXianRecordActivity.this,MyTixiandetailActivity.class);
 					Bundle bundle=new Bundle();
 					bundle.putString("name", incomeslist.get(position).get("name")+"");
 					bundle.putString("phonenumber",incomeslist.get(position).get("phonenumber")+"");

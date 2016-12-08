@@ -7,6 +7,9 @@ import java.text.DecimalFormat;
 import javax.net.ssl.HttpsURLConnection;
 import javax.security.auth.PrivateCredentialPermission;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -20,6 +23,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -73,9 +77,6 @@ public class MyTiXianActivity extends BaseActivity {
 		jiubi_total = Double.parseDouble(incomeString);
 		wine_money.setText(incomeString);
 
-		woyaotixian_hui.setVisibility(View.GONE);
-		woyaotixian.setVisibility(View.VISIBLE);
-
 	}
 
 	@Override
@@ -85,12 +86,15 @@ public class MyTiXianActivity extends BaseActivity {
 		tv__title.setText("提现");
 		tv__title.setTextSize(22);
 		sp = getSharedPreferences("user", 0);
-
 		nameEditText.addTextChangedListener(textWatcher);
 		countEditText.addTextChangedListener(textWatcher);
-		// 实际钱
+
+		woyaotixian.setVisibility(View.GONE);
+		woyaotixian_hui.setVisibility(View.VISIBLE);
 
 	}
+
+	private String realString;
 
 	private TextWatcher textWatcher = new TextWatcher() {
 		private CharSequence charSequence;
@@ -99,6 +103,34 @@ public class MyTiXianActivity extends BaseActivity {
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
 			// TODO Auto-generated method stub
+			namString = nameEditText.getText().toString().trim();
+			countsString = countEditText.getText().toString().trim();
+
+			if (!TextUtils.isEmpty(namString)
+					&& !TextUtils.isEmpty(countsString)) {
+				ticount = Double.parseDouble(countsString);
+				
+				if (ticount <= jiubi_total && ticount >= 2) {
+					woyaotixian.setVisibility(View.VISIBLE);
+					woyaotixian_hui.setVisibility(View.GONE);
+				} else if (ticount>jiubi_total) {
+					Toast.makeText(getApplicationContext(), "输入的数量超过提现金额", 0)
+					.show();
+					woyaotixian.setVisibility(View.GONE);
+					woyaotixian_hui.setVisibility(View.VISIBLE);
+					
+				}else if (ticount<jiubi_total) {
+					Toast.makeText(getApplicationContext(), "提现数量不能小于2", 0)
+					.show();
+					woyaotixian.setVisibility(View.GONE);
+					woyaotixian_hui.setVisibility(View.VISIBLE);
+				}
+
+			} else {
+				
+				woyaotixian.setVisibility(View.GONE);
+				woyaotixian_hui.setVisibility(View.VISIBLE);
+			}
 
 		}
 
@@ -139,87 +171,100 @@ public class MyTiXianActivity extends BaseActivity {
 			break;
 		case R.id.woyaotixian:
 			// 提现
-			//woyaotixian.setEnabled(false);
-			namString = nameEditText.getText().toString().trim();
-			countsString = countEditText.getText().toString().trim();
-			if (!TextUtils.isEmpty(namString)
-					&& !TextUtils.isEmpty(countsString)) {
+			Log.e("dianji", "haha");
+			woyaotixian.setEnabled(false);
 
-				ticount = Double.parseDouble(countsString);
+			new Thread(new Runnable() {
 
-				shouxufeiString = (ticount * 0.006) + "";
-				realmon = ticount - ticount * 0.006;
-				if (ticount <= jiubi_total && ticount >= 2) {
-					new Thread(new Runnable() {
+				private InputStream is;
 
-						private InputStream is;
+				@Override
+				public void run() {
 
-						@Override
-						public void run() {
+					try {
+						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/withdraw?unionid="
+								+ unionString
+								+ "&fee="
+								+ countsString
 
-							try {
-								String urlpath = "https://www.4001149114.com/NLJJ/ddapp/withdraw?unionid="
-										+ unionString
-										+ "&fee="
-										+ "realmon"
-										+ "&name="
-										+ namString
-										+ "&mobile="
-										+ mobileString;
-								HttpsURLConnection conn = NetUtils
-										.httpsconnNoparm(urlpath, "POST");
-								// 若连接服务器成功，返回数据
-								int code = conn.getResponseCode();
-								if (code == 200) {
+								+ "&name="
+								+ namString
+								+ "&mobile="
+								+ mobileString;
+						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
+								urlpath, "GET");
+						// 若连接服务器成功，返回数据
+						int code = conn.getResponseCode();
+						if (code == 200) {
+							is = conn.getInputStream();
+							String json = NetUtils.readString(is);
+							//Log.e("服务器信息", json);
+							// 解析json
+							// parsonJson(json);
+							// Thread.sleep(30000);
+							handler.sendEmptyMessage(1);
 
-									woyaotixian.setEnabled(true);
-									Intent intent = new Intent();
-									Bundle bundle = new Bundle();
-									// bundle.putString("money", incomeString);
-									bundle.putString("count", countsString);
-									bundle.putString("shouxufei",
-											shouxufeiString);
-									intent.putExtras(bundle);
-									startActivity(intent);
-									// Thread.sleep(30000);
+							// Thread.sleep(30000);
 
-									is.close();
-								}
-
-							} catch (Exception e) {
-								// TODO: handle exception
-							} finally {
-								if (is != null) {
-									try {
-										is.close();
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								}
-							}
-
+							is.close();
 						}
 
-					}).start();
-				} else {
-					Toast.makeText(getApplicationContext(), "酒币提现数量错误，请重新输入", 0)
-							.show();
-					woyaotixian.setEnabled(false);
+					} catch (Exception e) {
+						// TODO: handle exception
+					} finally {
+						if (is != null) {
+							try {
+								is.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+
 				}
 
-			} else {
-				woyaotixian_hui.setVisibility(View.VISIBLE);
-				woyaotixian.setVisibility(View.GONE);
-				Toast.makeText(getApplicationContext(), "姓名或提现酒币不能为空", 0)
-						.show();
-			}
-
+			}).start();
+			woyaotixian.setEnabled(true);
 			break;
 		default:
 			break;
 		}
 	}
+
+	Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				DecimalFormat df = new DecimalFormat("#0.00");
+				Intent intent = new Intent(MyTiXianActivity.this,
+						TixianSuccessActivity.class);
+				Bundle bundle = new Bundle();
+				// bundle.putString("money", incomeString);
+				bundle.putString("count", countsString);
+				bundle.putString("shouxufei", df.format(ticount*0.006));
+				intent.putExtras(bundle);
+				startActivity(intent);
+
+				break;
+
+			default:
+				break;
+			}
+		};
+	};
+
+	/*
+	 * protected void parsonJson(String json) { // TODO Auto-generated method
+	 * stub try { JSONObject jsonObject = new JSONObject(json); String
+	 * stateString = jsonObject.getString("state"); if
+	 * ("success".equals(stateString)) { // 提现成功 handler.sendEmptyMessage(1); }
+	 * 
+	 * } catch (JSONException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	@Override
 	public int getLayoutResID() {
@@ -232,6 +277,7 @@ public class MyTiXianActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		tv_back.setOnClickListener(this);
 		total_tixian.setOnClickListener(this);
+		woyaotixian.setOnClickListener(this);
 	}
 
 }

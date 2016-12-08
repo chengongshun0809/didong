@@ -1,10 +1,14 @@
 package zz.itcast.jiujinhui.activity;
 
+import java.text.DecimalFormat;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -28,10 +32,12 @@ public class TixianSuccessActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
+		DecimalFormat df = new DecimalFormat("#0.00");
 		Bundle bundle = getIntent().getExtras();
 		countString = bundle.getString("count");
+		double count=Double.parseDouble(countString);
 		shouxuString = bundle.getString("shouxufei");
-		money.setText(countString);
+		money.setText(df.format(count));
 		shouxumoney.setText(shouxuString);
 	}
 
@@ -40,6 +46,7 @@ public class TixianSuccessActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("提现详情");
+		tv_back.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -51,7 +58,8 @@ public class TixianSuccessActivity extends BaseActivity {
 	@Override
 	public void initListener() {
 		// TODO Auto-generated method stub
-		tv_back.setOnClickListener(this);
+		
+		wancheng.setOnClickListener(this);
 	}
 
 	@Override
@@ -59,12 +67,13 @@ public class TixianSuccessActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onClick(v);
 		switch (v.getId()) {
-		case R.id.tv_back:
-			finish();
-			break;
+		
 		case R.id.wancheng:
 			
-			finish();
+			Intent intent=new Intent(TixianSuccessActivity.this,MainActivity.class);
+			startActivity(intent);
+			Toast.makeText(getApplicationContext(), "提现申请成功", 0)
+			.show();
 			break;
 		default:
 			break;
