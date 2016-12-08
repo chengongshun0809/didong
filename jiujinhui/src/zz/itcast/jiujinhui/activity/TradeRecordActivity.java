@@ -73,7 +73,7 @@ public class TradeRecordActivity extends BaseActivity {
 			// TODO Auto-generated constructor stub
 		}
 
-		private final String[] titles = { "全部", "认购", "买入","卖出","提货","转让","预付款" };
+		private final String[] titles = { "全部", "认购", "买入","卖出","提货","转让","充值" };
 
 		@Override
 		public CharSequence getPageTitle(int position) {

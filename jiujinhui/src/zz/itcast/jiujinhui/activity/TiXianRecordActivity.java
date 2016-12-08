@@ -52,8 +52,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	private ImageView tv_back;
 	@ViewInject(R.id.Rl_jindu)
 	private RelativeLayout Rl_jindu;
-	@ViewInject(R.id.probar)
-	private ProgressBar probar;
+	
 	private RelativeLayout Rl_probar;
 	private ArrayList<Map<String, Object>> data = null;
 	Handler handler = new Handler() {

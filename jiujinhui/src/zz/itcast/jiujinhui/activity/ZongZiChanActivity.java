@@ -5,17 +5,8 @@ import android.view.View;
 
 public class ZongZiChanActivity extends BaseActivity {
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getLayoutResID() {
-		// TODO Auto-generated method stub
-		return R.layout.zongzichan_activity;
-	}
+	
+	
 
 	@Override
 	public void initData() {
@@ -34,5 +25,16 @@ public class ZongZiChanActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 
 	}
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public int getLayoutResID() {
+		// TODO Auto-generated method stub
+		return R.layout.zongzichan_activity;
+	}
+
 
 }
