@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -20,6 +21,7 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment.MyAdapter;
 
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -52,6 +54,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	private ImageView tv_back;
 	@ViewInject(R.id.Rl_jindu)
 	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.msg_chengjiao)
 	
 	private RelativeLayout Rl_probar;
 	private ArrayList<Map<String, Object>> data = null;
@@ -184,7 +187,7 @@ public class TiXianRecordActivity extends BaseActivity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return incomeslist.size();
+			return data.size();
 		}
 
 		@Override
@@ -218,16 +221,16 @@ public class TiXianRecordActivity extends BaseActivity {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.danhao.setText(incomeslist.get(position).get("danhao") + "");
+			holder.danhao.setText(data.get(position).get("danhao") + "");
 
-			holder.date.setText(incomeslist.get(position).get("date") + "");
-			if ("0".equals(incomeslist.get(position).get("state"))) {
+			holder.date.setText(data.get(position).get("date") + "");
+			if ("0".equals(data.get(position).get("state"))) {
 				holder.state.setText("成功");
 				holder.state.setTextColor(Color.BLUE);
-			} else if ("2".equals(incomeslist.get(position).get("state"))) {
+			} else if ("2".equals(data.get(position).get("state"))) {
 				holder.state.setText("失败");
 				holder.state.setTextColor(Color.RED);
-			}else if ("1".equals(incomeslist.get(position).get("state"))) {
+			}else if ("1".equals(data.get(position).get("state"))) {
 				holder.state.setText("处理中");
 				holder.state.setTextColor(Color.YELLOW);
 			}
@@ -239,11 +242,11 @@ public class TiXianRecordActivity extends BaseActivity {
 					// TODO Auto-generated method stub
 					Intent intent=new Intent(TiXianRecordActivity.this,MyTixiandetailActivity.class);
 					Bundle bundle=new Bundle();
-					bundle.putString("name", incomeslist.get(position).get("name")+"");
-					bundle.putString("phonenumber",incomeslist.get(position).get("phonenumber")+"");
-					bundle.putString("moneny",incomeslist.get(position).get("moneny")+"");
-					bundle.putString("state", incomeslist.get(position).get("state")+"");
-					bundle.putString("operatetime",incomeslist.get(position).get("oktime")+"");
+					bundle.putString("name", data.get(position).get("name")+"");
+					bundle.putString("phonenumber",data.get(position).get("phonenumber")+"");
+					bundle.putString("moneny",data.get(position).get("moneny")+"");
+					bundle.putString("state", data.get(position).get("state")+"");
+					bundle.putString("operatetime",data.get(position).get("oktime")+"");
 					bundle.putString("msg", info);
 					intent.putExtras(bundle);
 					startActivity(intent);
@@ -321,6 +324,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		stopThread = true;
+		handler.removeMessages(1);
 		super.onDestroy();
 	}
 

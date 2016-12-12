@@ -61,6 +61,7 @@
             android:src="@drawable/jiu" />
 
         <TextView
+            android:id="@+id/name_pro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -78,24 +79,22 @@
             android:text="全部成交"
             android:textColor="#666999" />
 
-        <LinearLayout
-            android:id="@+id/msg_weichengjiao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone" >
-
+       
             <TextView
+                android:visibility="gone" 
+                android:id="@+id/tv_weichengjiao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="12dp"
                 android:layout_marginTop="15dp"
                 android:text="未成交x"
                 android:textColor="#666999" />
 
             <TextView
-                android:id="@+id/msg_weichengjiao_num"
+                
+                android:visibility="gone" 
+                android:id="@+id/tv_weichengjiao_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -103,7 +102,7 @@
                 android:layout_marginTop="15dp"
                 android:text="1"
                 android:textColor="#666999" />
-        </LinearLayout>
+      
     </RelativeLayout>
 
     <View
@@ -116,7 +115,7 @@
         android:layout_height="40dp" >
 
         <TextView
-            android:id="@+id/danhao"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -148,7 +147,7 @@
                 android:text="共" />
 
             <TextView
-                android:id="@+id/num"
+                android:id="@+id/tvnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"

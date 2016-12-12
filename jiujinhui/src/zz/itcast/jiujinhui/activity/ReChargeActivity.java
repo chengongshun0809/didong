@@ -6,6 +6,7 @@ import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.Util;
 import android.content.SharedPreferences;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -102,8 +103,8 @@ public class ReChargeActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		api = WXAPIFactory.createWXAPI(this, null);
 		api.registerApp("wxdb59e14854a747c8");
-     iv_drink_checked_wubai.setVisibility(View.VISIBLE);
-     total="500";
+		iv_drink_checked_wubai.setVisibility(View.VISIBLE);
+		total = "500";
 	}
 
 	@Override
@@ -137,35 +138,37 @@ public class ReChargeActivity extends BaseActivity {
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);
 					other_moneny.requestFocus();
+					total = null;
 					touch_flag = 0;
 				}
-				
+
 				return false;
 			}
 		});
 		other_moneny.addTextChangedListener(new TextWatcher() {
-			
+
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				// TODO Auto-generated method stub
 				total = other_moneny.getText().toString();
+
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
-		
+
 	}
 
 	String total = null;
@@ -173,6 +176,8 @@ public class ReChargeActivity extends BaseActivity {
 	private String openidString;
 
 	private String unionidString;
+
+	private double totaldouble;
 
 	@Override
 	public void onClick(View v) {
@@ -188,7 +193,7 @@ public class ReChargeActivity extends BaseActivity {
 			total = "500";
 			other_moneny.setFocusable(false);
 			other_moneny.setFocusableInTouchMode(false);
-			
+
 			break;
 		case R.id.yiqian:
 			iv_drink_checked_wubai.setVisibility(v.GONE);
@@ -249,92 +254,113 @@ public class ReChargeActivity extends BaseActivity {
 			break;
 
 		case R.id.chongzhi:// 微信充值
-			
-			
-			other_moneny.setFocusable(false);
-			other_moneny.setFocusableInTouchMode(false);
-			
-			chongzhi.setEnabled(false);
-			
-			//Log.e("是否传total的值", total);
-			Toast.makeText(ReChargeActivity.this, "请稍等，正在跳转微信支付...",
-					Toast.LENGTH_SHORT).show();
 
-			
-			new Thread(new Runnable() {
+			if (!TextUtils.isEmpty(total)) {
+				totaldouble = Double.parseDouble(total);
+				if (totaldouble < 2) {
+					Toast.makeText(getApplicationContext(), "充值金额不能小于2", 0)
+							.show();
+					chongzhi.setEnabled(true);
+				} else {
+					other_moneny.setFocusable(false);
+					other_moneny.setFocusableInTouchMode(false);
+					Toast.makeText(ReChargeActivity.this, "请稍等，正在跳转微信支付...",
+							Toast.LENGTH_SHORT).show();
 
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					String url = "https://www.4001149114.com/NLJJ/ddapp/dealwinebuy?wxopenid="
-							+ openidString
-							+ "&unionid="
-							+ unionidString
-							+ "&total=" + total + "&num=1";
-					// String
-					// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
-					/*
-					 * Toast.makeText(ReChargeActivity.this, "获取订单中...",
-					 * Toast.LENGTH_SHORT).show();
-					 */
-					try {	
-						byte[] buf = Util.httpGet(url);
-						if (buf != null && buf.length > 0) {
-							String content = new String(buf);
-							Log.e("get server pay params:", content);
-							JSONObject json = new JSONObject(content);
-							if (null != json && !json.has("retcode")) {
-								PayReq req = new PayReq();
-								// req.appId = "wxf8b4f85f3a794e77"; // 测试用appId
+					new Thread(new Runnable() {
 
-								/*
-								 * req.appId = json.getString("appid");
-								 * req.partnerId = json.getString("partnerid");
-								 * req.prepayId = json.getString("prepayid");
-								 * req.nonceStr = json.getString("noncestr");
-								 * req.timeStamp = json.getString("timestamp");
-								 * req.packageValue = json.getString("package");
-								 * req.sign = json.getString("sign");
-								 * req.extData = "app data"; // optional
-								 */
-								req.appId = json.getString("appid");
-								req.partnerId = json.getString("partnerid");
-								req.prepayId = json.getString("prepayid");
-								req.nonceStr = json.getString("noncestr");
-								req.timeStamp = json.getString("timestamp");
-								req.packageValue = json.getString("package");
-								req.sign = json.getString("sign");
-								req.extData = "app data"; // optional
-
-								// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
-
-								api.sendReq(req);
-							} else {
-								Log.d("PAY_GET",
-										"返回错误" + json.getString("retmsg"));
-								/*
-								 * Toast.makeText(ReChargeActivity.this, "返回错误"
-								 * + json.getString("retmsg"),
-								 * Toast.LENGTH_SHORT).show();
-								 */
-							}
-						} else {
-							Log.d("PAY_GET", "服务器请求错误");
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							String url = "https://www.4001149114.com/NLJJ/ddapp/dealwinebuy?wxopenid="
+									+ openidString
+									+ "&unionid="
+									+ unionidString
+									+ "&total="
+									+ total
+									+ "&num=1";
+							// String
+							// url="http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php?plat=android";
 							/*
-							 * Toast.makeText(ReChargeActivity.this, "服务器请求错误",
+							 * Toast.makeText(ReChargeActivity.this, "获取订单中...",
 							 * Toast.LENGTH_SHORT).show();
 							 */
+							try {
+								byte[] buf = Util.httpGet(url);
+								if (buf != null && buf.length > 0) {
+									String content = new String(buf);
+									Log.e("get server pay params:", content);
+									JSONObject json = new JSONObject(content);
+									if (null != json && !json.has("retcode")) {
+										PayReq req = new PayReq();
+										// req.appId = "wxf8b4f85f3a794e77"; //
+										// 测试用appId
+
+										/*
+										 * req.appId = json.getString("appid");
+										 * req.partnerId =
+										 * json.getString("partnerid");
+										 * req.prepayId =
+										 * json.getString("prepayid");
+										 * req.nonceStr =
+										 * json.getString("noncestr");
+										 * req.timeStamp =
+										 * json.getString("timestamp");
+										 * req.packageValue =
+										 * json.getString("package"); req.sign =
+										 * json.getString("sign"); req.extData =
+										 * "app data"; // optional
+										 */
+										req.appId = json.getString("appid");
+										req.partnerId = json
+												.getString("partnerid");
+										req.prepayId = json
+												.getString("prepayid");
+										req.nonceStr = json
+												.getString("noncestr");
+										req.timeStamp = json
+												.getString("timestamp");
+										req.packageValue = json
+												.getString("package");
+										req.sign = json.getString("sign");
+										req.extData = "app data"; // optional
+
+										// 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+
+										api.sendReq(req);
+									} else {
+										Log.d("PAY_GET",
+												"返回错误"
+														+ json.getString("retmsg"));
+										/*
+										 * Toast.makeText(ReChargeActivity.this,
+										 * "返回错误" + json.getString("retmsg"),
+										 * Toast.LENGTH_SHORT).show();
+										 */
+									}
+								} else {
+									Log.d("PAY_GET", "服务器请求错误");
+									/*
+									 * Toast.makeText(ReChargeActivity.this,
+									 * "服务器请求错误", Toast.LENGTH_SHORT).show();
+									 */
+								}
+							} catch (Exception e) {
+								Log.e("PAY_GET", "异常：" + e.getMessage());
+								/*
+								 * Toast.makeText(ReChargeActivity.this, "异常：" +
+								 * e.getMessage(), Toast.LENGTH_SHORT) .show();
+								 */
+							}
+
 						}
-					} catch (Exception e) {
-						Log.e("PAY_GET", "异常：" + e.getMessage());
-						/*
-						 * Toast.makeText(ReChargeActivity.this, "异常：" +
-						 * e.getMessage(), Toast.LENGTH_SHORT) .show();
-						 */
-					}
+					}).start();
 
 				}
-			}).start();
+			} else {
+				Toast.makeText(getApplicationContext(), "请输入充值金额", 0).show();
+				chongzhi.setEnabled(true);
+			}
 
 			chongzhi.setEnabled(true);
 
