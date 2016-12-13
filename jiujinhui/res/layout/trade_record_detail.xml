@@ -58,7 +58,9 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/detile_shape_corners"
-            android:src="@drawable/jiu" />
+            android:src="@drawable/jiu"
+            
+             />
 
         <TextView
             android:id="@+id/name_pro"

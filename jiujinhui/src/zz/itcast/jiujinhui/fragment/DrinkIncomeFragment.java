@@ -135,7 +135,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return incomeslist.size();
+			return data.size();
 		}
 
 		@Override
@@ -172,10 +172,10 @@ public class DrinkIncomeFragment extends BaseFragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.danhao.setText(incomeslist.get(position).get("danhao")+"");
-			holder.jiubi.setText(incomeslist.get(position).get("jiubi")+"");
-			holder.date.setText(incomeslist.get(position).get("date")+"");
-			holder.msg.setText(incomeslist.get(position).get("msg")+"");
+			holder.danhao.setText(data.get(position).get("danhao")+"");
+			holder.jiubi.setText(data.get(position).get("jiubi")+"");
+			holder.date.setText(data.get(position).get("date")+"");
+			holder.msg.setText(data.get(position).get("msg")+"");
 			
 			return convertView;
 
@@ -187,12 +187,12 @@ public class DrinkIncomeFragment extends BaseFragment {
 
 	private ArrayList<Map<String, Object>> incomeslist;
 
-	private Income income;
+
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		try {
-			income = new Income();
+			
 			Map<String, Object> map;
 			incomeslist = new ArrayList<Map<String, Object>>();
 			JSONArray jsonArray = jsonObject.getJSONArray("incomes");

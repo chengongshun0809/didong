@@ -330,7 +330,7 @@ containing a value of this type.
         public static final int NickName=0x7f090021;
         public static final int Rl_jindu=0x7f090014;
         public static final int SmsSubmit=0x7f09007f;
-        public static final int action_settings=0x7f09009a;
+        public static final int action_settings=0x7f09009c;
         public static final int btn_login=0x7f09006a;
         public static final int btn_name=0x7f09008e;
         public static final int btn_nologin_fragment=0x7f090061;
@@ -343,6 +343,7 @@ containing a value of this type.
         public static final int checkRember=0x7f090067;
         public static final int chongzhi=0x7f09007a;
         public static final int circleImabeView=0x7f090020;
+        public static final int colistview=0x7f09009b;
         public static final int cominglistview=0x7f090016;
         public static final int compMod=0x7f09001e;
         public static final int count=0x7f090050;
@@ -463,6 +464,7 @@ containing a value of this type.
         public static final int tv__title=0x7f09004b;
         public static final int tv_back=0x7f090001;
         public static final int tv_hf=0x7f090028;
+        public static final int tv_null=0x7f09009a;
         public static final int tv_title_right=0x7f09004c;
         public static final int tv_weichengjiao=0x7f090094;
         public static final int tv_weichengjiao_num=0x7f090095;
@@ -534,7 +536,8 @@ containing a value of this type.
         public static final int tradetrans_fragment=0x7f030030;
         public static final int trans_service=0x7f030031;
         public static final int view_tips_loading2=0x7f030032;
-        public static final int zongzichan_activity=0x7f030033;
+        public static final int zhixian=0x7f030033;
+        public static final int zongzichan_activity=0x7f030034;
     }
     public static final class menu {
         public static final int main=0x7f080000;

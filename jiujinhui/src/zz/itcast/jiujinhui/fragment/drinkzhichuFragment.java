@@ -170,10 +170,10 @@ public class drinkzhichuFragment extends BaseFragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.danhao.setText(incomeslist.get(position).get("danhao")+"");
-			holder.jiubi.setText(incomeslist.get(position).get("jiubi")+"");
-			holder.date.setText(incomeslist.get(position).get("date")+"");
-			holder.msg.setText(incomeslist.get(position).get("msg")+"");
+			holder.danhao.setText(data.get(position).get("danhao")+"");
+			holder.jiubi.setText(data.get(position).get("jiubi")+"");
+			holder.date.setText(data.get(position).get("date")+"");
+			holder.msg.setText(data.get(position).get("msg")+"");
 			
 			return convertView;
 

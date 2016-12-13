@@ -6,6 +6,7 @@ import java.util.List;
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.fragment.BaseFragment;
 import zz.itcast.jiujinhui.fragment.DrinkIncomeFragment;
+import zz.itcast.jiujinhui.fragment.TradeAllFragment;
 import zz.itcast.jiujinhui.fragment.drinkzhichuFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -31,6 +32,7 @@ public class DrinkRecordActivity extends BaseActivity {
 	private ImageView tv_back;
 	private List<BaseFragment> fragments;
 	private FragmentManager fm;
+	
 
 	@Override
 	public int getLayoutResID() {
@@ -44,6 +46,7 @@ public class DrinkRecordActivity extends BaseActivity {
 		fragments = new ArrayList<BaseFragment>();
 		fragments.add(new DrinkIncomeFragment());
 		fragments.add(new drinkzhichuFragment());
+		
 		radiogroup.check(R.id.rb_income);
 
 	}
@@ -74,7 +77,7 @@ public class DrinkRecordActivity extends BaseActivity {
 				case R.id.rb_zhichu:
 					currentItem = 1;// ��������
 					break;
-
+				
 				default:
 					break;
 
@@ -87,7 +90,7 @@ public class DrinkRecordActivity extends BaseActivity {
 	}
 
 	@Override
-	 public void onClick(View v) {
+	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.tv_back:
