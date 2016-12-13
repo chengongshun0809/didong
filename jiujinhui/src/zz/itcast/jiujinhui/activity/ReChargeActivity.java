@@ -126,7 +126,7 @@ public class ReChargeActivity extends BaseActivity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				touch_flag++;
-				if (touch_flag == 2) {
+				if (touch_flag%2==0) {
 					iv_drink_checked_wubai.setVisibility(v.GONE);
 					iv_drink_checked_yiqian.setVisibility(v.GONE);
 					iv_drink_checked_liangqian.setVisibility(v.GONE);
@@ -138,7 +138,7 @@ public class ReChargeActivity extends BaseActivity {
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);
 					other_moneny.requestFocus();
-					total = null;
+					//total = null;
 					touch_flag = 0;
 				}
 
@@ -266,7 +266,7 @@ public class ReChargeActivity extends BaseActivity {
 					other_moneny.setFocusableInTouchMode(false);
 					Toast.makeText(ReChargeActivity.this, "请稍等，正在跳转微信支付...",
 							Toast.LENGTH_SHORT).show();
-
+					chongzhi.setEnabled(false);
 					new Thread(new Runnable() {
 
 						@Override

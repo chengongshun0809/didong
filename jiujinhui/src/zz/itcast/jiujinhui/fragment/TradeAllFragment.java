@@ -104,7 +104,7 @@ public class TradeAllFragment extends BaseFragment {
 							// Log.e("我靠快快快快快快快", jsonObject.toString());
 							parseJson(jsonObject);
 							stopThread=true;
-
+							Log.e("stopThread", stopThread+"");
 						} 
 
 					} catch (Exception e) {
@@ -365,8 +365,10 @@ public class TradeAllFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
+		handler.removeMessages(2);
+        handler.removeMessages(1);
 		data.clear();
-		
+		Log.e("stopThread", stopThread+"");
 	}
 
 }

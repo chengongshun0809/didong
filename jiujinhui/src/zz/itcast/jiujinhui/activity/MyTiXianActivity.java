@@ -279,5 +279,11 @@ public class MyTiXianActivity extends BaseActivity {
 		total_tixian.setOnClickListener(this);
 		woyaotixian.setOnClickListener(this);
 	}
-
+      @Override
+    protected void onDestroy() {
+    	// TODO Auto-generated method stub
+    	super.onDestroy();
+    	handler.removeMessages(1);
+    	
+    }
 }

@@ -607,6 +607,8 @@ public class TradeFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
+		handler.removeMessages(0);
+        handler.removeMessages(1);
 	}
 
 }

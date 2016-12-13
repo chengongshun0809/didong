@@ -304,5 +304,6 @@ boolean stopThread = false;
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
+		handler.removeMessages(1);
 	}
 }

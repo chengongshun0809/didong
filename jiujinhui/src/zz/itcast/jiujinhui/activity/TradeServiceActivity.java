@@ -143,7 +143,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			
+
 			case 1:
 				UpdateUI();
 				scrollview.invalidate();// 定时刷新
@@ -172,7 +172,6 @@ public class TradeServiceActivity extends BaseActivity {
 
 	}
 
-	
 	// 实现滚动线程
 	int j = 0;
 
@@ -205,18 +204,17 @@ public class TradeServiceActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
 		// hscrollview定时滚动
-		
 
 		handler.sendEmptyMessageDelayed(2, 3000);
 
 		dgid = getIntent().getStringExtra("dealdgid");
 		String name = getIntent().getStringExtra("name");
 		jiujiaoname.setText(name);
-		Log.e("mm", dgid);
+		// Log.e("mm", dgid);
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
 		// Log.e("ms我的unionID是：", unionid);
-		
+
 	}
 
 	@Override
@@ -268,7 +266,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
-               
+
 					try {
 						HttpsURLConnection connection = NetUtils
 								.httpsconnNoparm(url_serviceinfo, "POST");
@@ -302,15 +300,14 @@ public class TradeServiceActivity extends BaseActivity {
 				}
 			}
 		}).start();
-		
-		
+
 	}
 
 	protected void parseJson(JSONObject jsonObject) {
 		try {
 			// 用户手机号
 			String phonenum = jsonObject.getString("mobile");
-			Log.e("mobile", phonenum);
+			// Log.e("mobile", phonenum);
 			sp.edit().putString("mobile", phonenum).commit();
 
 			income = jsonObject.getDouble("income");
@@ -340,7 +337,7 @@ public class TradeServiceActivity extends BaseActivity {
 			Message message = new Message();
 			message.what = 1;
 			handler.sendMessage(message);
-			Log.e("shunshun", tradeprice + "");
+			// Log.e("shunshun", tradeprice + "");
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -355,7 +352,7 @@ public class TradeServiceActivity extends BaseActivity {
 		realpri.setText(df.format((tradeprice / 100)));
 		jiubi.setText(df.format((income / 100)));
 		totalassets = leftgoodassets + buygooding;
-        xiaji.setText(xia);
+		xiaji.setText(xia);
 		total_assets.setText(totalassets + "");
 		left_assets.setText(leftgoodassets + "");
 		buying.setText(buygooding + "");
@@ -865,6 +862,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		stopThread = false;
 		super.onDestroy();
-
+		handler.removeMessages(1);
+		handler.removeMessages(2);
 	}
 }

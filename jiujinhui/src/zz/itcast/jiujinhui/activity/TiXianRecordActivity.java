@@ -105,7 +105,7 @@ public class TiXianRecordActivity extends BaseActivity {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("我靠快快快快快快快", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(30000);
+							stopThread=true;
 
 						}
 
@@ -161,7 +161,7 @@ public class TiXianRecordActivity extends BaseActivity {
 				map.put("phonenumber", phonenumber);
 				map.put("moneny", df.format(Double.valueOf(moneny)/100));
 				
-				Log.e("state", state+",");
+				
 				
 				incomeslist.add(map);
 				//Log.e("map", incomeslist.toString());
@@ -283,7 +283,7 @@ public class TiXianRecordActivity extends BaseActivity {
 		ViewUtils.inject(this);
 		sp = getSharedPreferences("user", 0);
 		unionString = sp.getString("unionid", null);
-		Log.e("unionhahaha", unionString);
+		
 		data = new ArrayList<Map<String, Object>>();
 		tv__title.setText("我的提现");
 		
@@ -323,7 +323,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = true;
+		stopThread = false;
 		handler.removeMessages(1);
 		super.onDestroy();
 	}

@@ -257,7 +257,7 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(30000);
+							stopThread=true;
 							connection.disconnect();
 						}
 
@@ -296,7 +296,9 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = true;
+		stopThread = false;
+		handler.removeMessages(1);
+		handler.removeMessages(2);
 		super.onDestroy();
 	}
 }

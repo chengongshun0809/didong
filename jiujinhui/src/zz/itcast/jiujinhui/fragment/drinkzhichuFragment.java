@@ -90,7 +90,7 @@ public class drinkzhichuFragment extends BaseFragment {
 						JSONObject jsonObject = new JSONObject(infojson);
 						//Log.e("aaassssssssss", jsonObject.toString());
 						parseJson(jsonObject);
-						Thread.sleep(30000);
+						stopThread=true;
  
 					}
 

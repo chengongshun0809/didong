@@ -152,7 +152,7 @@ public class BuyChartFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(600000);
+							Thread.sleep(60000);
 
 						}
 
@@ -358,7 +358,7 @@ public class BuyChartFragment extends BaseFragment {
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = true;
+		stopThread = false;
 		super.onDestroy();
            handler.removeMessages(0);
            handler.removeMessages(1);

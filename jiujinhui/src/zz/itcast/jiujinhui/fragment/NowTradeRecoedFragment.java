@@ -269,10 +269,7 @@ public class NowTradeRecoedFragment extends BaseFragment {
 
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 							+ unionid + "&dgid=" + dgid;
-					Log.d("unionid:   是", unionid);
-					System.err.println("unionid是：" + unionid);
-					Log.e("dgid:   是", dgid);
-					System.err.println("dgid是：" + dgid);
+					
 					try {
 						HttpsURLConnection connection = NetUtils
 								.httpsconnNoparm(url_serviceinfo, "POST");
@@ -327,6 +324,8 @@ public class NowTradeRecoedFragment extends BaseFragment {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		stopThread = true;
+		handler.removeMessages(1);
+		handler.removeMessages(2);
 		super.onDestroy();
 	}
 }

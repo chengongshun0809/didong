@@ -296,7 +296,8 @@ public class TradeTransFragment extends BaseFragment {
 		super.onDestroyView();
 		stopThread=false;
 		data.clear();
-
+		handler.removeMessages(2);
+        handler.removeMessages(1);
 	}
 
 }

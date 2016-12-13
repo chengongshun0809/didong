@@ -249,8 +249,9 @@ public class ZongZiChanActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = false;
+		
 		super.onDestroy();
-
+		stopThread = false;
+		handler.removeMessages(1);
 	}
 }

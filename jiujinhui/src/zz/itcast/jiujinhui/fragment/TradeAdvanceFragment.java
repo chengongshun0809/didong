@@ -324,6 +324,8 @@ public class TradeAdvanceFragment extends BaseFragment {
 		super.onDestroyView();
 		data.clear();
 		stopThread=false;
+		handler.removeMessages(2);
+        handler.removeMessages(1);
 	}
 	
 }
