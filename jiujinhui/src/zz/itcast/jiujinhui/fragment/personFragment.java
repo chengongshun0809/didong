@@ -87,7 +87,7 @@ public class personFragment extends BaseFragment {
   };
 private String phonenum;
 private DecimalFormat df;
-	
+boolean stopThread = false;
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
@@ -116,7 +116,7 @@ private DecimalFormat df;
 
 			@Override
 			public void run() {
-				
+				while (!stopThread) {
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/hallorder?unionid="
 								+ unionString + "&dgid=DG161027140008895";
@@ -148,7 +148,7 @@ private DecimalFormat df;
 					}
 				
 				}
-
+			}
 			
 		}).start();
 	   
@@ -299,10 +299,10 @@ private DecimalFormat df;
 		}
 
 	}
-@Override
-public void onDestroy() {
-	// TODO Auto-generated method stub
-
-	super.onDestroy();
-}
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		stopThread=false;
+	}
 }

@@ -66,7 +66,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 
 		};
 	};
-
+	boolean stopThread = false;
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
@@ -77,7 +77,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-
+				while (!stopThread) {
 				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/myincome?unionid="
 						+ unionString;
 
@@ -92,7 +92,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 						JSONObject jsonObject = new JSONObject(infojson);
 						//Log.e("aaassssssssss", jsonObject.toString());
 						parseJson(jsonObject);
-						Thread.sleep(30000);
+						stopThread=true;
  
 					}
 
@@ -112,7 +112,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 				}
 
 			}
-
+			}
 		}).start();
 
 		inflater = getActivity().getLayoutInflater();
@@ -260,5 +260,12 @@ public void onDestroyView() {
 		// TODO Auto-generated method stub
 		return R.layout.drinkincome_fragment;
 	}
-
+ @Override
+public void onDestroy() {
+	// TODO Auto-generated method stub
+	super.onDestroy();
+	
+	stopThread=false;
+	handler.removeMessages(1);
+}
 }

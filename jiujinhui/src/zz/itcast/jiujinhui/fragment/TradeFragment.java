@@ -209,7 +209,7 @@ public class TradeFragment extends BaseFragment {
 	private RelativeLayout jiaoyizhong;
 	private JSONObject jsonObject2;
 	private String opentime;
-
+	boolean stopThread = false;
 	@Override
 	public void initData() {
 		// 跑马灯
@@ -226,7 +226,7 @@ public class TradeFragment extends BaseFragment {
 
 			@Override
 			public void run() {
-			
+				while (!stopThread) {
 					try {
 						String urlpath = "https://www.4001149114.com/NLJJ/ddapp/ttzqlist";
 						HttpsURLConnection conn = NetUtils.httpsconnNoparm(
@@ -257,7 +257,7 @@ public class TradeFragment extends BaseFragment {
 					}
 				
 				
-
+				}
 			}
 		}).start();
 	}
@@ -418,6 +418,16 @@ public class TradeFragment extends BaseFragment {
 			// tv_dealterm.setTextColor(R.color.red);
 
 			btn_public.setVisibility(View.VISIBLE);
+			btn_public.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					
+					
+				}
+			});
 			// tv_tian.setTextColor(R.color.red);
 		}
 		// 交易期
@@ -591,6 +601,12 @@ public class TradeFragment extends BaseFragment {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		super.onClick(v);
+	}
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		stopThread=false;
 	}
 
 }

@@ -112,7 +112,7 @@ public class TraderengouFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("我靠快快快快快快快", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(30000);
+							stopThread=true;
 
 						}
 
@@ -323,7 +323,7 @@ public class TraderengouFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		data.clear();
-		
+		stopThread=false;
 	}
 	
 }
