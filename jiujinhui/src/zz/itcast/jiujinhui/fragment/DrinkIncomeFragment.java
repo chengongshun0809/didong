@@ -35,12 +35,15 @@ import android.widget.TextView;
 
 public class DrinkIncomeFragment extends BaseFragment {
 
+	
+	@ViewInject(R.id.Rl_jindu_shouru)
+	private RelativeLayout Rl_jindu;
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
-
+	@ViewInject(R.id.tv_null_shouru)
+	private RelativeLayout tv_null_shouru;
 	private SharedPreferences sp;
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	private String unionString;
 	private MyAdapter adapter;
 	private ArrayList<Map<String, Object>> data=null;
@@ -59,7 +62,11 @@ public class DrinkIncomeFragment extends BaseFragment {
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				break;
-
+			case 2:
+				Rl_jindu.setVisibility(View.GONE);
+				cominglistview.setVisibility(View.GONE);
+				tv_null_shouru.setVisibility(View.VISIBLE);
+				break;
 			default:
 				break;
 			}
@@ -186,6 +193,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 	JSONArray jsonArray2 = new JSONArray();
 
 	private ArrayList<Map<String, Object>> incomeslist;
+	private JSONArray jsonArray;
 
 
 
@@ -195,8 +203,12 @@ public class DrinkIncomeFragment extends BaseFragment {
 			
 			Map<String, Object> map;
 			incomeslist = new ArrayList<Map<String, Object>>();
-			JSONArray jsonArray = jsonObject.getJSONArray("incomes");
-
+			jsonArray = jsonObject.getJSONArray("incomes");
+            if (jsonArray.length()==0) {
+				handler.sendEmptyMessage(2);
+			}else {
+				
+			
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jObject = (JSONObject) jsonArray.get(i);
 				
@@ -227,6 +239,7 @@ public class DrinkIncomeFragment extends BaseFragment {
 			Message message=handler.obtainMessage();
 			message.what=1;
 			handler.sendMessage(message);
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

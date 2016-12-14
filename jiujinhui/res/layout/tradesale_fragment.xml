@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/Rl_jindu"
+        android:id="@+id/Rl_jindu_sale"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:visibility="gone" >
@@ -27,7 +27,7 @@
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/cominglistview"
+        android:id="@+id/cominglistview_sale"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="#00000000"
@@ -38,14 +38,17 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" 
+         android:id="@+id/tv_null_sale"
+         android:visibility="gone"
+        >
         <TextView 
-            android:id="@+id/tv_null"
+           
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="暂无数据"
-            android:visibility="gone"
+            
             />
     </RelativeLayout>
 

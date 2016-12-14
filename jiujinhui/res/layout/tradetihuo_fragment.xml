@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/Rl_jindu"
+        android:id="@+id/Rl_jindu_tihuo"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:visibility="gone" >
@@ -37,7 +37,7 @@
     </ListView>
 
     <RelativeLayout
-        android:id="@+id/tv_null"
+        android:id="@+id/tv_null_tihuo"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="gone"

@@ -34,18 +34,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class drinkzhichuFragment extends BaseFragment {
-
+	@ViewInject(R.id.Rl_jindu_zhichu)
+	private RelativeLayout Rl_jindu;
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
 
 	private SharedPreferences sp;
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.tv_null_zhichu)
+	private RelativeLayout tv_null_zhichu;
 	private String unionString;
 	private MyAdapter adapter;
 	Handler handler = new Handler() {
-
-		
 
 		public void handleMessage(android.os.Message msg) {
 
@@ -58,7 +57,11 @@ public class drinkzhichuFragment extends BaseFragment {
 				cominglistview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				break;
-
+			case 2:
+				Rl_jindu.setVisibility(View.GONE);
+				cominglistview.setVisibility(View.GONE);
+				tv_null_zhichu.setVisibility(View.VISIBLE);
+				break;
 			default:
 				break;
 			}
@@ -66,6 +69,7 @@ public class drinkzhichuFragment extends BaseFragment {
 		};
 	};
 	boolean stopThread = false;
+
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
@@ -76,40 +80,40 @@ public class drinkzhichuFragment extends BaseFragment {
 			@Override
 			public void run() {
 				while (!stopThread) {
-				String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/myincome?unionid="
-						+ unionString;
+					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/myincome?unionid="
+							+ unionString;
 
-				try {
-					HttpsURLConnection connection = NetUtils.httpsconnNoparm(
-							url_serviceinfo, "POST");
+					try {
+						HttpsURLConnection connection = NetUtils
+								.httpsconnNoparm(url_serviceinfo, "POST");
 
-					int code = connection.getResponseCode();
-					if (code == 200) {
-						iStream = connection.getInputStream();
-						String infojson = NetUtils.readString(iStream);
-						JSONObject jsonObject = new JSONObject(infojson);
-						//Log.e("aaassssssssss", jsonObject.toString());
-						parseJson(jsonObject);
-						stopThread=true;
- 
-					}
+						int code = connection.getResponseCode();
+						if (code == 200) {
+							iStream = connection.getInputStream();
+							String infojson = NetUtils.readString(iStream);
+							JSONObject jsonObject = new JSONObject(infojson);
+							// Log.e("aaassssssssss", jsonObject.toString());
+							parseJson(jsonObject);
+							stopThread = true;
 
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					if (iStream != null) {
-						try {
-							iStream.close();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						if (iStream != null) {
+							try {
+								iStream.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
 					}
 
 				}
-
-			}
 			}
 		}).start();
 
@@ -118,7 +122,6 @@ public class drinkzhichuFragment extends BaseFragment {
 	}
 
 	LayoutInflater inflater;
-
 
 	class ViewHolder {
 		public TextView danhao;
@@ -170,11 +173,11 @@ public class drinkzhichuFragment extends BaseFragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.danhao.setText(data.get(position).get("danhao")+"");
-			holder.jiubi.setText(data.get(position).get("jiubi")+"");
-			holder.date.setText(data.get(position).get("date")+"");
-			holder.msg.setText(data.get(position).get("msg")+"");
-			
+			holder.danhao.setText(data.get(position).get("danhao") + "");
+			holder.jiubi.setText(data.get(position).get("jiubi") + "");
+			holder.date.setText(data.get(position).get("date") + "");
+			holder.msg.setText(data.get(position).get("msg") + "");
+
 			return convertView;
 
 		}
@@ -183,48 +186,50 @@ public class drinkzhichuFragment extends BaseFragment {
 
 	JSONArray jsonArray2 = new JSONArray();
 
-	private ArrayList<Map<String, Object>> incomeslist=null;
-	private ArrayList<Map<String, Object>> data=null;
+	private ArrayList<Map<String, Object>> incomeslist = null;
+	private ArrayList<Map<String, Object>> data = null;
 	private Income income;
+	private JSONArray jsonArray;
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		try {
-			income = new Income();
+
 			Map<String, Object> map;
 			incomeslist = new ArrayList<Map<String, Object>>();
-			JSONArray jsonArray = jsonObject.getJSONArray("incomes");
+			jsonArray = jsonObject.getJSONArray("incomes");
+			if (jsonArray.length() == 0) {
+				handler.sendEmptyMessage(2);
+			} else {
 
-			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jObject = (JSONObject) jsonArray.get(i);
-				
-				double jiubi = jObject.getDouble("total");
-				// 酒币
-				if (jiubi<0) {
-					// 单号
-					String danhao = jObject.getString("oid");
-					
-					
-					// 日期
-					String date = jObject.getString("createtime");
-					String msg = jObject.getString("msg");
-					DecimalFormat df = new DecimalFormat("#0.00");
-					map = new HashMap<String, Object>();
-					map.put("danhao", danhao);
-					map.put("jiubi", df.format(Double.valueOf(jiubi) / 100));
-					map.put("date", date);
-					map.put("msg", msg);
-					incomeslist.add(map);
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jObject = (JSONObject) jsonArray.get(i);
+
+					double jiubi = jObject.getDouble("total");
+					// 酒币
+					if (jiubi < 0) {
+						// 单号
+						String danhao = jObject.getString("oid");
+
+						// 日期
+						String date = jObject.getString("createtime");
+						String msg = jObject.getString("msg");
+						DecimalFormat df = new DecimalFormat("#0.00");
+						map = new HashMap<String, Object>();
+						map.put("danhao", danhao);
+						map.put("jiubi", df.format(Double.valueOf(jiubi) / 100));
+						map.put("date", date);
+						map.put("msg", msg);
+						incomeslist.add(map);
+					}
+
 				}
-				
-				
-				
+				// Log.e("收入", incomeslist.toString());
+
+				Message message = handler.obtainMessage();
+				message.what = 1;
+				handler.sendMessage(message);
 			}
-			//Log.e("收入", incomeslist.toString());
-			
-			Message message=handler.obtainMessage();
-			message.what=1;
-			handler.sendMessage(message);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -241,28 +246,31 @@ public class drinkzhichuFragment extends BaseFragment {
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
-		ViewUtils.inject(this,view);
+		ViewUtils.inject(this, view);
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionString = sp.getString("unionid", null);
 		Rl_jindu.setVisibility(View.VISIBLE);
 	}
-@Override
-public void onDestroyView() {
-	// TODO Auto-generated method stub
-	super.onDestroyView();
-	data.clear();
-}
+
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		data.clear();
+	}
+
 	@Override
 	public int getLayoutResID() {
 		// TODO Auto-generated method stub
 		return R.layout.drinkzhichu_fragment;
 	}
-	 @Override
-	 public void onDestroy() {
-	 	// TODO Auto-generated method stub
-	 	super.onDestroy();
-	 	
-	 	stopThread=false;
-	 	handler.removeMessages(1);
-	 }
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+		stopThread = false;
+		handler.removeMessages(1);
+	}
 }

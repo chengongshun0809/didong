@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="80dp" 
-        android:id="@+id/Rl_jindu"
+        android:id="@+id/Rl_jindu_tixian"
         android:visibility="gone"
         >
         <ProgressBar
@@ -40,5 +40,19 @@
         android:dividerHeight="1px"
         android:scrollbars="none" >
     </ListView>
+    <RelativeLayout
+        android:id="@+id/tv_null_tixian"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+         >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无数据"
+             />
+    </RelativeLayout>
 
 </LinearLayout>

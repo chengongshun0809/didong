@@ -203,7 +203,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 																												JSONObject json = new JSONObject(
 																														responseInfo.result
 																																.toString());
-																												Log.e("个人信息",json.toString() );
+																												//Log.e("个人信息",json.toString() );
 																												
 																											} catch (JSONException e) {
 																												// TODO Auto-generated catch block

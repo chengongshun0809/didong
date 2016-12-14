@@ -213,7 +213,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// Log.e("mm", dgid);
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
-		// Log.e("ms我的unionID是：", unionid);
+		 Log.e("ms我的unionID是：", unionid);
 
 	}
 
@@ -278,7 +278,7 @@ public class TradeServiceActivity extends BaseActivity {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(30000);
+							Thread.sleep(60000);
 
 						}
 
@@ -461,7 +461,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private TextView product_total_price;
 	private Button dialog_ok;
 	private Button diaog_cancel;
-	private int count_buy;
+	private int count_buy=1;
 
 	@Override
 	public void onClick(View v) {
@@ -709,12 +709,12 @@ public class TradeServiceActivity extends BaseActivity {
 		// 买入价格
 		product_ordsubmit_price = (EditText) view
 				.findViewById(R.id.product_ordsubmit_price);
+		product_ordsubmit_count.addTextChangedListener(textWatcher);
 		product_ordsubmit_price.addTextChangedListener(textWatcher);
-
+		
 		// 总价钱
 		product_total_price = (TextView) view
 				.findViewById(R.id.product_total_price);
-
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
 		diaog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
 		final AlertDialog builder = new AlertDialog.Builder(this).create();

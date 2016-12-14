@@ -35,13 +35,15 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class TradeBuyFragment extends BaseFragment {
-	@ViewInject(R.id.cominglistview)
+	
+	@ViewInject(R.id.Rl_jindu_buy)
+	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.cominglistview_buy)
 	private ListView listview;
-	@ViewInject(R.id.tv_null)
+	@ViewInject(R.id.tv_null_buy)
 	private RelativeLayout tv_null;
 
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	boolean stopThread = false;
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
@@ -62,6 +64,7 @@ public class TradeBuyFragment extends BaseFragment {
 				break;
 			case 2:
 				Rl_jindu.setVisibility(View.GONE);
+				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			default:
@@ -83,7 +86,7 @@ public class TradeBuyFragment extends BaseFragment {
 			public void run() {
 				while (!stopThread) {
 					String url_serviceinfo = "https://www.4001149114.com/NLJJ/ddapp/mydeallist?unionid="
-							+ unionIDString + "&type=2";
+							+ unionIDString +"&type=2";
 
 					try {
 						HttpsURLConnection connection = NetUtils
@@ -96,7 +99,7 @@ public class TradeBuyFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("我靠快快快快快快快", jsonObject.toString());
 							parseJson(jsonObject);
-							stopThread=true;
+							stopThread = true;
 
 						}
 
@@ -130,11 +133,10 @@ public class TradeBuyFragment extends BaseFragment {
 			orderlist = new ArrayList<Map<String, Object>>();
 
 			JSONArray jsonlist = jsonObject.getJSONArray("orders");
-			if (jsonlist.length() == 0) {
+			if (jsonlist.length()==0) {
 				handler.sendEmptyMessage(2);
-				
-			} else {
 
+			} else {
 				for (int i = 0; i < jsonlist.length(); i++) {
 					JSONObject jObject = (JSONObject) jsonlist.get(i);
 					String danhao = jObject.getString("oid");
@@ -161,6 +163,8 @@ public class TradeBuyFragment extends BaseFragment {
 				Message message = handler.obtainMessage();
 				message.what = 1;
 				handler.sendMessage(message);
+				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -233,7 +237,7 @@ public class TradeBuyFragment extends BaseFragment {
 			// 判断type
 			int type_int = Integer.parseInt(typString);
 			switch (type_int) {
-			
+
 			case 2:
 				holder.tv_dan_state.setText("买入完成");
 				holder.msg_chengjiao.setVisibility(View.VISIBLE);
@@ -241,7 +245,7 @@ public class TradeBuyFragment extends BaseFragment {
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
 				break;
-			
+
 			default:
 				break;
 			}
@@ -293,10 +297,10 @@ public class TradeBuyFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread=false;
-		data.clear();
+		stopThread = false;
+		/*data.clear();
 		handler.removeMessages(2);
-        handler.removeMessages(1);
+		handler.removeMessages(1);*/
 	}
 
 }

@@ -44,17 +44,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TradeAdvanceFragment extends BaseFragment {
-	@ViewInject(R.id.cominglistview)
+	
+	@ViewInject(R.id.Rl_jindu_chong)
+	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.cominglistview_recharge)
 	private ListView listview;
 
 	
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	boolean stopThread = false;
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
 	private String unionIDString;
-	@ViewInject(R.id.tv_null)
+	@ViewInject(R.id.tv_null_recharge)
 	private RelativeLayout tv_null;
 	
 	
@@ -75,6 +77,7 @@ public class TradeAdvanceFragment extends BaseFragment {
 				break;
 			case 2:
 				Rl_jindu.setVisibility(View.GONE);
+				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				
 				break;
@@ -148,36 +151,36 @@ public class TradeAdvanceFragment extends BaseFragment {
 			JSONArray jsonlist = jsonObject.getJSONArray("orders");
 			if (jsonlist.length()==0) {
 				handler.sendEmptyMessage(2);
-				
-			}else {
-				
-			
-			for (int i = 0; i < jsonlist.length(); i++) {
-				JSONObject jObject = (JSONObject) jsonlist.get(i);
-				String danhao = jObject.getString("oid");
-				String type = jObject.getString("type");
-				String name = jObject.getString("pname");
-				// 根据是否成功完成来判断状态
-				String undonenum = jObject.getString("undonenum");
-				String date = jObject.getString("createtime");
-				DecimalFormat df = new DecimalFormat("#0.00");
-				double total = jObject.getDouble("total");
-				String number_total = jObject.getString("num");
 
-				map = new HashMap<String, Object>();
-				map.put("danhao", danhao);
-				map.put("type", type);
-				map.put("name", name);
-				map.put("undonenum", undonenum);
-				map.put("date", date);
-				map.put("total", df.format(total / 100));
-				map.put("number_total", number_total);
-				orderlist.add(map);
+			} else {
+				for (int i = 0; i < jsonlist.length(); i++) {
+					JSONObject jObject = (JSONObject) jsonlist.get(i);
+					String danhao = jObject.getString("oid");
+					String type = jObject.getString("type");
+					String name = jObject.getString("pname");
+					// 根据是否成功完成来判断状态
+					String undonenum = jObject.getString("undonenum");
+					String date = jObject.getString("createtime");
+					DecimalFormat df = new DecimalFormat("#0.00");
+					double total = jObject.getDouble("total");
+					String number_total = jObject.getString("num");
 
-			}
-			Message message = handler.obtainMessage();
-			message.what = 1;
-			handler.sendMessage(message);
+					map = new HashMap<String, Object>();
+					map.put("danhao", danhao);
+					map.put("type", type);
+					map.put("name", name);
+					map.put("undonenum", undonenum);
+					map.put("date", date);
+					map.put("total", df.format(total / 100));
+					map.put("number_total", number_total);
+					orderlist.add(map);
+				}
+
+				Message message = handler.obtainMessage();
+				message.what = 1;
+				handler.sendMessage(message);
+				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -322,10 +325,10 @@ public class TradeAdvanceFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		data.clear();
+		//data.clear();
 		stopThread=false;
-		handler.removeMessages(2);
-        handler.removeMessages(1);
+		/*handler.removeMessages(2);
+        handler.removeMessages(1);*/
 	}
 	
 }

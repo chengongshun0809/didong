@@ -36,13 +36,15 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 public class TradeTihuoFragment extends BaseFragment {
+
+	@ViewInject(R.id.Rl_jindu_tihuo)
+	private RelativeLayout Rl_jindu;
 	@ViewInject(R.id.colistview)
 	private ListView listview;
-	@ViewInject(R.id.tv_null)
+	@ViewInject(R.id.tv_null_tihuo)
 	private RelativeLayout tv_null;
 
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	boolean stopThread = false;
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
@@ -133,7 +135,10 @@ public class TradeTihuoFragment extends BaseFragment {
 			orderlist = new ArrayList<Map<String, Object>>();
 
 			JSONArray jsonlist = jsonObject.getJSONArray("orders");
-			if (jsonlist.length() > 0) {
+			if (jsonlist.length()==0) {
+				handler.sendEmptyMessage(2);
+
+			} else {
 				for (int i = 0; i < jsonlist.length(); i++) {
 					JSONObject jObject = (JSONObject) jsonlist.get(i);
 					String danhao = jObject.getString("oid");
@@ -160,9 +165,7 @@ public class TradeTihuoFragment extends BaseFragment {
 				Message message = handler.obtainMessage();
 				message.what = 1;
 				handler.sendMessage(message);
-
-			} else {
-				handler.sendEmptyMessage(2);
+				
 
 			}
 		} catch (JSONException e) {
@@ -297,9 +300,9 @@ public class TradeTihuoFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
-		data.clear();
+	/*	data.clear();
 		handler.removeMessages(2);
-        handler.removeMessages(1);
+        handler.removeMessages(1);*/
 	}
 
 }

@@ -43,8 +43,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TiXianRecordActivity extends BaseActivity {
+	
+	@ViewInject(R.id.Rl_jindu_tixian)
+	private RelativeLayout Rl_jindu;
 	@ViewInject(R.id.cominglistview)
 	private ListView cominglistview;
+	@ViewInject(R.id.tv_null_tixian)
+	private RelativeLayout tv_null_tixian;
 	private String unionString;
 	private SharedPreferences sp;
 	private MyAdapter adapter;
@@ -52,8 +57,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	private TextView tv__title;
 	@ViewInject(R.id.tv_back)
 	private ImageView tv_back;
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	@ViewInject(R.id.msg_chengjiao)
 	
 	private RelativeLayout Rl_probar;
@@ -73,7 +77,11 @@ public class TiXianRecordActivity extends BaseActivity {
 				
 				
 				break;
-
+			case 2:
+				Rl_jindu.setVisibility(View.GONE);
+				cominglistview.setVisibility(View.GONE);
+				tv_null_tixian.setVisibility(View.VISIBLE);
+				break;
 			default:
 				break;
 			}
@@ -139,6 +147,12 @@ public class TiXianRecordActivity extends BaseActivity {
 			Map<String, Object> map;
 			incomeslist = new ArrayList<Map<String, Object>>();
 			jsonArray = jsonObject.getJSONArray("mchpays");
+			if (jsonArray.length()==0) {
+				handler.sendEmptyMessage(2);
+			}else {
+				
+			
+			
 			for (int i = 0; i < jsonArray.length(); i++) {
 				// 单号
 				JSONObject jObject = (JSONObject) jsonArray.get(i);
@@ -171,7 +185,7 @@ public class TiXianRecordActivity extends BaseActivity {
 			Message message = handler.obtainMessage();
 			message.what = 1;
 			handler.sendMessage(message);
-			
+			}
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -324,7 +338,7 @@ public class TiXianRecordActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		stopThread = false;
-		handler.removeMessages(1);
+		//handler.removeMessages(1);
 		super.onDestroy();
 	}
 

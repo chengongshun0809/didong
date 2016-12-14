@@ -5,13 +5,13 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/Rl_jindu"
+        android:id="@+id/Rl_jindu_chong"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
         android:visibility="gone" >
 
         <ProgressBar
-            android:id="@+id/probar"
+           
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
@@ -27,7 +27,7 @@
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/cominglistview"
+        android:id="@+id/cominglistview_recharge"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="#00000000"
@@ -38,7 +38,7 @@
     </ListView>
 
     <RelativeLayout
-        android:id="@+id/tv_null"
+        android:id="@+id/tv_null_recharge"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 

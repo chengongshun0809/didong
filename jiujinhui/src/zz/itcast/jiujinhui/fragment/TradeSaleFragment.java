@@ -38,17 +38,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TradeSaleFragment extends BaseFragment {
-	@ViewInject(R.id.cominglistview)
+	
+	@ViewInject(R.id.Rl_jindu_sale)
+	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.cominglistview_sale)
 	private ListView listview;
 
-	@ViewInject(R.id.Rl_jindu)
-	private RelativeLayout Rl_jindu;
+	
 	boolean stopThread = false;
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
 	private String unionIDString;
 
-	@ViewInject(R.id.tv_null)
+	@ViewInject(R.id.tv_null_sale)
 	private RelativeLayout tv_null;
 	Handler handler = new Handler() {
 
@@ -67,6 +69,7 @@ public class TradeSaleFragment extends BaseFragment {
 				break;
 			case 2:
 				Rl_jindu.setVisibility(View.GONE);
+				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			default:
@@ -135,11 +138,10 @@ public class TradeSaleFragment extends BaseFragment {
 			orderlist = new ArrayList<Map<String, Object>>();
 
 			JSONArray jsonlist = jsonObject.getJSONArray("orders");
-			if (jsonlist.length() == 0) {
+			if (jsonlist.length()==0) {
 				handler.sendEmptyMessage(2);
-				
-			} else {
 
+			} else {
 				for (int i = 0; i < jsonlist.length(); i++) {
 					JSONObject jObject = (JSONObject) jsonlist.get(i);
 					String danhao = jObject.getString("oid");
@@ -161,11 +163,13 @@ public class TradeSaleFragment extends BaseFragment {
 					map.put("total", df.format(total / 100));
 					map.put("number_total", number_total);
 					orderlist.add(map);
-
 				}
+
 				Message message = handler.obtainMessage();
 				message.what = 1;
 				handler.sendMessage(message);
+				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -302,10 +306,10 @@ public class TradeSaleFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		data.clear();
+		//data.clear();
 		stopThread=false;
-		handler.removeMessages(2);
-        handler.removeMessages(1);
+		/*handler.removeMessages(2);
+        handler.removeMessages(1);*/
 	}
 
 }

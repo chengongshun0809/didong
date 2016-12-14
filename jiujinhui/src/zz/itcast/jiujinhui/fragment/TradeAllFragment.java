@@ -39,17 +39,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class TradeAllFragment extends BaseFragment {
-	@ViewInject(R.id.cominglistview)
-	private ListView listview;
+	
 
-	@ViewInject(R.id.Rl_jindu)
+	@ViewInject(R.id.Rl_jindu_all)
 	private RelativeLayout Rl_jindu;
+	@ViewInject(R.id.cominglistview_all)
+	private ListView listview;
 	boolean stopThread = false;
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
 	private String unionIDString;
 
-	@ViewInject(R.id.tv_null)
+	@ViewInject(R.id.tv_null_all)
 	private RelativeLayout tv_null;
 	Handler handler = new Handler() {
 
@@ -67,8 +68,9 @@ public class TradeAllFragment extends BaseFragment {
 
 				break;
 			case 2:
-				
+
 				Rl_jindu.setVisibility(View.GONE);
+				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			default:
@@ -103,10 +105,9 @@ public class TradeAllFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("我靠快快快快快快快", jsonObject.toString());
 							parseJson(jsonObject);
-							stopThread=true;
-							Log.e("stopThread", stopThread+"");
-						} 
-
+							stopThread = true;
+							Log.e("stopThread", stopThread + "");
+						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -137,11 +138,12 @@ public class TradeAllFragment extends BaseFragment {
 			orderlist = new ArrayList<Map<String, Object>>();
 
 			JSONArray jsonlist = jsonObject.getJSONArray("orders");
-			if (jsonlist.length()<=0) {
+			if (jsonlist.length()==0) {
+				Message message = handler.obtainMessage();
+				message.what = 2;
+				handler.sendMessage(message);
 			
-				handler.sendEmptyMessage(2);
 			} else {
-
 				for (int i = 0; i < jsonlist.length(); i++) {
 					JSONObject jObject = (JSONObject) jsonlist.get(i);
 					String danhao = jObject.getString("oid");
@@ -163,11 +165,14 @@ public class TradeAllFragment extends BaseFragment {
 					map.put("total", df.format(total / 100));
 					map.put("number_total", number_total);
 					orderlist.add(map);
-
 				}
+
 				Message message = handler.obtainMessage();
 				message.what = 1;
 				handler.sendMessage(message);
+
+				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -263,14 +268,14 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
 				break;
-				
+
 			case 7:
 				holder.tv_dan_state.setText("转让完成");
 				holder.msg_chengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao.setVisibility(View.GONE);
 				holder.tv_weichengjiao_num.setVisibility(View.GONE);
 				holder.msg_chengjiao.setText("全部成交");
-				
+
 				break;
 			case 8:
 				holder.tv_dan_state.setText("转让撤回");
@@ -278,7 +283,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setText(undonenum);
-				
+
 				break;
 			case 1:
 				holder.tv_dan_state.setText("认购完成");
@@ -352,8 +357,6 @@ public class TradeAllFragment extends BaseFragment {
 
 	}
 
-	
-
 	@Override
 	public int getLayoutResID() {
 		// TODO Auto-generated method stub
@@ -364,11 +367,10 @@ public class TradeAllFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread=false;
-		handler.removeMessages(2);
-        handler.removeMessages(1);
-		data.clear();
-		Log.e("stopThread", stopThread+"");
+		stopThread = false;
+		
+		//data.clear();
+		Log.e("stopThread", stopThread + "");
 	}
 
 }
