@@ -165,13 +165,14 @@ public class TiXianRecordActivity extends BaseActivity {
 				name = jObject.getString("name");
 				state = jObject.getString("state");
 				info = jObject.getString("msg");
+				Log.e("info", info);
 				map = new HashMap<String, Object>();
 				map.put("danhao", danhao);
 				map.put("date", date);
 				map.put("state", state);
 				map.put("oktime", oktime);
 				map.put("name", name);
-				map.put("info", info);
+				map.put("infoing", info);
 				map.put("phonenumber", phonenumber);
 				map.put("moneny", df.format(Double.valueOf(moneny)/100));
 				
@@ -261,7 +262,7 @@ public class TiXianRecordActivity extends BaseActivity {
 					bundle.putString("moneny",data.get(position).get("moneny")+"");
 					bundle.putString("state", data.get(position).get("state")+"");
 					bundle.putString("operatetime",data.get(position).get("oktime")+"");
-					bundle.putString("msg", info);
+					bundle.putString("infoing", data.get(position).get("infoing")+"");
 					intent.putExtras(bundle);
 					startActivity(intent);
 					

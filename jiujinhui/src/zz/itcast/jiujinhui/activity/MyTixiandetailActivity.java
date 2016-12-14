@@ -3,6 +3,7 @@ package zz.itcast.jiujinhui.activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,18 +24,20 @@ public class MyTixiandetailActivity extends BaseActivity {
 	@ViewInject(R.id.operatetime)
 	private TextView operatetimeTextView;
 	@ViewInject(R.id.shuoming)
-	private TextView shuoming;
+	private RelativeLayout shuoming;
 	private SharedPreferences sp;
 	@ViewInject(R.id.tv__title)
 	private TextView tv__title;
 	@ViewInject(R.id.tv_back)
 	private ImageView tv_back;
+	@ViewInject(R.id.shuodetail)
+	private TextView shuodetail;
 	private String name;
 	private String phonenumber2;
 	private String moneny;
 	private String state;
 	private String oktime;
-	private String msg;
+	private String msging;
 @ViewInject(R.id.tixian_jieguo)
 private RelativeLayout tixian_jieguo;
 	@Override
@@ -82,23 +85,29 @@ private RelativeLayout tixian_jieguo;
 		moneny = bundle.getString("moneny");
 		state = bundle.getString("state");
 		oktime = bundle.getString("operatetime");
-		msg = bundle.getString("msg");
+		msging = bundle.getString("infoing");
+		//Log.e("msg", msging);
 		nameTextView.setText(name);
 		phonenumberTextView.setText(phonenumber2);
 		moneyTextView.setText(moneny);
 		if ("0".equals(state)) {
 			// 提现成功标识
+			
 			operatetimeTextView.setText(oktime);
 
-		}else if ("2".equals(state)) {
-			shuoming.setVisibility(View.VISIBLE);
-			shuoming.setText("酒币提现失败原因: 支付失败,NAME_MISMATCH,真实姓名不一致.");
-			shuoming.setTextColor(Color.RED);
-			tixian_jieguo.setVisibility(View.GONE);
-		}else if ("1".equals(state)) {
+		}
+		if ("2".equals(state)) {
 			tixian_jieguo.setVisibility(View.GONE);
 			shuoming.setVisibility(View.VISIBLE);
-			shuoming.setText("  提现处理中，请稍后...");
+			shuodetail.setText(msging);
+			shuodetail.setTextColor(Color.RED);
+			
+		}
+		if ("1".equals(state)) {
+			tixian_jieguo.setVisibility(View.GONE);
+			shuoming.setVisibility(View.VISIBLE);
+			shuodetail.setText("  提现处理中，请耐心等待...");
+			shuodetail.setTextColor(Color.YELLOW);
 		}
 
 	}
