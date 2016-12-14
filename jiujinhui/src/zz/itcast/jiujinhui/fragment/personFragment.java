@@ -130,7 +130,7 @@ boolean stopThread = false;
 							String json = NetUtils.readString(is);
 							// 解析json
 							parsonJson(json);
-							Thread.sleep(30000);
+							stopThread=true;
 							is.close();
 						}
 

@@ -200,6 +200,8 @@ public class TradeServiceActivity extends BaseActivity {
 
 	@Override
 	public void initView() {
+		
+		
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
@@ -860,8 +862,9 @@ public class TradeServiceActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		stopThread = false;
+		stopThread = true;
 		super.onDestroy();
+		Log.e("onDestroy_stopThread", stopThread+"");
 		handler.removeMessages(1);
 		handler.removeMessages(2);
 	}

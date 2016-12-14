@@ -200,9 +200,9 @@ public class MyTiXianActivity extends BaseActivity {
 							String json = NetUtils.readString(is);
 							//Log.e("服务器信息", json);
 							// 解析json
-							// parsonJson(json);
+							 parsonJson(json);
 							// Thread.sleep(30000);
-							handler.sendEmptyMessage(1);
+							
 
 							// Thread.sleep(30000);
 
@@ -230,6 +230,23 @@ public class MyTiXianActivity extends BaseActivity {
 		default:
 			break;
 		}
+	}
+
+	protected void parsonJson(String json) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject jsonObject=new JSONObject(json);
+			String stateString=jsonObject.getString("state");
+			if ("success".equals(stateString)) {
+				handler.sendEmptyMessage(1);
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	Handler handler = new Handler() {

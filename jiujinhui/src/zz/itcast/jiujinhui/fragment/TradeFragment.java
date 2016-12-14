@@ -573,15 +573,7 @@ public class TradeFragment extends BaseFragment {
 
 	}
 
-	@Override
-	public void onDestroy() {
-
-		isPlaying = false;
-		handler.removeMessages(0);
-		handler.removeMessages(1);
-		super.onDestroy();
-
-	}
+	
 
 	@Override
 	public void initListener() {
