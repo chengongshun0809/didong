@@ -128,7 +128,7 @@ public class SaleChartFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(60000);
+							stopThread=true;
 
 						}
 
