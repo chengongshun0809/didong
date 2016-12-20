@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-   <include layout="@layout/layout_base_title" />
+  <include
+      layout="@layout/layout_base_title" />
 
-<zz.itcast.jiujinhui.view.MyScrollView
+       <zz.itcast.jiujinhui.view.MyScrollView
         android:id="@+id/scrollview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -15,7 +16,7 @@
          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+android:orientation="vertical" >
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="115dp"
@@ -139,7 +140,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/subnum"
+                        android:id="@+id/zongzichan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
@@ -188,7 +189,7 @@
                     android:orientation="horizontal" >
 
                     <TextView
-                        android:id="@+id/subnum"
+                        android:id="@+id/yitihuo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
@@ -227,7 +228,7 @@
                 android:background="#cccccc" />
 
             <LinearLayout
-                android:id="@+id/ll_scroll"
+               
                 android:layout_width="107dp"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >
@@ -336,8 +337,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:text="认购价"
-            android:textColor="#666666" 
-            android:textSize="18sp"
+            android:textColor="#999999" 
+            android:textSize="15sp"
             />
 
         <LinearLayout
@@ -353,7 +354,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="¥"
-                android:textSize="18sp"
+                android:textSize="15sp"
                  />
             <TextView
                 android:id="@+id/ren_price"
@@ -361,14 +362,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="298.22"
-                android:textSize="18sp"
+              android:textSize="15sp"
                  />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="元"
-                android:textSize="18sp"
+                android:textSize="15sp"
                  />
         </LinearLayout>
     </RelativeLayout>
@@ -387,8 +388,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:text="最小认购量"
-            android:textColor="#666666" 
-            android:textSize="18sp"
+            android:textColor="#999999" 
+            android:textSize="15sp"
             />
 
         <LinearLayout
@@ -401,24 +402,100 @@
 
             
             <TextView
-                android:id="@+id/ren_price"
+                
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="1"
-                android:textSize="18sp"
+                android:textSize="15sp"
                  />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="瓶"
-                android:textSize="18sp"
+                android:textSize="15sp"
                  />
         </LinearLayout>
     </RelativeLayout>
-    
-   
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="#cccccc" />
+   <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:text="收储服务费"
+            android:textColor="#999999" 
+            android:textSize="15sp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="70dp"
+            android:orientation="horizontal" >
+
+            
+            <TextView
+                
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="5.5%"
+                android:textSize="15sp"
+                 />
+          
+        </LinearLayout>
+    </RelativeLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="#cccccc" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:text="发行量"
+            android:textColor="#999999" 
+           android:textSize="15sp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="70dp"
+            android:orientation="horizontal" >
+
+            
+            <TextView
+               
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="10000瓶"
+          android:textSize="15sp"
+                 />
+          
+        </LinearLayout>
+    </RelativeLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -434,8 +511,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:text="发行者"
-            android:textColor="#666666" 
-            android:textSize="18sp"
+            android:textColor="#999999" 
+            android:textSize="15sp"
             />
 
         <LinearLayout
@@ -453,7 +530,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="陆家嘴酒金窖"
-                android:textSize="18sp"
+                android:textSize="15sp"
                  />
           
         </LinearLayout>
@@ -473,8 +550,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:text="状态"
-            android:textColor="#666666" 
-            android:textSize="18sp"
+            android:textColor="#999999" 
+             android:textSize="15sp"
             />
 
         <LinearLayout
@@ -487,12 +564,12 @@
 
             
             <TextView
-                android:id="@+id/ren_price"
+               
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="认购中(剩"
-                android:textSize="18sp"
+                 android:textSize="15sp"
                  />
             <TextView
                 android:id="@+id/ren_leftday"
@@ -500,15 +577,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="10"
-                android:textSize="18sp"
+            android:textSize="15sp"
                  />
              <TextView
-                android:id="@+id/ren_price"
+               
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="天)"
-                android:textSize="18sp"
+               android:textSize="15sp"
                  />
         </LinearLayout>
     </RelativeLayout>
@@ -518,7 +595,8 @@
         android:layout_marginTop="2dp"
         android:background="#cccccc" />
      </LinearLayout>
-    </zz.itcast.jiujinhui.view.MyScrollView>
+</zz.itcast.jiujinhui.view.MyScrollView>
+   
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -533,7 +611,7 @@
          >
 
         <LinearLayout
-            android:id="@+id/rb_buy_service"
+            android:id="@+id/rb_buy_rengou"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -553,7 +631,7 @@
                 android:textSize="11sp" />
       </LinearLayout>
       <LinearLayout
-            android:id="@+id/rb_tihuo_service"
+            android:id="@+id/rb_tihuo_rengou"
             android:layout_width="dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

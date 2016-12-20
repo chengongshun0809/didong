@@ -195,7 +195,7 @@
                     android:id="@+id/li"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="成交价:¥ "
+                    android:text="最新价:¥ "
                     android:textColor="#3366cc"
                     android:textSize="15.5sp" />
 

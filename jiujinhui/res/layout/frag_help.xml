@@ -343,7 +343,7 @@
             </RelativeLayout>            
 <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="70dp" >
+                android:layout_height="90dp" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -351,7 +351,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                       android:textColor="#999999"
-                       android:lineSpacingExtra="4dp"
+                       android:lineSpacingExtra="3dp"
                     android:text="7、交易平台统一使用酒币交易(1酒币=1元)，点击个人中心的充值按钮，充值到酒币账户。卖出撮合成功后酒币即时返现到酒币账户，点击提现按钮，可提现至微信零钱。" />
             </RelativeLayout>
 <RelativeLayout

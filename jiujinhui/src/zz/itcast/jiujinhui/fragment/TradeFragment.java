@@ -15,15 +15,14 @@ import org.json.JSONObject;
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.activity.LoginActivity;
 import zz.itcast.jiujinhui.activity.TradeServiceActivity;
+import zz.itcast.jiujinhui.activity.WoyaorengouActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
@@ -210,6 +209,7 @@ public class TradeFragment extends BaseFragment {
 	private JSONObject jsonObject2;
 	private String opentime;
 	boolean stopThread = false;
+	private String maindgid;
 	@Override
 	public void initData() {
 		// 跑马灯
@@ -294,17 +294,17 @@ public class TradeFragment extends BaseFragment {
 			// System.err.println(jsonObject.toString());
 			// 判断json是否传输成功
 			String success = jsonObject.getString("message");
-			Log.e("sss", "是否成功:" + success);
+			//Log.e("sss", "是否成功:" + success);
 			// 置顶的酒金窖
 			String maindealgood = jsonObject.getString("maindealgood");
 			jsonObject2 = new JSONObject(maindealgood);
-			Log.e("v", jsonObject2.getString("dgid"));
+			//Log.e("v", jsonObject2.getString("dgid"));
           /* String dgid= jsonObject2.getString("dgid");
            sp.edit().putString("dgid", dgid).commit();*/
 			mainname = jsonObject2.getString("name");
 			opentime = jsonObject2.getString("subscribetime");
-			
-			Log.e("vv", jsonObject2.getString("name"));
+			//maindgid = jsonObject2.getString("dgid");
+			//Log.e("vv", jsonObject2.getString("name"));
 			maingooddealprice = jsonObject2.getDouble("realprice");
 			maindealcode = jsonObject2.getString("dealcode");
 
@@ -420,12 +420,36 @@ public class TradeFragment extends BaseFragment {
 			btn_public.setVisibility(View.VISIBLE);
 			btn_public.setOnClickListener(new OnClickListener() {
 				
+				private String maingoodname;
+				private String dgid;
+
 				@Override
 				public void onClick(View v) {
+
+					try {
+						dgid = jsonObject2.getString("dgid");
+						maingoodname = jsonObject2.getString("name");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 					// TODO Auto-generated method stub
-					
-					
-					
+					Boolean isLogined = sp.getBoolean("isLogined", false);
+					if (isLogined) {
+						Intent intent1 = new Intent(getActivity(),WoyaorengouActivity.class);
+						Bundle bundle=new Bundle();
+						bundle.putString("name", maingoodname);
+						bundle.putString("dgid", dgid);
+						bundle.putString("maindealterm", maindealterm);
+						intent1.putExtras(bundle);
+						startActivity(intent1);
+					} else {
+						Intent intent = new Intent(getActivity(),
+								LoginActivity.class);
+						startActivity(intent);
+					}
+
 				}
 			});
 			// tv_tian.setTextColor(R.color.red);
@@ -490,6 +514,7 @@ public class TradeFragment extends BaseFragment {
 								TradeServiceActivity.class);
 						intent.putExtra("name", maingoodname);
 						intent.putExtra("dealdgid", dgid);
+						
 						startActivity(intent);
 					} else {
 						Intent intent = new Intent(getActivity(),

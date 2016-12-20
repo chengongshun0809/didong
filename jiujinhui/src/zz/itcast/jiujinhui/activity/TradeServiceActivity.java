@@ -215,7 +215,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// Log.e("mm", dgid);
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
-		 Log.e("ms我的unionID是：", unionid);
+		// Log.e("ms我的unionID是：", unionid);
 
 	}
 
@@ -357,11 +357,14 @@ public class TradeServiceActivity extends BaseActivity {
 		xiaji.setText(xia);
 		total_assets.setText(totalassets + "");
 		left_assets.setText(leftgoodassets + "");
-		buying.setText(buygooding + "");
+		  buying.setText(buygooding + "");
 		saling.setText(salgooding + "");
 		dealed.setText(dealnum + "");
 		reward.setText(df.format((downaward / 100)));
-
+         //tihuo,trans
+		taked_goods.setText(tihuo+"");
+		transed.setText(trans+"");
+		
 		/*
 		 * double shouyi = (tradeprice * (leftgoodassets + salgooding) +
 		 * totaloutmoney - totalbuy) / 100;
@@ -496,7 +499,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			break;
 
-		default:
+		default: 
 			break;
 		}
 	}
@@ -771,6 +774,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 				} else {
 					count_buy = 1;
+					Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0).show();
 				}
 
 			}
