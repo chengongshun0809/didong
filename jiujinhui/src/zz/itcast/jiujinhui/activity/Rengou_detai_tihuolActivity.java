@@ -8,6 +8,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -45,6 +46,8 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			switch (msg.what) {
 			case 0:
 				Toast.makeText(getApplicationContext(), "恭喜您提货成功", 0).show();
+				Intent intent=new Intent(Rengou_detai_tihuolActivity.this,TradeServiceActivity.class);
+				startActivity(intent);
 				break;
 			case 1:
 				Toast.makeText(getApplicationContext(), "提货失败，请重新提货", 0).show();
@@ -74,6 +77,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		tihuo.setOnClickListener(this);
 		quxiao.setOnClickListener(this);
+		tv_back.setOnClickListener(this);
 	}
 
 	@Override
@@ -88,6 +92,10 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onClick(v);
 		switch (v.getId()) {
+		case R.id.tv_back:
+			
+			finish();
+			break;
 		case R.id.tihuo:
 			addressString = et_address.getText().toString().trim();
 			if (!TextUtils.isEmpty(addressString)) {
@@ -167,7 +175,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			}
 			break;
 		case R.id.quxiao:
-
+           finish();
 			break;
 
 		default:
