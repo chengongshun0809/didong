@@ -105,16 +105,10 @@
             android:textColor="#ff323232"
             android:textSize="15sp" />
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/igray" />
-
-    <LinearLayout
+<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-      
+       
         android:orientation="horizontal" >
 
         <TextView
@@ -126,6 +120,7 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/zhidaojia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
@@ -140,6 +135,10 @@
             android:textColor="#ff323232"
             android:textSize="18sp" />
     </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
 
     <LinearLayout
         android:layout_width="fill_parent"

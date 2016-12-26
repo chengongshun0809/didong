@@ -99,8 +99,8 @@ public class NetUtils {
 			//conn = (HttpURLConnection) url.openConnection();
 			conn = (HttpsURLConnection) url.openConnection();
 			conn.setSSLSocketFactory(ssf);
-			conn.setConnectTimeout(30000);//设置连接主机超时（单位：毫秒）
-			conn.setReadTimeout(30000);//设置从主机读取数据超时（单位：毫秒）
+			conn.setConnectTimeout(300000);//设置连接主机超时（单位：毫秒）
+			conn.setReadTimeout(300000);//设置从主机读取数据超时（单位：毫秒）
 			// 设置允许输出
 			conn.setDoOutput(true);
 			conn.setDoInput(true);

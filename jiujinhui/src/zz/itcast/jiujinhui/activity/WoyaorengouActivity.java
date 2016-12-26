@@ -97,6 +97,20 @@ public class WoyaorengouActivity extends BaseActivity {
 			case 2:
 				UpdatehscrollviewUI();
 				break;
+			case 3:
+				builder.dismiss();
+				Intent intent=new Intent(WoyaorengouActivity.this,RengouSuccessActivity.class);
+				startActivity(intent);
+				
+				//Toast.makeText(getApplicationContext(), "恭喜您，认购成功", 0).show();
+				
+				
+				
+				break;
+			case 4:
+				//builder.dismiss();
+				Toast.makeText(getApplicationContext(), "认购失败，请重新认购", 0).show();
+				break;
 			default:
 				break;
 			}
@@ -221,13 +235,13 @@ public class WoyaorengouActivity extends BaseActivity {
 			JSONObject jObject = new JSONObject(json);
 			jiubiString = jObject.getDouble("income");
 			rengou_price = jObject.getDouble("realprice");
+			//sp.edit().putString("huigoujia", df.format(rengou_price/100)).commit();
 			dealString = jObject.getString("dealgood");
 
 			JSONObject jObject2 = new JSONObject(dealString);
 			owner = jObject2.getString("owner");
 
-			// 认购总资产
-			String dealdataString = jObject.getString("dealdata");
+			dealdataString = jObject.getString("dealdata");
 			JSONObject jObject3 = new JSONObject(dealdataString);
 
 			zongString = jObject3.getString("subnum");
@@ -236,6 +250,8 @@ public class WoyaorengouActivity extends BaseActivity {
 			xia = jObject3.getString("downnum");
 			record = jObject3.getDouble("downaward");
 			stock = jObject3.getString("stock");
+			ddid = jObject3.getString("ddid");
+			
 			Message message = new Message();
 			message.what = 1;
 			handler.sendMessage(message);
@@ -288,21 +304,29 @@ public class WoyaorengouActivity extends BaseActivity {
 			showRengou_buy();
 			break;
 		case R.id.rb_tihuo_rengou:
-			showTihuo();
+			int zongzi=Integer.parseInt(zongString);
+			if (zongzi>0) {
+				showTihuo();
+			}else {
+				Toast.makeText(getApplicationContext(), "可提资产为0", 0).show();
+			}
+			
+			
 			break;
 		default:
 			break;
 		}
 
 	}
-
+	private String countString;
+	
 	TextWatcher textWatcher=new TextWatcher() {
 		private CharSequence charSequence;
 		
+		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			// TODO Auto-generated method stub
-			String countString=counTextView.getText().toString().trim();
+			countString = counTextView.getText().toString().trim();
 			price.setText(""+Arith.mul(rengou_price/100, Double.parseDouble(countString)));
 			
 			
@@ -334,10 +358,12 @@ public class WoyaorengouActivity extends BaseActivity {
 		price = (TextView) view.findViewById(R.id.price);
 		dialog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
-		final AlertDialog builder = new AlertDialog.Builder(this).create();
+		builder = new AlertDialog.Builder(this).create();
 		builder.setView(view, 0, 0, 0, 0);
 		builder.setCancelable(false);
 		builder.show();
+		countString = counTextView.getText().toString().trim();
+		num2 = Integer.parseInt(countString);
 		price.setText(df.format(rengou_price/100));
 		counTextView.addTextChangedListener(textWatcher);
 		//price.addTextChangedListener(textWatcher);
@@ -389,17 +415,130 @@ public class WoyaorengouActivity extends BaseActivity {
 		});
 		dialog_ok.setOnClickListener(new OnClickListener() {
 			
+			private String pricString;
+			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				double priceDouble=Double.parseDouble(price.getText().toString().trim());
+				pricString = price.getText().toString().trim();
 				
 				Log.e("zhzh", price.getText().toString().trim());
+				if ((jiubiString/100)>=priceDouble) {
+					//继续购买
+					new Thread(new Runnable() {
+
+						private InputStream iStream;
+
+						@Override
+						public void run() {
+							
+								String url="https://www.4001149114.com/NLJJ/ddapp/dealsubscribepay?"+"&ddid="+ddid+"&num="+countString+"&price="+pricString;
+								try {  
+									HttpsURLConnection connection = NetUtils
+											.httpsconnNoparm(url, "POST");
+									int code = connection.getResponseCode();
+									if (code == 200) {
+										iStream = connection.getInputStream();
+										String infojson = NetUtils.readString(iStream);
+										// JSONObject jsonObject = new JSONObject(infojson);
+										Log.e("我靠快快快快快快快", infojson);
+										//handler.sendEmptyMessage(3);
+										//Log.e("hahahhahh", infojson);
+										parseJson_rengoubuy(infojson);
+									
+                                   Log.e("sssssssssss", "hahah");
+									}
+
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} finally {
+									if (iStream != null) {
+										try {
+											iStream.close();
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+
+								}
+
+							}
+						
+						private void parseJson_rengoubuy(String infojson) {
+							// TODO Auto-generated method stub
+							try {
+								JSONObject jsonObject=new JSONObject(infojson);
+							String success=jsonObject.getString("message");
+							if ("success".equals(success)) {
+								//认购成功
+								handler.sendEmptyMessage(3);
+								
+							}if ("error".equals(success)) {
+								handler.sendEmptyMessage(4);
+							}
+							
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						       
+						}
+
+						
+					}).start();
+					
+				}else {
+					Toast.makeText(getApplicationContext(), "账户酒币不够，请先充值", 0).show();
+					/*builder.dismiss();
+					
+					Log.e("chongzhi", "yaochongzhi");
+					//去充值
+					LayoutInflater inflater = getLayoutInflater();
+					View view = (View) inflater.inflate(R.layout.rengou_msg_chongzhi, null);
+					Button chongzhi_ok=(Button) view.findViewById(R.id.dialog_ok);
+					Button chongzhi_cancel=(Button) view.findViewById(R.id.dialog_cancel);
+					
+					
+					final AlertDialog builder1 = new AlertDialog.Builder(getApplicationContext()).create();
+					builder1.setView(view, 0, 0, 0, 0);
+					builder1.setCancelable(false);
+					builder1.show();
+					chongzhi_cancel.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							builder1.dismiss();
+						}
+					});
+					chongzhi_ok.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Intent intent=new Intent(WoyaorengouActivity.this,ReChargeActivity.class);
+							startActivity(intent);
+						}
+					});*/
+					
+				}
+				
+				
 				
 			}
 		});
 
 	}
 	int tihuo_count=1;
+	private int num2;
+	private String ddid;
+	private AlertDialog builder;
+	private String dealdataString;
+	private AlertDialog builder1;
     //提货
 	private void showTihuo() {
 		// TODO Auto-generated method stub
@@ -410,16 +549,16 @@ public class WoyaorengouActivity extends BaseActivity {
 		num = (TextView) view.findViewById(R.id.num);
 		dialog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
-		final AlertDialog builder = new AlertDialog.Builder(this).create();
-		builder.setView(view, 0, 0, 0, 0);
-		builder.setCancelable(false);
-		builder.show();
+		builder1 = new AlertDialog.Builder(this).create();
+		builder1.setView(view, 0, 0, 0, 0);
+		builder1.setCancelable(false);
+		builder1.show();
 		dialog_cancel.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				builder.dismiss();
+				builder1.dismiss();
 				tihuo_count=1;
 				
 			}
@@ -429,7 +568,27 @@ public class WoyaorengouActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Log.e("tihuo_ok", num.getText().toString().trim());
+				int number=Integer.parseInt(num.getText().toString().trim());
+				//总资产
+				int zong_num=Integer.parseInt(zongString);
+				if (number<=zong_num) {
+					builder1.dismiss();
+					
+					Log.e("tihuo_ok", num.getText().toString().trim());
+					Intent intent=new Intent(WoyaorengouActivity.this,Rengou_detai_tihuolActivity.class);
+					Bundle bundle=new Bundle();
+					bundle.putString("num", number+"");
+					bundle.putString("ddid", ddid);
+					intent.putExtras(bundle);
+					startActivity(intent);
+					
+				}else {
+					Toast.makeText(getApplicationContext(), "提货的数量不能大于总资产", 0).show();
+				}
+				
+				
+				
+				
 				
 				
 			}
@@ -476,5 +635,7 @@ public class WoyaorengouActivity extends BaseActivity {
 		stopThread = true;
 		handler.removeMessages(1);
 		handler.removeMessages(2);
+		handler.removeMessages(3);
+		handler.removeMessages(4);
 	}
 }

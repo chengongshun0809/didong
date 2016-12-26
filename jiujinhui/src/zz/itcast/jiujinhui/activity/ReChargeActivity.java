@@ -289,7 +289,7 @@ public class ReChargeActivity extends BaseActivity {
 								byte[] buf = Util.httpGet(url);
 								if (buf != null && buf.length > 0) {
 									String content = new String(buf);
-									Log.e("get server pay params:", content);
+									//Log.e("get server pay params:", content);
 									JSONObject json = new JSONObject(content);
 									if (null != json && !json.has("retcode")) {
 										PayReq req = new PayReq();

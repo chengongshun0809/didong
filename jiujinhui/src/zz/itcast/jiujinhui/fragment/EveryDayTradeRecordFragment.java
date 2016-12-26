@@ -212,7 +212,9 @@ public class EveryDayTradeRecordFragment extends BaseFragment {
 				// 回购价
 				double buybackprice = object.getDouble("buybackprice");
 				buybackpriceList.add((float) buybackprice / 100);
-
+                
+				
+				
 				String dealday = object.getString("dealday");
 				timeList.add(dealday.substring(5, dealday.length()));
 

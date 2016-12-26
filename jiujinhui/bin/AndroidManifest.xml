@@ -75,6 +75,12 @@
         <activity android:name="zz.itcast.jiujinhui.activity.MyTixiandetailActivity"></activity>
       <activity android:name="zz.itcast.jiujinhui.activity.TixianSuccessActivity"></activity>
         <activity android:name="zz.itcast.jiujinhui.activity.WoyaorengouActivity"></activity>
+       <activity android:name="zz.itcast.jiujinhui.activity.RengouSuccessActivity"></activity>
+       <activity android:name="zz.itcast.jiujinhui.activity.Rengou_detai_tihuolActivity"></activity> 
+       
+       
+       
+       
         <!-- 微信回调activity -->
         <activity
             android:name=".wxapi.WXEntryActivity"

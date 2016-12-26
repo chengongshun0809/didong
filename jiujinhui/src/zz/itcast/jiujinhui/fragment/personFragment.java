@@ -75,7 +75,7 @@ public class personFragment extends BaseFragment {
 	  public void handleMessage(android.os.Message msg) {
 		switch (msg.what) {
 		case 1:
-			 person_jiubi.setText((income/100)+"");
+			 person_jiubi.setText(df.format(income/100));
 			break;
 
 		default:

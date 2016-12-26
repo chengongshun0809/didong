@@ -2,8 +2,11 @@ package zz.itcast.jiujinhui.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.security.auth.PrivateCredentialPermission;
@@ -151,6 +154,16 @@ public class TradeServiceActivity extends BaseActivity {
 			case 2:
 				UpdatehscrollviewUI();
 				// hscrollview.invalidate();
+				break;
+			case 3:
+				builder1.dismiss();
+				Toast.makeText(getApplicationContext(), "买入成功", 0).show();
+				break;
+			case 4:
+				builder1.dismiss();
+				Toast.makeText(getApplicationContext(), "买入失败，请重新买入", 0).show();
+				break;
+
 			default:
 				break;
 			}
@@ -169,7 +182,7 @@ public class TradeServiceActivity extends BaseActivity {
 		rb_tihuo_service.setOnClickListener(this);
 		rb_zhuanrang_service.setOnClickListener(this);
 		person_assets.setOnClickListener(this);
-
+		/**/
 	}
 
 	// 实现滚动线程
@@ -200,8 +213,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 	@Override
 	public void initView() {
-		
-		
+
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);
 		tv__title.setText("交易服务");
@@ -216,6 +228,15 @@ public class TradeServiceActivity extends BaseActivity {
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
 		// Log.e("ms我的unionID是：", unionid);
+		/*
+		 * for (int i = 0; i < nowlist.size(); i++) { String nowtime =
+		 * nowlist.get(i);
+		 * 
+		 * if (nowtmString.equals(nowtime)) { huogoumoney =
+		 * buybackpricelist.get(i); Log.e("huogoumoney", huogoumoney+""); }
+		 * 
+		 * }
+		 */
 
 	}
 
@@ -238,8 +259,18 @@ public class TradeServiceActivity extends BaseActivity {
 	 * 
 	 * };
 	 */
+	private InputStream iStream;
+
 	@Override
 	public void initData() {
+		// 获取系统当前时间
+
+		/*
+		 * Date date = new Date(); DateFormat format = new
+		 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String nowtime =
+		 * format.format(date); nowtmString = nowtime.substring(0, 10);
+		 * Log.e("nowtime", nowtmString);
+		 */
 		// TODO Auto-generated method stub
 		fragmentsList1 = new ArrayList<Fragment>();
 		fragmentsList1.add(new NowTradeRecoedFragment());
@@ -259,8 +290,6 @@ public class TradeServiceActivity extends BaseActivity {
 		// 获取数据
 
 		new Thread(new Runnable() {
-
-			private InputStream iStream;
 
 			@Override
 			public void run() {
@@ -313,7 +342,10 @@ public class TradeServiceActivity extends BaseActivity {
 			sp.edit().putString("mobile", phonenum).commit();
 
 			income = jsonObject.getDouble("income");
+			// 回购价
 
+			buybackprice = jsonObject.getDouble("buybackprice");
+			Log.e("buybackprice", buybackprice + "");
 			// sp.edit().putFloat("jiubi", (float) (income/100)).commit();
 			String incomeing = (income / 100) + "";
 			sp.edit().putString("jiubi", incomeing).commit();
@@ -326,6 +358,8 @@ public class TradeServiceActivity extends BaseActivity {
 			salgooding = jsonObject2.getInt("putnum");
 			leftgoodassets = jsonObject2.getInt("stock");
 			xia = jsonObject2.getString("downnum");
+			ddid = jsonObject2.getString("ddid");
+
 			// 认购
 			rengou = jsonObject2.getInt("subnum");
 			dealnum = jsonObject2.getInt("dealnum");
@@ -357,14 +391,14 @@ public class TradeServiceActivity extends BaseActivity {
 		xiaji.setText(xia);
 		total_assets.setText(totalassets + "");
 		left_assets.setText(leftgoodassets + "");
-		  buying.setText(buygooding + "");
+		buying.setText(buygooding + "");
 		saling.setText(salgooding + "");
 		dealed.setText(dealnum + "");
 		reward.setText(df.format((downaward / 100)));
-         //tihuo,trans
-		taked_goods.setText(tihuo+"");
-		transed.setText(trans+"");
-		
+		// tihuo,trans
+		taked_goods.setText(tihuo + "");
+		transed.setText(trans + "");
+
 		/*
 		 * double shouyi = (tradeprice * (leftgoodassets + salgooding) +
 		 * totaloutmoney - totalbuy) / 100;
@@ -466,7 +500,7 @@ public class TradeServiceActivity extends BaseActivity {
 	private TextView product_total_price;
 	private Button dialog_ok;
 	private Button diaog_cancel;
-	private int count_buy=1;
+	private int count_buy = 1;
 
 	@Override
 	public void onClick(View v) {
@@ -499,7 +533,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			break;
 
-		default: 
+		default:
 			break;
 		}
 	}
@@ -710,22 +744,26 @@ public class TradeServiceActivity extends BaseActivity {
 		// 数量
 		product_ordsubmit_count = (TextView) view
 				.findViewById(R.id.product_ordsubmit_count);
+		// 指导价
+		TextView zhidaojia = (TextView) view.findViewById(R.id.zhidaojia);
+		zhidaojia.setText(df.format(tradeprice / 100));
 
 		// 买入价格
 		product_ordsubmit_price = (EditText) view
 				.findViewById(R.id.product_ordsubmit_price);
 		product_ordsubmit_count.addTextChangedListener(textWatcher);
 		product_ordsubmit_price.addTextChangedListener(textWatcher);
-		
+
 		// 总价钱
 		product_total_price = (TextView) view
 				.findViewById(R.id.product_total_price);
+
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
 		diaog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
-		final AlertDialog builder = new AlertDialog.Builder(this).create();
-		builder.setView(view, 0, 0, 0, 0);
-		builder.setCancelable(false);
-		builder.show();
+		builder1 = new AlertDialog.Builder(this).create();
+		builder1.setView(view, 0, 0, 0, 0);
+		builder1.setCancelable(false);
+		builder1.show();
 
 		// 取消按钮
 		diaog_cancel.setOnClickListener(new OnClickListener() {
@@ -733,17 +771,115 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				builder.dismiss();
+				builder1.dismiss();
 				count_buy = 1;
 			}
 		});
 		// 确定按钮
 		dialog_ok.setOnClickListener(new OnClickListener() {
 
+			private String num_buy;
+			private String total_price;
+			private String buy_priceString;
+
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				num_buy = product_ordsubmit_count.getText().toString().trim();
+				total_price = product_total_price.getText().toString().trim();
+				buy_priceString = product_ordsubmit_price.getText().toString()
+						.trim();
+				double total_price_double = Double.parseDouble(total_price);
+				
+				if (!TextUtils.isEmpty(buy_priceString)) {
+					double buyprice = Double.parseDouble(buy_priceString);
+					if (buyprice >= (buybackprice / 100)) {
 
+						if ((income / 100) >= total_price_double) {
+							new Thread(new Runnable() {
+
+								private InputStream iStream;
+
+								@Override
+								public void run() {
+
+									String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuy?"
+											+ "&ddid="
+											+ ddid
+											+ "&num="
+											+ num_buy + "&price=" + total_price;
+									try {
+										HttpsURLConnection connection = NetUtils
+												.httpsconnNoparm(url, "POST");
+										int code = connection.getResponseCode();
+										if (code == 200) {
+											iStream = connection
+													.getInputStream();
+											String infojson = NetUtils
+													.readString(iStream);
+											// JSONObject jsonObject = new
+											// JSONObject(infojson);
+											// Log.e("我靠快快快快快快快", infojson);
+											// handler.sendEmptyMessage(3);
+											// Log.e("hahahhahh", infojson);
+											parseJson_buy(infojson);
+
+											// Log.e("sssssssssss", "hahah");
+										}
+
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} finally {
+										if (iStream != null) {
+											try {
+												iStream.close();
+											} catch (IOException e) {
+												// TODO Auto-generated catch
+												// block
+												e.printStackTrace();
+											}
+										}
+
+									}
+
+								}
+
+								private void parseJson_buy(String infojson) {
+									// TODO Auto-generated method stub
+									try {
+										JSONObject jsonObject = new JSONObject(
+												infojson);
+										String s = jsonObject
+												.getString("message");
+										String paystateString = jsonObject
+												.getString("paystate");
+										if ("yes".equals(paystateString)) {
+											// 买入成功
+											handler.sendEmptyMessage(3);
+										}
+										if ("no".equals(paystateString)) {
+											handler.sendEmptyMessage(4);
+										}
+
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+								}
+							}).start();
+						} else {
+							// 酒币不够
+							Toast.makeText(getApplicationContext(), "酒币不够，请充值",
+									0).show();
+						}
+					} else {
+						Toast.makeText(getApplicationContext(), "买入价不能低于回购价:"+buybackprice/100,
+								0).show();
+					}
+				} else {
+					Toast.makeText(getApplicationContext(), "请输入买入价", 0).show();
+				}
 			}
 		});
 
@@ -774,7 +910,8 @@ public class TradeServiceActivity extends BaseActivity {
 
 				} else {
 					count_buy = 1;
-					Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0).show();
+					Toast.makeText(getApplicationContext(), "最小认购量不能小于1", 0)
+							.show();
 				}
 
 			}
@@ -863,13 +1000,37 @@ public class TradeServiceActivity extends BaseActivity {
 
 	private String xia;
 
+	private String ddid;
+
+	private AlertDialog builder1;
+
+	private String nowtmString;
+
+	private ArrayList<Float> buybackpricelist;
+
+	private ArrayList<String> nowlist;
+
+	private double huogoumoney;
+
+	private double buybackprice;
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		stopThread = true;
 		super.onDestroy();
-		Log.e("onDestroy_stopThread", stopThread+"");
+		Log.e("onDestroy_stopThread", stopThread + "");
 		handler.removeMessages(1);
 		handler.removeMessages(2);
+		handler.removeMessages(3);
+		handler.removeMessages(4);
+		if (iStream != null) {
+			try {
+				iStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
