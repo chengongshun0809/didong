@@ -1,4 +1,4 @@
-package zz.itcast.jiujinhui.fragment;
+ package zz.itcast.jiujinhui.fragment;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -185,6 +185,8 @@ public class TradeAllFragment extends BaseFragment {
 
 	public class ListViewAdapter extends BaseAdapter {
 
+		private String undonenum;
+
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
@@ -240,8 +242,9 @@ public class TradeAllFragment extends BaseFragment {
 			holder.total.setText(data.get(position).get("total") + "");
 			holder.tv_num.setText(data.get(position).get("number_total") + "");
 			String typString = (String) data.get(position).get("type");
-			// 未成交
-			String undonenum = (String) data.get(position).get("undonenum");
+			undonenum = (String) data.get(position).get("undonenum");
+			int undonenum_int=Integer.parseInt(undonenum);
+			
 			// 判断type
 			int type_int = Integer.parseInt(typString);
 			switch (type_int) {
@@ -254,12 +257,20 @@ public class TradeAllFragment extends BaseFragment {
 
 				break;
 			case 3:
-				holder.tv_dan_state.setText("卖出完成");
-				holder.msg_chengjiao.setVisibility(View.VISIBLE);
-				holder.tv_weichengjiao.setVisibility(View.GONE);
-				holder.tv_weichengjiao_num.setVisibility(View.GONE);
-				holder.msg_chengjiao.setText("全部成交");
-
+				if (undonenum_int==0) {
+					holder.tv_dan_state.setText("卖出完成");
+					holder.msg_chengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao_num.setVisibility(View.GONE);
+					holder.msg_chengjiao.setText("全部成交");
+				}else {
+					holder.tv_dan_state.setText("卖出中");
+					holder.msg_chengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setText(undonenum);
+				}
+				
 				break;
 			case 4:
 				holder.tv_dan_state.setText("提货完成");
@@ -300,11 +311,28 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao_num.setText(undonenum);
 				break;
 			case 2:
-				holder.tv_dan_state.setText("买入完成");
-				holder.msg_chengjiao.setVisibility(View.VISIBLE);
-				holder.tv_weichengjiao.setVisibility(View.GONE);
-				holder.tv_weichengjiao_num.setVisibility(View.GONE);
-				holder.msg_chengjiao.setText("全部成交");
+				if (undonenum_int==0) {
+					holder.tv_dan_state.setText("买入完成");
+					holder.msg_chengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao_num.setVisibility(View.GONE);
+					holder.msg_chengjiao.setText("全部成交");
+				}else {
+					holder.tv_dan_state.setText("买入中");
+					holder.msg_chengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setText(undonenum);
+				}
+				
+				break;
+			case 12:
+				
+				holder.tv_dan_state.setText("买入退款");
+				holder.msg_chengjiao.setVisibility(View.GONE);
+				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+				holder.tv_weichengjiao_num.setText(undonenum);
 				break;
 			case 5:
 				holder.tv_dan_state.setText("卖出撤回");

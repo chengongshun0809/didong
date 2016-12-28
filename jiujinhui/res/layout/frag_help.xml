@@ -411,7 +411,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                      android:textColor="#999999"
-                    android:text="Copyright©2011-2016" />
+                    android:text="Copyright©2011-2017" />
             </RelativeLayout>
 
             <RelativeLayout

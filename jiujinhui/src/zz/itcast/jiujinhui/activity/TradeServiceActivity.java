@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -21,8 +23,10 @@ import zz.itcast.jiujinhui.fragment.EveryDayTradeRecordFragment;
 import zz.itcast.jiujinhui.fragment.NowTradeRecoedFragment;
 import zz.itcast.jiujinhui.fragment.SaleChartFragment;
 import zz.itcast.jiujinhui.res.Arith;
+import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -527,15 +531,129 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_buy_service:
-			showBuyDialog();
+			// 获取系统当前时间
+
+			/*
+			 * Date date = new Date(); long nowtime = date.getTime();
+			 * SimpleDateFormat sdf = new
+			 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String now_time =
+			 * sdf.format(date); String nyr = now_time.substring(0, 11);
+			 * 
+			 * String start1 = nyr + "09:00"; String timeEnd1 = nyr + "11:30";
+			 * 
+			 * String start2 = nyr + "13:30"; String timeEnd2 = nyr + "15:00";
+			 * 
+			 * String start3 = nyr + "20:30"; String timeEnd3 = nyr + "22:00";
+			 * 
+			 * String start4 = nyr + "20:30"; String timeEnd4 = nyr + "22:00";
+			 * try { long start11 = sdf.parse(start1).getTime(); long timeEnd11
+			 * = sdf.parse(timeEnd1).getTime();
+			 * 
+			 * long start22 = sdf.parse(start2).getTime(); long timeEnd22 =
+			 * sdf.parse(timeEnd2).getTime();
+			 * 
+			 * long start33 = sdf.parse(start3).getTime(); long timeEnd33 =
+			 * sdf.parse(timeEnd3).getTime();
+			 * 
+			 * long start44 = sdf.parse(start4).getTime(); long timeEnd44 =
+			 * sdf.parse(timeEnd4).getTime(); // 判断是周几 Calendar cal =
+			 * Calendar.getInstance(); cal.setTime(new Date()); int week =
+			 * cal.get(Calendar.DAY_OF_WEEK) - 1; if (week == 0 && week == 6) {
+			 * if (start44 <= nowtime && nowtime <= timeEnd44) {
+			 * showBuyDialog(); } else { // 未到开市时间 LayoutInflater inflater =
+			 * LayoutInflater.from(this); View view = (View)
+			 * inflater.inflate(R.layout.timeout_service, null); final
+			 * AlertDialog builder=new AlertDialog.Builder(this).create();
+			 * builder.setView(view, 0, 0, 0, 0); builder.setCancelable(false);
+			 * builder.show();
+			 * 
+			 * 
+			 * RelativeLayout haode=(RelativeLayout)
+			 * view.findViewById(R.id.haode); haode.setOnClickListener(new
+			 * OnClickListener() {
+			 * 
+			 * @Override public void onClick(View v) { // TODO Auto-generated
+			 * method stub builder.dismiss(); } });
+			 * 
+			 * 
+			 * }
+			 * 
+			 * } else { if (start11 <= nowtime && nowtime <= timeEnd11 ||
+			 * start22 <= nowtime && nowtime <= timeEnd22 || start33 <= nowtime
+			 * && nowtime <= timeEnd33) {
+			 * 
+			 * showBuyDialog();
+			 * 
+			 * } else { // 未到开市时间 } }
+			 * 
+			 * } catch (ParseException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 */
+			DateTest dateTest = new DateTest();
+			boolean flag = dateTest.isNowDate();
+			if (flag == true) {
+				// 符合交易时间
+				showBuyDialog();
+
+			} else {
+				LayoutInflater inflater = LayoutInflater.from(this);
+				View view = (View) inflater.inflate(R.layout.timeout_service,
+						null);
+				final AlertDialog builder = new AlertDialog.Builder(this)
+						.create();
+				builder.setView(view, 0, 0, 0, 0);
+				builder.setCancelable(false);
+				builder.show();
+
+				RelativeLayout haode = (RelativeLayout) view
+						.findViewById(R.id.haode);
+				haode.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) { // TODO Auto-generated
+						builder.dismiss();
+					}
+				});
+
+			}
+
 			break;
 		case R.id.rb_sale_service:
-			if (leftgoodassets > 0) {
-				showSaleDialog();
+			
+			DateTest dateT = new DateTest();
+			boolean flag1 = dateT.isNowDate();
+			if (flag1 == true) {
+				// 符合交易时间
+				if (leftgoodassets > 0) {
+					showSaleDialog();
+				} else {
+					Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0", 0)
+							.show();
+				}
+
 			} else {
-				Toast.makeText(getApplicationContext(), "当前可卖出资产的数量为0", 0)
-						.show();
+				LayoutInflater inflater = LayoutInflater.from(this);
+				View view = (View) inflater.inflate(R.layout.timeout_service,
+						null);
+				final AlertDialog builder = new AlertDialog.Builder(this)
+						.create();
+				builder.setView(view, 0, 0, 0, 0);
+				builder.setCancelable(false);
+				builder.show();
+
+				RelativeLayout haode = (RelativeLayout) view
+						.findViewById(R.id.haode);
+				haode.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) { // TODO Auto-generated
+						builder.dismiss();
+					}
+				});
+
 			}
+			
+			
 
 			break;
 
@@ -550,13 +668,40 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
+			DateTest date = new DateTest();
+			boolean flag2 = date.isNowDate();
+			if (flag2 == true) {
+				// 符合交易时间
+				if (leftgoodassets > 0) {
+					shouTransDialog();
+				} else {
+					Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0", 0)
+							.show();
+				}
 
-			if (leftgoodassets > 0) {
-				shouTransDialog();
 			} else {
-				Toast.makeText(getApplicationContext(), "当前可转让资产的数量为0", 0)
-						.show();
+				LayoutInflater inflater = LayoutInflater.from(this);
+				View view = (View) inflater.inflate(R.layout.timeout_service,
+						null);
+				final AlertDialog builder = new AlertDialog.Builder(this)
+						.create();
+				builder.setView(view, 0, 0, 0, 0);
+				builder.setCancelable(false);
+				builder.show();
+
+				RelativeLayout haode = (RelativeLayout) view
+						.findViewById(R.id.haode);
+				haode.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) { // TODO Auto-generated
+						builder.dismiss();
+					}
+				});
+
 			}
+
+			
 
 			break;
 		// 个人资产
@@ -863,9 +1008,7 @@ public class TradeServiceActivity extends BaseActivity {
 											+ "&ddid="
 											+ ddid
 											+ "&num="
-											+ count_sale
-											+ "&price="
-											+ totalp;
+											+ count_sale + "&price=" + totalp;
 									try {
 										HttpsURLConnection connection = NetUtils
 												.httpsconnNoparm(url, "POST");
@@ -910,8 +1053,10 @@ public class TradeServiceActivity extends BaseActivity {
 												infojson);
 										String s = jsonObject
 												.getString("message");
-										/*String paystateString = jsonObject
-												.getString("paystate");*/
+										/*
+										 * String paystateString = jsonObject
+										 * .getString("paystate");
+										 */
 										if ("success".equals(s)) {
 											// 买入成功
 											handler.sendEmptyMessage(7);

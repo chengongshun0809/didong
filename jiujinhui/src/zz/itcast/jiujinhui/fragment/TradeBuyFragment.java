@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import zz.itcast.jiujinhui.R;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.R.integer;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -234,16 +235,27 @@ public class TradeBuyFragment extends BaseFragment {
 			String typString = (String) data.get(position).get("type");
 			// 未成交
 			String undonenum = (String) data.get(position).get("undonenum");
+			
+			int undonenum_int=Integer.parseInt(undonenum);
 			// 判断type
 			int type_int = Integer.parseInt(typString);
 			switch (type_int) {
 
 			case 2:
-				holder.tv_dan_state.setText("买入完成");
-				holder.msg_chengjiao.setVisibility(View.VISIBLE);
-				holder.tv_weichengjiao.setVisibility(View.GONE);
-				holder.tv_weichengjiao_num.setVisibility(View.GONE);
-				holder.msg_chengjiao.setText("全部成交");
+				if (undonenum_int==0) {
+					holder.tv_dan_state.setText("买入完成");
+					holder.msg_chengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao_num.setVisibility(View.GONE);
+					holder.msg_chengjiao.setText("全部成交");
+				}else {
+					holder.tv_dan_state.setText("买入中");
+					holder.msg_chengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setText(undonenum);
+				}
+				
 				break;
 
 			default:

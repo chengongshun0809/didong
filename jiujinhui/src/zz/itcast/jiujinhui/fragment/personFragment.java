@@ -18,19 +18,24 @@ import zz.itcast.jiujinhui.activity.SmsNumberActivity;
 import zz.itcast.jiujinhui.activity.TiXianRecordActivity;
 import zz.itcast.jiujinhui.activity.TradeRecordActivity;
 import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
+import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -253,13 +258,41 @@ boolean stopThread = false;
 						MyTiXianActivity.class);
 				startActivity(intent4);
 			}*/
-			Intent intent4 = new Intent(getActivity(),
-					MyTiXianActivity.class);
-			Bundle bundle=new Bundle();
-			bundle.putString("mobile", phonenum);
-			bundle.putString("money", df.format(income/100));
-			intent4.putExtras(bundle);
-			startActivity(intent4);
+			DateTest date = new DateTest();
+			boolean flag2 = date.isNowDate();
+			if (flag2 == true) {
+				// 符合交易时间
+				Intent intent4 = new Intent(getActivity(),
+						MyTiXianActivity.class);
+				Bundle bundle=new Bundle();
+				bundle.putString("mobile", phonenum);
+				bundle.putString("money", df.format(income/100));
+				intent4.putExtras(bundle);
+				startActivity(intent4);
+
+			} else {
+				LayoutInflater inflater = LayoutInflater.from(getActivity());
+				View view = (View) inflater.inflate(R.layout.timeout_tixian_person,
+						null);
+				final AlertDialog builder = new AlertDialog.Builder(getActivity())
+						.create();
+				builder.setView(view, 0, 0, 0, 0);
+				builder.setCancelable(false);
+				builder.show();
+				RelativeLayout haode = (RelativeLayout) view
+						.findViewById(R.id.haode);
+				haode.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) { // TODO Auto-generated
+						builder.dismiss();
+					}
+				});
+
+			}
+			
+			
+			
 			break;
 
 		case R.id.recharge:// 点击充值

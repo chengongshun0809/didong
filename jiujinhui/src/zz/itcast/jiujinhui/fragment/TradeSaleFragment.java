@@ -241,14 +241,23 @@ public class TradeSaleFragment extends BaseFragment {
 			String undonenum = (String) data.get(position).get("undonenum");
 			// 判断type
 			int type_int = Integer.parseInt(typString);
+			int undonenum_int=Integer.parseInt(undonenum);
 			switch (type_int) {
 			
 			case 3:
-				holder.tv_dan_state.setText("卖出完成");
-				holder.msg_chengjiao.setVisibility(View.VISIBLE);
-				holder.tv_weichengjiao.setVisibility(View.GONE);
-				holder.tv_weichengjiao_num.setVisibility(View.GONE);
-				holder.msg_chengjiao.setText("全部成交");
+				if (undonenum_int==0) {
+					holder.tv_dan_state.setText("卖出完成");
+					holder.msg_chengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao_num.setVisibility(View.GONE);
+					holder.msg_chengjiao.setText("全部成交");
+				}else {
+					holder.tv_dan_state.setText("卖出中");
+					holder.msg_chengjiao.setVisibility(View.GONE);
+					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+					holder.tv_weichengjiao_num.setText(undonenum);
+				}
 
 				break;
 			
