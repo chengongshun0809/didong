@@ -142,7 +142,7 @@ public class ZongZiChanActivity extends BaseActivity {
 			//总资产
 			TextView zong_assists=(TextView) view.findViewById(R.id.zongzichan);
 			TextView shengyu=(TextView) view.findViewById(R.id.shengyu);
-			TextView saling=(TextView) view.findViewById(R.id.saling);
+			TextView saling=(TextView) view.findViewById(R.id.naichuzhong);
 			TextView buying=(TextView) view.findViewById(R.id.buying);
 			TextView finished_chengjiao=(TextView) view.findViewById(R.id.finished_chengjiao);
 			TextView finished_tihuo=(TextView) view.findViewById(R.id.finished_tihuo);
@@ -161,9 +161,9 @@ public class ZongZiChanActivity extends BaseActivity {
 			     //总资产
 				String total=jsonObject.getString("subnum");
 				//剩余资产
-				String left_total=jsonObject.getString("stock");
+				int left_total=jsonObject.getInt("stock");
 				//卖出中
-				String saleingsString=jsonObject.getString("putnum");
+				int saleingsString=jsonObject.getInt("putnum");
 				//买入中
 				String  buyingString=jsonObject.getString("getnum");
 			    //已成交
@@ -173,11 +173,12 @@ public class ZongZiChanActivity extends BaseActivity {
 				//已转让
 				String trans_num=jsonObject.getString("buybacknum");
 			double shou_d=Double.parseDouble(zongshouyi);
+			
 			zshouyi.setText(df.format(shou_d/100));
 				name.setText(jiujiaoname);
-				zong_assists.setText(total);
-				shengyu.setText(left_total);
-				saling.setText(saleingsString);
+				zong_assists.setText((left_total+saleingsString)+"");
+				shengyu.setText(left_total+"");
+				saling.setText(saleingsString+"");
 				buying.setText(buyingString);
 				finished_chengjiao.setText(chengjiaoString);
 				finished_tihuo.setText(tihuo_num);

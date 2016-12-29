@@ -162,11 +162,11 @@ public class TradeServiceActivity extends BaseActivity {
 				// hscrollview.invalidate();
 				break;
 			case 3:
-				builder1.dismiss();
-				Toast.makeText(getApplicationContext(), "买入成功", 0).show();
+				dialog_buy.dismiss();
+				Toast.makeText(getApplicationContext(), "恭喜您买入成功", 0).show();
 				break;
 			case 4:
-				builder1.dismiss();
+				dialog_buy.dismiss();
 				Toast.makeText(getApplicationContext(), "买入失败，请重新买入", 0).show();
 				break;
 			case 5:
@@ -408,7 +408,7 @@ public class TradeServiceActivity extends BaseActivity {
 		jiubi.setText(df.format((income / 100)));
 		totalassets = leftgoodassets + buygooding;
 		xiaji.setText(xia);
-		total_assets.setText(totalassets + "");
+		total_assets.setText((leftgoodassets+salgooding)+"");
 		left_assets.setText(leftgoodassets + "");
 		buying.setText(buygooding + "");
 		saling.setText(salgooding + "");
@@ -532,65 +532,12 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取系统当前时间
-
-			/*
-			 * Date date = new Date(); long nowtime = date.getTime();
-			 * SimpleDateFormat sdf = new
-			 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String now_time =
-			 * sdf.format(date); String nyr = now_time.substring(0, 11);
-			 * 
-			 * String start1 = nyr + "09:00"; String timeEnd1 = nyr + "11:30";
-			 * 
-			 * String start2 = nyr + "13:30"; String timeEnd2 = nyr + "15:00";
-			 * 
-			 * String start3 = nyr + "20:30"; String timeEnd3 = nyr + "22:00";
-			 * 
-			 * String start4 = nyr + "20:30"; String timeEnd4 = nyr + "22:00";
-			 * try { long start11 = sdf.parse(start1).getTime(); long timeEnd11
-			 * = sdf.parse(timeEnd1).getTime();
-			 * 
-			 * long start22 = sdf.parse(start2).getTime(); long timeEnd22 =
-			 * sdf.parse(timeEnd2).getTime();
-			 * 
-			 * long start33 = sdf.parse(start3).getTime(); long timeEnd33 =
-			 * sdf.parse(timeEnd3).getTime();
-			 * 
-			 * long start44 = sdf.parse(start4).getTime(); long timeEnd44 =
-			 * sdf.parse(timeEnd4).getTime(); // 判断是周几 Calendar cal =
-			 * Calendar.getInstance(); cal.setTime(new Date()); int week =
-			 * cal.get(Calendar.DAY_OF_WEEK) - 1; if (week == 0 && week == 6) {
-			 * if (start44 <= nowtime && nowtime <= timeEnd44) {
-			 * showBuyDialog(); } else { // 未到开市时间 LayoutInflater inflater =
-			 * LayoutInflater.from(this); View view = (View)
-			 * inflater.inflate(R.layout.timeout_service, null); final
-			 * AlertDialog builder=new AlertDialog.Builder(this).create();
-			 * builder.setView(view, 0, 0, 0, 0); builder.setCancelable(false);
-			 * builder.show();
-			 * 
-			 * 
-			 * RelativeLayout haode=(RelativeLayout)
-			 * view.findViewById(R.id.haode); haode.setOnClickListener(new
-			 * OnClickListener() {
-			 * 
-			 * @Override public void onClick(View v) { // TODO Auto-generated
-			 * method stub builder.dismiss(); } });
-			 * 
-			 * 
-			 * }
-			 * 
-			 * } else { if (start11 <= nowtime && nowtime <= timeEnd11 ||
-			 * start22 <= nowtime && nowtime <= timeEnd22 || start33 <= nowtime
-			 * && nowtime <= timeEnd33) {
-			 * 
-			 * showBuyDialog();
-			 * 
-			 * } else { // 未到开市时间 } }
-			 * 
-			 * } catch (ParseException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); }
-			 */
+          
+			
+		
+			Date date=new Date();
 			DateTest dateTest = new DateTest();
-			boolean flag = dateTest.isNowDate();
+			boolean flag = dateTest.isNowDate(date);
 			if (flag == true) {
 				// 符合交易时间
 				showBuyDialog();
@@ -599,11 +546,10 @@ public class TradeServiceActivity extends BaseActivity {
 				LayoutInflater inflater = LayoutInflater.from(this);
 				View view = (View) inflater.inflate(R.layout.timeout_service,
 						null);
-				final AlertDialog builder = new AlertDialog.Builder(this)
-						.create();
-				builder.setView(view, 0, 0, 0, 0);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setView(view);
 				builder.setCancelable(false);
-				builder.show();
+			dialog_NO = builder.show();
 
 				RelativeLayout haode = (RelativeLayout) view
 						.findViewById(R.id.haode);
@@ -611,7 +557,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 					@Override
 					public void onClick(View v) { // TODO Auto-generated
-						builder.dismiss();
+						dialog_NO.dismiss();
 					}
 				});
 
@@ -621,7 +567,8 @@ public class TradeServiceActivity extends BaseActivity {
 		case R.id.rb_sale_service:
 			
 			DateTest dateT = new DateTest();
-			boolean flag1 = dateT.isNowDate();
+			Date date2=new Date();
+			boolean flag1 = dateT.isNowDate(date2);
 			if (flag1 == true) {
 				// 符合交易时间
 				if (leftgoodassets > 0) {
@@ -668,8 +615,9 @@ public class TradeServiceActivity extends BaseActivity {
 			break;
 
 		case R.id.rb_zhuanrang_service:
-			DateTest date = new DateTest();
-			boolean flag2 = date.isNowDate();
+			DateTest datet = new DateTest();
+			Date date3=new Date();
+			boolean flag2 = datet.isNowDate(date3);
 			if (flag2 == true) {
 				// 符合交易时间
 				if (leftgoodassets > 0) {
@@ -766,11 +714,13 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				
 				trans_num = Integer.parseInt(transTextView.getText().toString()
 						.trim());
 				double total_price = trans_num * buybackprice;
 				totalprice = total_price + "";
 				if (trans_num <= leftgoodassets) {
+					rb_zhuanrang_service.setEnabled(false);
 					new Thread(new Runnable() {
 
 						private InputStream iStream;
@@ -797,7 +747,7 @@ public class TradeServiceActivity extends BaseActivity {
 									Log.e("我靠快快快快快快快", infojson);
 									// handler.sendEmptyMessage(3);
 									// Log.e("hahahhahh", infojson);
-									parseJson_rengou_tihuo(infojson);
+									parseJson_trans(infojson);
 
 									Log.e("sssssssssss", "hahah");
 								}
@@ -819,7 +769,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 						}
 
-						private void parseJson_rengou_tihuo(String infojson) {
+						private void parseJson_trans(String infojson) {
 							// TODO Auto-generated method stub
 							try {
 								JSONObject jsonObject = new JSONObject(infojson);
@@ -842,7 +792,7 @@ public class TradeServiceActivity extends BaseActivity {
 						}
 
 					}).start();
-
+					rb_zhuanrang_service.setEnabled(true);
 				} else {
 					Toast.makeText(getApplicationContext(), "可转让的资产不能大于剩余资产", 0)
 							.show();
@@ -912,6 +862,7 @@ public class TradeServiceActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				int num_ti = Integer.parseInt(tihuoTextView.getText()
 						.toString().trim());
+				rb_tihuo_service.setEnabled(false);
 				// 总资产
 				if (num_ti <= leftgoodassets) {
 
@@ -928,7 +879,7 @@ public class TradeServiceActivity extends BaseActivity {
 					Toast.makeText(getApplicationContext(), "提货的数量不能大于剩余资产", 0)
 							.show();
 				}
-
+				rb_tihuo_service.setEnabled(true);
 			}
 		});
 		tihuocancel.setOnClickListener(new OnClickListener() {
@@ -966,10 +917,10 @@ public class TradeServiceActivity extends BaseActivity {
 				.findViewById(R.id.product_ordsubmit_count_sub);
 		ok = (Button) saleView.findViewById(R.id.dialog_ok);
 		cancel = (Button) saleView.findViewById(R.id.dialog_cancel);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setView(saleView);
-		builder.setCancelable(false);
-		dialog = builder.show();
+		AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+		builder3.setView(saleView);
+		builder3.setCancelable(false);
+		dialog = builder3.show();
 		ok.setOnClickListener(new OnClickListener() {
 
 			private String count;
@@ -979,6 +930,7 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+			
 				// 卖出价
 				String price = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
@@ -994,9 +946,9 @@ public class TradeServiceActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(),
 								"卖出价不能大于:" + (tradeprice / 100) * 1.1, 0)
 								.show();
-					} else {
-						totalp = count_sale * sale_price + "";
-						if ((income / 100) >= (sale_price * count_sale)) {
+					  } else {
+						if (leftgoodassets>= count_sale) {
+							rb_sale_service.setEnabled(false);
 							new Thread(new Runnable() {
 
 								private InputStream iStream;
@@ -1023,7 +975,7 @@ public class TradeServiceActivity extends BaseActivity {
 											// Log.e("我靠快快快快快快快", infojson);
 											// handler.sendEmptyMessage(3);
 											// Log.e("hahahhahh", infojson);
-											parseJson_buy(infojson);
+											parseJson_sale(infojson);
 
 											// Log.e("sssssssssss", "hahah");
 										}
@@ -1046,7 +998,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 								}
 
-								private void parseJson_buy(String infojson) {
+								private void parseJson_sale(String infojson) {
 									// TODO Auto-generated method stub
 									try {
 										JSONObject jsonObject = new JSONObject(
@@ -1058,7 +1010,7 @@ public class TradeServiceActivity extends BaseActivity {
 										 * .getString("paystate");
 										 */
 										if ("success".equals(s)) {
-											// 买入成功
+											// 卖出成功
 											handler.sendEmptyMessage(7);
 										}
 										if ("error".equals(s)) {
@@ -1072,10 +1024,10 @@ public class TradeServiceActivity extends BaseActivity {
 
 								}
 							}).start();
-
+							rb_sale_service.setEnabled(true);
 						} else {
 							Toast.makeText(getApplicationContext(),
-									"您的酒币余额不够，请充值", 0).show();
+									"卖出资产不能大于剩余资产", 0).show();
 						}
 
 					}
@@ -1155,10 +1107,10 @@ public class TradeServiceActivity extends BaseActivity {
 
 		dialog_ok = (Button) view.findViewById(R.id.dialog_ok);
 		diaog_cancel = (Button) view.findViewById(R.id.dialog_cancel);
-		builder1 = new AlertDialog.Builder(this).create();
-		builder1.setView(view, 0, 0, 0, 0);
+		AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+		builder1.setView(view);
 		builder1.setCancelable(false);
-		builder1.show();
+	   dialog_buy=builder1.show();
 
 		// 取消按钮
 		diaog_cancel.setOnClickListener(new OnClickListener() {
@@ -1166,7 +1118,7 @@ public class TradeServiceActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				builder1.dismiss();
+				dialog_buy.dismiss();
 				count_buy = 1;
 			}
 		});
@@ -1179,17 +1131,19 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
 						.trim();
 				double total_price_double = Double.parseDouble(total_price);
-
+				
 				if (!TextUtils.isEmpty(buy_priceString)) {
 					double buyprice = Double.parseDouble(buy_priceString);
 					if (buyprice >= (buybackprice / 100)) {
 
 						if ((income / 100) >= total_price_double) {
+							rb_buy_service.setEnabled(false);
 							new Thread(new Runnable() {
 
 								private InputStream iStream;
@@ -1263,6 +1217,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 								}
 							}).start();
+							rb_buy_service.setEnabled(true);
 						} else {
 							// 酒币不够
 							Toast.makeText(getApplicationContext(), "酒币不够，请充值",
@@ -1415,6 +1370,10 @@ public class TradeServiceActivity extends BaseActivity {
 
 	private TextView zhi_price;
 
+	private Dialog dialog_buy;
+
+	private Dialog dialog_NO;
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -1428,7 +1387,7 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.removeMessages(6);
 		handler.removeMessages(7);
 		handler.removeMessages(8);
-		handler.removeMessages(9);
+		//handler.removeMessages(9);
 		if (iStream != null) {
 			try {
 				iStream.close();

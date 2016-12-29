@@ -16,11 +16,11 @@ public class DateTest {
 	private static long nowtime;
         
 	@SuppressLint("SimpleDateFormat") 
-	public  boolean isNowDate() {
+	public  boolean isNowDate(Date  date) {
 		boolean flag=false;
-		Date date = new Date();
+		//Date date = new Date();
 		nowtime = date.getTime();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String now_time = sdf.format(date);
 		String nyr = now_time.substring(0, 11);
 

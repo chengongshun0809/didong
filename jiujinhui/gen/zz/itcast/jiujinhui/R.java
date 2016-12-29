@@ -348,7 +348,7 @@ containing a value of this type.
         public static final int Rl_jindu_trans=0x7f0900bf;
         public static final int Rl_jindu_zhichu=0x7f09001c;
         public static final int SmsSubmit=0x7f090092;
-        public static final int action_settings=0x7f0900d3;
+        public static final int action_settings=0x7f0900d4;
         public static final int add=0x7f090084;
         public static final int add_tihuo=0x7f09008e;
         public static final int btn_login=0x7f09006f;
@@ -385,9 +385,9 @@ containing a value of this type.
         public static final int et_phonenumber=0x7f090068;
         public static final int et_register_code_id=0x7f090020;
         public static final int et_register_username_id=0x7f09001f;
-        public static final int finished_chengjiao=0x7f0900d0;
-        public static final int finished_tihuo=0x7f0900d1;
-        public static final int finished_trans=0x7f0900d2;
+        public static final int finished_chengjiao=0x7f0900d1;
+        public static final int finished_tihuo=0x7f0900d2;
+        public static final int finished_trans=0x7f0900d3;
         public static final int fl=0x7f090004;
         public static final int forget_password=0x7f090070;
         public static final int haode=0x7f090093;
@@ -417,7 +417,7 @@ containing a value of this type.
         public static final int ll_head_title=0x7f09004e;
         public static final int ll_kou_first=0x7f090055;
         public static final int ll_kou_second=0x7f090057;
-        public static final int ll_lookvalue=0x7f0900cf;
+        public static final int ll_lookvalue=0x7f0900d0;
         public static final int ll_person=0x7f090000;
         public static final int ll_scroll=0x7f090039;
         public static final int ll_viewpager_home_frags=0x7f090031;
@@ -428,6 +428,7 @@ containing a value of this type.
         public static final int msg=0x7f09001b;
         public static final int msg_chengjiao=0x7f0900a6;
         public static final int msg_info=0x7f09005a;
+        public static final int naichuzhong=0x7f0900ce;
         public static final int name=0x7f090052;
         public static final int name_pro=0x7f090088;
         public static final int num=0x7f09008d;
@@ -474,7 +475,7 @@ containing a value of this type.
         public static final int rengouqi=0x7f090099;
         public static final int reward=0x7f090044;
         public static final int rl_jiubi=0x7f090026;
-        public static final int rl_lookMore=0x7f0900ce;
+        public static final int rl_lookMore=0x7f0900cf;
         public static final int rl_tab_container=0x7f090005;
         public static final int sale_count=0x7f0900ac;
         public static final int sale_price=0x7f0900ab;
