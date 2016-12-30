@@ -22,6 +22,7 @@ import zz.itcast.jiujinhui.activity.ZongZiChanActivity;
 import zz.itcast.jiujinhui.res.DateTest;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -273,7 +274,7 @@ boolean stopThread = false;
 				startActivity(intent4);
 
 			} else {
-				LayoutInflater inflater = LayoutInflater.from(getActivity());
+				/*LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				View view = (View) inflater.inflate(R.layout.timeout_tixian_person,
 						null);
 				final AlertDialog builder = new AlertDialog.Builder(getActivity())
@@ -281,7 +282,7 @@ boolean stopThread = false;
 				builder.setView(view, 0, 0, 0, 0);
 				builder.setCancelable(false);
 				builder.show();
-				RelativeLayout haode = (RelativeLayout) view
+				RelativeLayout haode =    (RelativeLayout) view
 						.findViewById(R.id.haode);
 				haode.setOnClickListener(new OnClickListener() {
 
@@ -289,7 +290,8 @@ boolean stopThread = false;
 					public void onClick(View v) { // TODO Auto-generated
 						builder.dismiss();
 					}
-				});
+				});*/
+				Toast.makeText(getActivity(), "非交易时间无法提现", 0).show();
 
 			}
 			

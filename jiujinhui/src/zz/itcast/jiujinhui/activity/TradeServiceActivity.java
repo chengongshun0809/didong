@@ -176,9 +176,11 @@ public class TradeServiceActivity extends BaseActivity {
 			case 6:
 				dialog1.dismiss();
 				Toast.makeText(getApplicationContext(), "转让失败", 0).show();
+				break;
 			case 7:
 				dialog.dismiss();
 				Toast.makeText(getApplicationContext(), "恭喜您卖出成功", 0).show();
+				break;
 			case 8:
 				dialog.dismiss();
 				Toast.makeText(getApplicationContext(), "卖出失败", 0).show();
@@ -549,7 +551,7 @@ public class TradeServiceActivity extends BaseActivity {
 				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setView(view);
 				builder.setCancelable(false);
-			dialog_NO = builder.show();
+			    dialog_NO = builder.show();
 
 				RelativeLayout haode = (RelativeLayout) view
 						.findViewById(R.id.haode);
@@ -935,7 +937,10 @@ public class TradeServiceActivity extends BaseActivity {
 				String price = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
 				count_sale = Integer.parseInt(count);
-
+                      double pricedouble=Double.parseDouble(price);
+                   double total_price=pricedouble*count_sale;   
+                   totalp=total_price+"";
+                      
 				if (!TextUtils.isEmpty(price)) {
 					double sale_price = Double.parseDouble(price);
 					if (sale_price < ((tradeprice / 100) * 0.9)) {
@@ -1168,9 +1173,9 @@ public class TradeServiceActivity extends BaseActivity {
 											// JSONObject jsonObject = new
 											// JSONObject(infojson);
 											// Log.e("我靠快快快快快快快", infojson);
-											// handler.sendEmptyMessage(3);
-											// Log.e("hahahhahh", infojson);
-											parseJson_buy(infojson);
+											 handler.sendEmptyMessage(3);
+											//Log.e("hahahhahh", infojson);
+											//parseJson_buy(infojson);
 
 											// Log.e("sssssssssss", "hahah");
 										}
@@ -1193,7 +1198,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 								}
 
-								private void parseJson_buy(String infojson) {
+								/*private void parseJson_buy(String infojson) {
 									// TODO Auto-generated method stub
 									try {
 										JSONObject jsonObject = new JSONObject(
@@ -1202,11 +1207,11 @@ public class TradeServiceActivity extends BaseActivity {
 												.getString("message");
 										String paystateString = jsonObject
 												.getString("paystate");
-										if ("yes".equals(paystateString)) {
+										if ("success".equals(s)) {
 											// 买入成功
 											handler.sendEmptyMessage(3);
 										}
-										if ("no".equals(paystateString)) {
+										if ("error".equals(s)) {
 											handler.sendEmptyMessage(4);
 										}
 
@@ -1215,7 +1220,7 @@ public class TradeServiceActivity extends BaseActivity {
 										e.printStackTrace();
 									}
 
-								}
+								}*/
 							}).start();
 							rb_buy_service.setEnabled(true);
 						} else {

@@ -46,8 +46,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 			switch (msg.what) {
 			case 0:
 				Toast.makeText(getApplicationContext(), "恭喜您提货成功", 0).show();
-				Intent intent=new Intent(Rengou_detai_tihuolActivity.this,TradeServiceActivity.class);
-				startActivity(intent);
+				finish();
 				break;
 			case 1:
 				Toast.makeText(getApplicationContext(), "提货失败，请重新提货", 0).show();
