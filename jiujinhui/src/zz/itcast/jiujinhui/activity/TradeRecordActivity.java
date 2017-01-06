@@ -13,8 +13,10 @@ import zz.itcast.jiujinhui.fragment.TraderengouFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +31,7 @@ public class TradeRecordActivity extends BaseActivity {
 	private ArrayList<Fragment> fragmentsList;
 	@ViewInject(R.id.tv__title)
 	private TextView tv__title;
-	@ViewInject(R.id.tv_back)
+	@ViewInject(R.id.tv_back) 
 	private ImageView tv_back;
 
 	@Override
@@ -58,9 +60,10 @@ public class TradeRecordActivity extends BaseActivity {
 				fragmentsList));
 		tabs.setViewPager(pager);
 		tabs.setShouldExpand(true);
+		pager.setOffscreenPageLimit(7);
 	}
 
-	public class MypagerAdapter extends FragmentPagerAdapter {
+	public class MypagerAdapter extends FragmentStatePagerAdapter {
 		private ArrayList<Fragment> fragmentsList;
 
 		public MypagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
@@ -86,13 +89,19 @@ public class TradeRecordActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			return fragmentsList.get(position);
 		}
-
+         @Override
+        public int getItemPosition(Object object) {
+        	// TODO Auto-generated method stub
+        	return MypagerAdapter.POSITION_NONE;
+        }
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
 			return titles.length;
 		}
-
+       
+          
+        
 	}
 
 	@Override

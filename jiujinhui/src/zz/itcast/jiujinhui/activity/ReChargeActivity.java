@@ -133,7 +133,7 @@ public class ReChargeActivity extends BaseActivity {
 					iv_drink_checked_wuqian.setVisibility(v.GONE);
 					iv_drink_checked_yiwan.setVisibility(v.GONE);
 					iv_drink_checked_sanwan.setVisibility(v.GONE);
-					// total = other_moneny.getText().toString();
+					total = other_moneny.getText().toString();
 
 					other_moneny.setFocusable(true);
 					other_moneny.setFocusableInTouchMode(true);

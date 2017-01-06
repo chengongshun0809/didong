@@ -59,6 +59,7 @@ public class TradeTihuoFragment extends BaseFragment {
 				data.clear();
 				data.addAll(orderlist);
 				Rl_jindu.setVisibility(View.GONE);
+				
 				adapter = new ListViewAdapter();
 				listview.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
@@ -281,7 +282,7 @@ public class TradeTihuoFragment extends BaseFragment {
 		sp = getActivity().getSharedPreferences("user", 0);
 		unionIDString = sp.getString("unionid", null);
 		Rl_jindu.setVisibility(View.VISIBLE);
-
+		tv_null.setVisibility(View.GONE);
 		data = new ArrayList<Map<String, Object>>();
 		inflater = getActivity().getLayoutInflater();
 
