@@ -245,6 +245,7 @@ public class TradeServiceActivity extends BaseActivity {
 		dgid = getIntent().getStringExtra("dealdgid");
 		String name = getIntent().getStringExtra("name");
 		jiujiaoname.setText(name);
+		jiujiaoname.setTextSize(16);
 		// Log.e("mm", dgid);
 		sp = getSharedPreferences("user", 0);
 		unionid = sp.getString("unionid", null);
@@ -330,8 +331,8 @@ public class TradeServiceActivity extends BaseActivity {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							Thread.sleep(60000);
-
+							//Thread.sleep(60000);
+							stopThread=true;
 						}
 
 					} catch (Exception e) {

@@ -24,7 +24,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:padding="@dimen/base_padding" >
 
             <zz.itcast.jiujinhui.view.CircleImageView
@@ -39,7 +39,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="20dp" >
+            android:layout_height="30dp" >
 
             <TextView
                 android:id="@+id/NickName"
@@ -53,7 +53,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:id="@+id/rl_jiubi"
             >
 

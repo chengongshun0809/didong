@@ -419,8 +419,14 @@ public class TradeBuyFragment extends BaseFragment {
 	
 		handler.removeMessages(2);
         handler.removeMessages(1);
-        
+        list.clear();
         
 	}
+    @Override
+    public void onDetach() {
+    	// TODO Auto-generated method stub
+    	super.onDetach();
+    	 list.clear();
+    }
 
 }

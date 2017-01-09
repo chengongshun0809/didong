@@ -105,6 +105,7 @@ public class NetUtils {
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
+			conn.setRequestProperty("Connection", "close");
 			conn.setRequestMethod(RequestMethod);
 			// 设置User-Agent: Fiddler
 			conn.setRequestProperty("ser-Agent", "Fiddler");

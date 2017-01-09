@@ -109,14 +109,14 @@
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="10dp"
                 android:text="收储服务费"
-                android:textSize="15.5sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:layout_marginBottom="18dp"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="13dp"
             android:layout_marginTop="18dp"
             android:background="@color/igray" />
 
@@ -129,16 +129,16 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
+                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:text="龙潭酒"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal" >
 
@@ -146,21 +146,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="交易代码: "
-                    android:textSize="15.5sp" />
+                     
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/dealcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16002"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/limit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal" >
 
@@ -168,26 +169,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="限量发行: "
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10000"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="瓶"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal" >
 
@@ -197,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:text="最新价:¥ "
                     android:textColor="#3366cc"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/realprice_chengjiao"
@@ -205,7 +206,7 @@
                     android:layout_height="wrap_content"
                     android:text="298.26"
                     android:textColor="#3366cc"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/term_day"
@@ -213,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:text="元"
                     android:textColor="#3366cc"
-                    android:textSize="15.5sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -224,9 +225,10 @@
         android:layout_height="40dp"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
-        
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
         android:background="@drawable/btn_shape_corners"
-        android:visibility="gone" >
+        >
 
         <TextView
             android:id="@+id/btn_name"
@@ -235,7 +237,7 @@
             android:layout_centerInParent="true"
             android:text="进入交易大厅"
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <View
