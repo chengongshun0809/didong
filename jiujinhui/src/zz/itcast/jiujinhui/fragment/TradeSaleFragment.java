@@ -350,6 +350,8 @@ public class TradeSaleFragment extends BaseFragment {
 					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setText(undonenum);
+					
+					
 				}
 
 				break;

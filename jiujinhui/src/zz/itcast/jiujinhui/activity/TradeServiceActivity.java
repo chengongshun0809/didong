@@ -148,6 +148,23 @@ public class TradeServiceActivity extends BaseActivity {
 	@ViewInject(R.id.reward)
 	private TextView reward;
 	boolean stopThread = false;
+	private static long lastTime = 0;
+	private static final int DEFAULT_TIME = 2000;
+
+	public static boolean isSingle() {
+		boolean isSingle;
+		long currentTime = System.currentTimeMillis();
+		if (currentTime - lastTime <= DEFAULT_TIME) {
+			isSingle = true;
+		} else {
+			isSingle = false;
+		}
+		lastTime = currentTime;
+
+		return isSingle;
+
+	}
+
 	// 定义一个Handler对象
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -331,8 +348,8 @@ public class TradeServiceActivity extends BaseActivity {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							//Thread.sleep(60000);
-							stopThread=true;
+							// Thread.sleep(60000);
+							stopThread = true;
 						}
 
 					} catch (Exception e) {
@@ -411,7 +428,7 @@ public class TradeServiceActivity extends BaseActivity {
 		jiubi.setText(df.format((income / 100)));
 		totalassets = leftgoodassets + buygooding;
 		xiaji.setText(xia);
-		total_assets.setText((leftgoodassets+salgooding)+"");
+		total_assets.setText((leftgoodassets + salgooding) + "");
 		left_assets.setText(leftgoodassets + "");
 		buying.setText(buygooding + "");
 		saling.setText(salgooding + "");
@@ -535,10 +552,8 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_buy_service:
 			// 获取系统当前时间
-          
-			
-		
-			Date date=new Date();
+
+			Date date = new Date();
 			DateTest dateTest = new DateTest();
 			boolean flag = dateTest.isNowDate(date);
 			if (flag == true) {
@@ -549,10 +564,11 @@ public class TradeServiceActivity extends BaseActivity {
 				LayoutInflater inflater = LayoutInflater.from(this);
 				View view = (View) inflater.inflate(R.layout.timeout_service,
 						null);
-				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				final AlertDialog.Builder builder = new AlertDialog.Builder(
+						this);
 				builder.setView(view);
 				builder.setCancelable(false);
-			    dialog_NO = builder.show();
+				dialog_NO = builder.show();
 
 				RelativeLayout haode = (RelativeLayout) view
 						.findViewById(R.id.haode);
@@ -568,9 +584,9 @@ public class TradeServiceActivity extends BaseActivity {
 
 			break;
 		case R.id.rb_sale_service:
-			
+
 			DateTest dateT = new DateTest();
-			Date date2=new Date();
+			Date date2 = new Date();
 			boolean flag1 = dateT.isNowDate(date2);
 			if (flag1 == true) {
 				// 符合交易时间
@@ -602,8 +618,6 @@ public class TradeServiceActivity extends BaseActivity {
 				});
 
 			}
-			
-			
 
 			break;
 
@@ -619,7 +633,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 		case R.id.rb_zhuanrang_service:
 			DateTest datet = new DateTest();
-			Date date3=new Date();
+			Date date3 = new Date();
 			boolean flag2 = datet.isNowDate(date3);
 			if (flag2 == true) {
 				// 符合交易时间
@@ -651,8 +665,6 @@ public class TradeServiceActivity extends BaseActivity {
 				});
 
 			}
-
-			
 
 			break;
 		// 个人资产
@@ -717,85 +729,91 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				trans_num = Integer.parseInt(transTextView.getText().toString()
 						.trim());
 				double total_price = trans_num * buybackprice;
 				totalprice = total_price + "";
 				if (trans_num <= leftgoodassets) {
 					rb_zhuanrang_service.setEnabled(false);
-					new Thread(new Runnable() {
+					if (TradeServiceActivity.isSingle()) {
+						Toast.makeText(getApplicationContext(), "操作频繁", 0)
+								.show();
+					} else {
+						new Thread(new Runnable() {
 
-						private InputStream iStream;
+							private InputStream iStream;
 
-						@Override
-						public void run() {
+							@Override
+							public void run() {
 
-							String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuyback?"
-									+ "&ddid="
-									+ ddid
-									+ "&num="
-									+ trans_num
-									+ "&price=" + totalprice;
-							try {
-								HttpsURLConnection connection = NetUtils
-										.httpsconnNoparm(url, "POST");
-								int code = connection.getResponseCode();
-								if (code == 200) {
-									iStream = connection.getInputStream();
-									String infojson = NetUtils
-											.readString(iStream);
-									// JSONObject jsonObject = new
-									// JSONObject(infojson);
-									Log.e("我靠快快快快快快快", infojson);
-									// handler.sendEmptyMessage(3);
-									// Log.e("hahahhahh", infojson);
-									parseJson_trans(infojson);
-
-									Log.e("sssssssssss", "hahah");
-								}
-
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} finally {
-								if (iStream != null) {
-									try {
-										iStream.close();
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+								String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuyback?"
+										+ "&ddid="
+										+ ddid
+										+ "&num="
+										+ trans_num
+										+ "&price=" + totalprice;
+								try {
+									HttpsURLConnection connection = NetUtils
+											.httpsconnNoparm(url, "POST");
+									int code = connection.getResponseCode();
+									if (code == 200) {
+										iStream = connection.getInputStream();
+										String infojson = NetUtils
+												.readString(iStream);
+										// JSONObject jsonObject = new
+										// JSONObject(infojson);
+										Log.e("我靠快快快快快快快", infojson);
+										// handler.sendEmptyMessage(3);
+										// Log.e("hahahhahh", infojson);
+										parseJson_trans(infojson);
+										rb_zhuanrang_service.setEnabled(true);
+										Log.e("sssssssssss", "hahah");
 									}
+
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} finally {
+									if (iStream != null) {
+										try {
+											iStream.close();
+										} catch (IOException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+
 								}
 
 							}
 
-						}
+							private void parseJson_trans(String infojson) {
+								// TODO Auto-generated method stub
+								try {
+									JSONObject jsonObject = new JSONObject(
+											infojson);
+									String success = jsonObject
+											.getString("message");
+									if ("success".equals(success)) {
+										// 转让成功
+										handler.sendEmptyMessage(5);
 
-						private void parseJson_trans(String infojson) {
-							// TODO Auto-generated method stub
-							try {
-								JSONObject jsonObject = new JSONObject(infojson);
-								String success = jsonObject
-										.getString("message");
-								if ("success".equals(success)) {
-									// 转让成功
-									handler.sendEmptyMessage(5);
+									}
+									if ("error".equals(success)) {
+										handler.sendEmptyMessage(6);
+									}
 
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-								if ("error".equals(success)) {
-									handler.sendEmptyMessage(6);
-								}
 
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
 
-						}
+						}).start();
+					}
 
-					}).start();
-					rb_zhuanrang_service.setEnabled(true);
 				} else {
 					Toast.makeText(getApplicationContext(), "可转让的资产不能大于剩余资产", 0)
 							.show();
@@ -898,6 +916,7 @@ public class TradeServiceActivity extends BaseActivity {
 	}
 
 	int sale_count = 1;
+	private boolean salefirstclick = false;
 
 	// 卖出按钮
 	private void showSaleDialog() {
@@ -924,26 +943,30 @@ public class TradeServiceActivity extends BaseActivity {
 		builder3.setView(saleView);
 		builder3.setCancelable(false);
 		dialog = builder3.show();
+
 		ok.setOnClickListener(new OnClickListener() {
 
 			private String count;
 			private int count_sale;
 			private String totalp;
+			private long secondTime;
+			private long firstTime;
+			private String pricesale;
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 			
-				// 卖出价
-				String price = salePrice.getText().toString().trim();
+				pricesale = salePrice.getText().toString().trim();
 				count = product_ordsubmit_count2.getText().toString().trim();
 				count_sale = Integer.parseInt(count);
-                      double pricedouble=Double.parseDouble(price);
-                   double total_price=pricedouble*count_sale;   
-                   totalp=total_price+"";
-                      
-				if (!TextUtils.isEmpty(price)) {
-					double sale_price = Double.parseDouble(price);
+				
+				
+
+				if (!TextUtils.isEmpty(pricesale)) {
+					double sale_price = Double.parseDouble(pricesale);
+					double total_price = sale_price * count_sale;
+					totalp = total_price + "";
 					if (sale_price < ((tradeprice / 100) * 0.9)) {
 						Toast.makeText(getApplicationContext(),
 								"卖出价不能小于:" + (tradeprice / 100) * 0.9, 0)
@@ -952,85 +975,86 @@ public class TradeServiceActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(),
 								"卖出价不能大于:" + (tradeprice / 100) * 1.1, 0)
 								.show();
-					  } else {
-						if (leftgoodassets>= count_sale) {
-							rb_sale_service.setEnabled(false);
-							new Thread(new Runnable() {
+					} else {
+						if (leftgoodassets >= count_sale) {
+							if (TradeServiceActivity.isSingle()) {
+								Toast.makeText(getApplicationContext(), "操作频繁",
+										0).show();
+							} else {
 
-								private InputStream iStream;
+								new Thread(new Runnable() {
 
-								@Override
-								public void run() {
+									private InputStream iStream;
 
-									String url = "https://www.4001149114.com/NLJJ/ddapp/dealput?"
-											+ "&ddid="
-											+ ddid
-											+ "&num="
-											+ count_sale + "&price=" + totalp;
-									try {
-										HttpsURLConnection connection = NetUtils
-												.httpsconnNoparm(url, "POST");
-										int code = connection.getResponseCode();
-										if (code == 200) {
-											iStream = connection
-													.getInputStream();
-											String infojson = NetUtils
-													.readString(iStream);
-											// JSONObject jsonObject = new
-											// JSONObject(infojson);
-											// Log.e("我靠快快快快快快快", infojson);
-											// handler.sendEmptyMessage(3);
-											// Log.e("hahahhahh", infojson);
-											parseJson_sale(infojson);
+									@Override
+									public void run() {
 
-											// Log.e("sssssssssss", "hahah");
-										}
-
-									} catch (Exception e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} finally {
-										if (iStream != null) {
-											try {
-												iStream.close();
-											} catch (IOException e) {
-												// TODO Auto-generated catch
-												// block
-												e.printStackTrace();
+										String url = "https://www.4001149114.com/NLJJ/ddapp/dealput?"
+												+ "&ddid="
+												+ ddid
+												+ "&num="
+												+ count_sale
+												+ "&price="
+												+ totalp;
+										try {
+											HttpsURLConnection connection = NetUtils
+													.httpsconnNoparm(url,
+															"POST");
+											int code = connection
+													.getResponseCode();
+											if (code == 200) {
+												iStream = connection
+														.getInputStream();
+												String infojson = NetUtils
+														.readString(iStream);
+												
+												parseJson_sale(infojson);
+											
 											}
+
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} finally {
+											if (iStream != null) {
+												try {
+													iStream.close();
+												} catch (IOException e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												}
+											}
+
 										}
 
 									}
 
-								}
+									private void parseJson_sale(String infojson) {
+										// TODO Auto-generated method stub
+										try {
+											JSONObject jsonObject = new JSONObject(
+													infojson);
+											String s = jsonObject
+													.getString("message");
+											
+											if ("success".equals(s)) {
+												// 卖出成功
+												handler.sendEmptyMessage(7);
+											}
+											if ("error".equals(s)) {
+												handler.sendEmptyMessage(8);
+											}
 
-								private void parseJson_sale(String infojson) {
-									// TODO Auto-generated method stub
-									try {
-										JSONObject jsonObject = new JSONObject(
-												infojson);
-										String s = jsonObject
-												.getString("message");
-										/*
-										 * String paystateString = jsonObject
-										 * .getString("paystate");
-										 */
-										if ("success".equals(s)) {
-											// 卖出成功
-											handler.sendEmptyMessage(7);
-										}
-										if ("error".equals(s)) {
-											handler.sendEmptyMessage(8);
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
 										}
 
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
 									}
+								}).start();
 
-								}
-							}).start();
-							rb_sale_service.setEnabled(true);
+							}
 						} else {
 							Toast.makeText(getApplicationContext(),
 									"卖出资产不能大于剩余资产", 0).show();
@@ -1039,6 +1063,7 @@ public class TradeServiceActivity extends BaseActivity {
 					}
 
 				} else {
+
 					Toast.makeText(getApplicationContext(), "卖出价不能为空", 0)
 							.show();
 				}
@@ -1116,7 +1141,7 @@ public class TradeServiceActivity extends BaseActivity {
 		AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
 		builder1.setView(view);
 		builder1.setCancelable(false);
-	   dialog_buy=builder1.show();
+		dialog_buy = builder1.show();
 
 		// 取消按钮
 		diaog_cancel.setOnClickListener(new OnClickListener() {
@@ -1137,93 +1162,83 @@ public class TradeServiceActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				num_buy = product_ordsubmit_count.getText().toString().trim();
 				total_price = product_total_price.getText().toString().trim();
 				buy_priceString = product_ordsubmit_price.getText().toString()
 						.trim();
 				double total_price_double = Double.parseDouble(total_price);
-				
+
 				if (!TextUtils.isEmpty(buy_priceString)) {
 					double buyprice = Double.parseDouble(buy_priceString);
 					if (buyprice >= (buybackprice / 100)) {
 
 						if ((income / 100) >= total_price_double) {
-							rb_buy_service.setEnabled(false);
-							new Thread(new Runnable() {
+							
+							if (TradeServiceActivity.isSingle()) {
+								Toast.makeText(getApplicationContext(), "操作频繁",
+										0).show();
+							} else {
 
-								private InputStream iStream;
+								new Thread(new Runnable() {
 
-								@Override
-								public void run() {
+									private InputStream iStream;
 
-									String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuy?"
-											+ "&ddid="
-											+ ddid
-											+ "&num="
-											+ num_buy + "&price=" + total_price;
-									try {
-										HttpsURLConnection connection = NetUtils
-												.httpsconnNoparm(url, "POST");
-										int code = connection.getResponseCode();
-										if (code == 200) {
-											iStream = connection
-													.getInputStream();
-											String infojson = NetUtils
-													.readString(iStream);
-											// JSONObject jsonObject = new
-											// JSONObject(infojson);
-											// Log.e("我靠快快快快快快快", infojson);
-											 handler.sendEmptyMessage(3);
-											//Log.e("hahahhahh", infojson);
-											//parseJson_buy(infojson);
+									@Override
+									public void run() {
 
-											// Log.e("sssssssssss", "hahah");
-										}
+										String url = "https://www.4001149114.com/NLJJ/ddapp/dealbuy?"
+												+ "&ddid="
+												+ ddid
+												+ "&num="
+												+ num_buy
+												+ "&price="
+												+ total_price;
+										try {
+											HttpsURLConnection connection = NetUtils
+													.httpsconnNoparm(url,
+															"POST");
+											int code = connection
+													.getResponseCode();
+											if (code == 200) {
+												iStream = connection
+														.getInputStream();
+												String infojson = NetUtils
+														.readString(iStream);
+												// JSONObject jsonObject = new
+												// JSONObject(infojson);
+												// Log.e("我靠快快快快快快快", infojson);
+												handler.sendEmptyMessage(3);
+												// Log.e("hahahhahh", infojson);
+												// parseJson_buy(infojson);
 
-									} catch (Exception e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									} finally {
-										if (iStream != null) {
-											try {
-												iStream.close();
-											} catch (IOException e) {
-												// TODO Auto-generated catch
-												// block
-												e.printStackTrace();
+												// Log.e("sssssssssss",
+												// "hahah");
+												rb_buy_service.setEnabled(true);
 											}
+
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} finally {
+											if (iStream != null) {
+												try {
+													iStream.close();
+												} catch (IOException e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												}
+											}
+
 										}
 
 									}
 
-								}
+								}).start();
 
-								/*private void parseJson_buy(String infojson) {
-									// TODO Auto-generated method stub
-									try {
-										JSONObject jsonObject = new JSONObject(
-												infojson);
-										String s = jsonObject
-												.getString("message");
-										String paystateString = jsonObject
-												.getString("paystate");
-										if ("success".equals(s)) {
-											// 买入成功
-											handler.sendEmptyMessage(3);
-										}
-										if ("error".equals(s)) {
-											handler.sendEmptyMessage(4);
-										}
+							}
 
-									} catch (JSONException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-
-								}*/
-							}).start();
-							rb_buy_service.setEnabled(true);
 						} else {
 							// 酒币不够
 							Toast.makeText(getApplicationContext(), "酒币不够，请充值",
@@ -1380,6 +1395,8 @@ public class TradeServiceActivity extends BaseActivity {
 
 	private Dialog dialog_NO;
 
+	private static long firstTime;
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -1393,7 +1410,7 @@ public class TradeServiceActivity extends BaseActivity {
 		handler.removeMessages(6);
 		handler.removeMessages(7);
 		handler.removeMessages(8);
-		//handler.removeMessages(9);
+		// handler.removeMessages(9);
 		if (iStream != null) {
 			try {
 				iStream.close();
