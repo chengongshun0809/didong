@@ -56,7 +56,6 @@ public class TradeSaleFragment extends BaseFragment {
 	@ViewInject(R.id.cominglistview_sale)
 	private ListView listview;
 
-	
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
 	private String unionIDString;
@@ -116,7 +115,7 @@ public class TradeSaleFragment extends BaseFragment {
 												listview.removeFooterView(footer);
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
-												
+
 												// bt_Msg.setText("加载更多");
 												Log.e("kobe", "lebron");
 
@@ -146,7 +145,6 @@ public class TradeSaleFragment extends BaseFragment {
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			case 3:
-			
 
 				Toast.makeText(getActivity(), "撤单成功", 0).show();
 
@@ -175,11 +173,11 @@ public class TradeSaleFragment extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
+
 		listview.setSelection(0);
-		CurrentpageNum=1;
+		CurrentpageNum = 1;
 		visitService(CurrentpageNum);
-		
+
 	}
 
 	int CurrentpageNum = 1;
@@ -210,7 +208,7 @@ public class TradeSaleFragment extends BaseFragment {
 						iStream = connection.getInputStream();
 						String infojson = NetUtils.readString(iStream);
 						JSONObject jsonObject = new JSONObject(infojson);
-						//Log.e("我靠快快快快快快快", jsonObject.toString());
+						// Log.e("我靠快快快快快快快", jsonObject.toString());
 						parseJson(jsonObject);
 
 						++CurrentpageNum;
@@ -394,110 +392,131 @@ public class TradeSaleFragment extends BaseFragment {
 					holder.msg_chengjiao.setText("全部成交");
 					holder.rl_chedanLayout.setVisibility(View.GONE);
 				} else {
-					holder.tv_dan_state.setText("卖出中");
-					holder.msg_chengjiao.setVisibility(View.GONE);
-					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setText(undonenum);
-					holder.rl_chedanLayout.setVisibility(View.VISIBLE);
-					danhaos_chedan = list.get(position).get("danhao") + "";
-
 					time = list.get(position).get("date") + "";
 					sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 					holder.bt_chedan.setTag(position);
-					
+
 					try {
-						dingdantime = sdf.parse(time)
-								.getTime();
+						dingdantime = sdf.parse(time).getTime();
 					} catch (ParseException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
-					holder.bt_chedan.setOnClickListener(new OnClickListener() {
+					long now = new Date().getTime();
+					if ((now - dingdantime) > 432000000) {
+						// 系统自动撤单
+						holder.tv_dan_state.setText("卖出完成");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao.setText("逾期系统撤回x");
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.GONE);
+						// danhaos_chedan = list.get(position).get("danhao") +
+						// "";
 
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							if (TradeServiceActivity.isSingle()) {
-								Toast.makeText(getActivity(), "操作频繁", 0).show();
-							} else {
-								int pos = Integer.parseInt(v.getTag()
-										.toString());
-								try {
-									
-									
-									Date date = new Date();
-									long newTime = date.getTime();
-									if ((newTime - dingdantime) > 900000) {
-										holder.rl_chedanLayout
-												.setVisibility(View.VISIBLE);
-										list.remove(pos);
-										adapter.notifyDataSetChanged();
-										new Thread(new Runnable() {
+					} else {
+						holder.tv_dan_state.setText("卖出中");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.VISIBLE);
+						danhaos_chedan = list.get(position).get("danhao") + "";
 
-											private InputStream iStream;
+						holder.bt_chedan
+								.setOnClickListener(new OnClickListener() {
 
-											@Override
-											public void run() {
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										if (TradeServiceActivity.isSingle()) {
+											Toast.makeText(getActivity(),
+													"操作频繁", 0).show();
+										} else {
+											int pos = Integer.parseInt(v
+													.getTag().toString());
+											try {
 
-												String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
-														+ danhaos_chedan;
+												Date date = new Date();
+												long newTime = date.getTime();
+												if ((newTime - dingdantime) > 900000) {
+													holder.rl_chedanLayout
+															.setVisibility(View.VISIBLE);
+													list.remove(pos);
+													adapter.notifyDataSetChanged();
+													new Thread(new Runnable() {
 
-												try {
-													HttpsURLConnection connection = NetUtils
-															.httpsconnNoparm(
-																	url_chedan,
-																	"POST");
+														private InputStream iStream;
 
-													int code = connection
-															.getResponseCode();
-													if (code == 200) {
-														iStream = connection
-																.getInputStream();
-														String infojson = NetUtils
-																.readString(iStream);
-														handler.sendEmptyMessage(3);
-														// parsechedan(infojson);
+														@Override
+														public void run() {
 
-													}
+															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
+																	+ danhaos_chedan;
 
-												} catch (Exception e) {
-													// TODO Auto-generated catch
-													// block
-													e.printStackTrace();
-												} finally {
-													if (iStream != null) {
-														try {
-															iStream.close();
-														} catch (IOException e) {
-															// TODO
-															// Auto-generated
-															// catch
-															// block
-															e.printStackTrace();
+															try {
+																HttpsURLConnection connection = NetUtils
+																		.httpsconnNoparm(
+																				url_chedan,
+																				"POST");
+
+																int code = connection
+																		.getResponseCode();
+																if (code == 200) {
+																	iStream = connection
+																			.getInputStream();
+																	String infojson = NetUtils
+																			.readString(iStream);
+																	handler.sendEmptyMessage(3);
+																	// parsechedan(infojson);
+
+																}
+
+															} catch (Exception e) {
+																// TODO
+																// Auto-generated
+																// catch
+																// block
+																e.printStackTrace();
+															} finally {
+																if (iStream != null) {
+																	try {
+																		iStream.close();
+																	} catch (IOException e) {
+																		// TODO
+																		// Auto-generated
+																		// catch
+																		// block
+																		e.printStackTrace();
+																	}
+																}
+
+															}
+
 														}
-													}
 
+													}).start();
+
+												} else {
+													Toast.makeText(
+															getActivity(),
+															"卖出15分钟之后,才能撤单!", 0)
+															.show();
 												}
 
+											} catch (Exception e1) {
+												// TODO Auto-generated catch
+												// block
+												e1.printStackTrace();
 											}
 
-										}).start();
+										}
 
-									} else {
-										Toast.makeText(getActivity(),
-												"卖出15分钟之后,才能撤单!", 0).show();
 									}
-
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-
-							}
-
-						}
-					});
+								});
+					}
 
 				}
 
@@ -560,7 +579,7 @@ public class TradeSaleFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		// data.clear();
-		
+
 		handler.removeMessages(2);
 		handler.removeMessages(3);
 		handler.removeMessages(1);

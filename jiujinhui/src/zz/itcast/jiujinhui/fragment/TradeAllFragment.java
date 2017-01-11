@@ -395,114 +395,131 @@ public class TradeAllFragment extends BaseFragment {
 					holder.msg_chengjiao.setText("全部成交");
 					holder.rl_chedanLayout.setVisibility(View.GONE);
 				} else {
-					holder.tv_dan_state.setText("卖出中");
-					holder.msg_chengjiao.setVisibility(View.GONE);
-					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
-					holder.tv_weichengjiao_num.setText(undonenum);
-					holder.rl_chedanLayout.setVisibility(View.VISIBLE);
-				danhaos_chedan = list.get(position).get("danhao")
-							+ "";
+					time = list.get(position).get("date") + "";
+					sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-				time = list.get(position).get("date") + "";
-				Log.e("time", time);
-				sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-				
-				try {
-					dingdantime = sdf.parse(time)
-							.getTime();
-				} catch (ParseException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				holder.bt_chedan.setTag(position);
-					holder.bt_chedan.setOnClickListener(new OnClickListener() {
+					holder.bt_chedan.setTag(position);
 
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							if (TradeServiceActivity.isSingle()) {
-								Toast.makeText(getActivity(), "操作频繁", 0).show();
-							} else {
-								 int pos=Integer.parseInt(v.getTag().toString());
-								try {
-								
-									
-									
-									
-									Date date = new Date();
-									long newTime = date.getTime();
-									if ((newTime - dingdantime) > 900000) {
-										holder.rl_chedanLayout.setVisibility(View.GONE);
-										list.remove(pos);
-										adapter.notifyDataSetChanged();
-										new Thread(new Runnable() {
+					try {
+						dingdantime = sdf.parse(time).getTime();
+					} catch (ParseException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					long now = new Date().getTime();
+					if ((now - dingdantime) > 432000000) {
+						// 系统自动撤单
+						holder.tv_dan_state.setText("卖出完成");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao.setText("逾期系统撤回x");
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.GONE);
+						// danhaos_chedan = list.get(position).get("danhao") +
+						// "";
 
-											private InputStream iStream;
+					} else {
+						holder.tv_dan_state.setText("卖出中");
+						holder.msg_chengjiao.setVisibility(View.GONE);
+						holder.tv_weichengjiao.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
+						holder.tv_weichengjiao_num.setText(undonenum);
+						holder.rl_chedanLayout.setVisibility(View.VISIBLE);
+						danhaos_chedan = list.get(position).get("danhao") + "";
 
-											@Override
-											public void run() {
+						holder.bt_chedan
+								.setOnClickListener(new OnClickListener() {
 
-												String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="+danhaos_chedan;
+									@Override
+									public void onClick(View v) {
+										// TODO Auto-generated method stub
+										if (TradeServiceActivity.isSingle()) {
+											Toast.makeText(getActivity(),
+													"操作频繁", 0).show();
+										} else {
+											int pos = Integer.parseInt(v
+													.getTag().toString());
+											try {
 
-												try {
-													HttpsURLConnection connection = NetUtils
-															.httpsconnNoparm(
-																	url_chedan,
-																	"POST");
+												Date date = new Date();
+												long newTime = date.getTime();
+												if ((newTime - dingdantime) > 900000) {
+													holder.rl_chedanLayout
+															.setVisibility(View.VISIBLE);
+													list.remove(pos);
+													adapter.notifyDataSetChanged();
+													new Thread(new Runnable() {
 
-													int code = connection
-															.getResponseCode();
-													if (code == 200) {
-														iStream = connection
-																.getInputStream();
-														String infojson = NetUtils
-																.readString(iStream);
-														handler.sendEmptyMessage(3);
-														//parsechedan(infojson);
+														private InputStream iStream;
 
-													}
+														@Override
+														public void run() {
 
-												} catch (Exception e) {
-													// TODO Auto-generated catch
-													// block
-													e.printStackTrace();
-												} finally {
-													if (iStream != null) {
-														try {
-															iStream.close();
-														} catch (IOException e) {
-															// TODO
-															// Auto-generated
-															// catch
-															// block
-															e.printStackTrace();
+															String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="
+																	+ danhaos_chedan;
+
+															try {
+																HttpsURLConnection connection = NetUtils
+																		.httpsconnNoparm(
+																				url_chedan,
+																				"POST");
+
+																int code = connection
+																		.getResponseCode();
+																if (code == 200) {
+																	iStream = connection
+																			.getInputStream();
+																	String infojson = NetUtils
+																			.readString(iStream);
+																	handler.sendEmptyMessage(3);
+																	// parsechedan(infojson);
+
+																}
+
+															} catch (Exception e) {
+																// TODO
+																// Auto-generated
+																// catch
+																// block
+																e.printStackTrace();
+															} finally {
+																if (iStream != null) {
+																	try {
+																		iStream.close();
+																	} catch (IOException e) {
+																		// TODO
+																		// Auto-generated
+																		// catch
+																		// block
+																		e.printStackTrace();
+																	}
+																}
+
+															}
+
 														}
-													}
 
+													}).start();
+
+												} else {
+													Toast.makeText(
+															getActivity(),
+															"卖出15分钟之后,才能撤单!", 0)
+															.show();
 												}
 
-							 				}
+											} catch (Exception e1) {
+												// TODO Auto-generated catch
+												// block
+												e1.printStackTrace();
+											}
 
-											
-										}).start();
+										}
 
-									} else {
-										Toast.makeText(getActivity(),
-												"卖出15分钟之后,才能撤单!", 0).show();
 									}
-
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-
-							}
-
-						}
-					});
-
-					
+								});
+					}
 					
 					
 				}
