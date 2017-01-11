@@ -56,7 +56,7 @@ public class TradeSaleFragment extends BaseFragment {
 	@ViewInject(R.id.cominglistview_sale)
 	private ListView listview;
 
-	boolean stopThread = false;
+	
 	private SharedPreferences sp;
 	private ListViewAdapter adapter;
 	private String unionIDString;
@@ -116,7 +116,7 @@ public class TradeSaleFragment extends BaseFragment {
 												listview.removeFooterView(footer);
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
-
+												
 												// bt_Msg.setText("加载更多");
 												Log.e("kobe", "lebron");
 
@@ -146,11 +146,7 @@ public class TradeSaleFragment extends BaseFragment {
 				tv_null.setVisibility(View.VISIBLE);
 				break;
 			case 3:
-				/*
-				 * Intent intent=new
-				 * Intent(getActivity(),ChedanSuccessActivity.class);
-				 * startActivity(intent);
-				 */
+			
 
 				Toast.makeText(getActivity(), "撤单成功", 0).show();
 
@@ -179,11 +175,11 @@ public class TradeSaleFragment extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
 		listview.setSelection(0);
-		if (list.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
-			list.clear();
-		}
-		visitService(1);
+		CurrentpageNum=1;
+		visitService(CurrentpageNum);
+		
 	}
 
 	int CurrentpageNum = 1;
@@ -564,11 +560,12 @@ public class TradeSaleFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		// data.clear();
-		stopThread = false;
+		
 		handler.removeMessages(2);
 		handler.removeMessages(3);
 		handler.removeMessages(1);
 		orderlist.clear();
+		listview.setSelection(0);
 		list.clear();
 	}
 

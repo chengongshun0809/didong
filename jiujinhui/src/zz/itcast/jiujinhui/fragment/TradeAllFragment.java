@@ -169,8 +169,9 @@ public class TradeAllFragment extends BaseFragment {
 
 	@Override
 	public void initData() {
-		visitService(1);
-
+		CurrentpageNum = 1;
+		visitService(CurrentpageNum);
+		listview.setSelection(0);
 		
 
 	}
@@ -636,14 +637,14 @@ public class TradeAllFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread = false;
+		
 		handler.removeMessages(3);
 	
 		handler.removeMessages(2);
         handler.removeMessages(1);
-        
-		// data.clear();
-		Log.e("stopThread", stopThread + "");
+        listview.setSelection(0);
+		list.clear();
+		
 	}
 
 }

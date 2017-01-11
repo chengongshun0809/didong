@@ -111,7 +111,7 @@ public class TraderengouFragment extends BaseFragment {
 												listview.removeFooterView(footer);
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
-
+												
 												//bt_Msg.setText("加载更多");
 												Log.e("kobe", "lebron");
 
@@ -153,8 +153,9 @@ public class TraderengouFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		visitService(1);
-		
+		CurrentpageNum=1;
+		visitService(CurrentpageNum);
+		listview.setSelection(0);
 	}
 
 	int CurrentpageNum = 1;
@@ -409,6 +410,7 @@ public class TraderengouFragment extends BaseFragment {
 		 */
 		handler.removeMessages(2);
         handler.removeMessages(1);
+        listview.setSelection(0);
 	}
 
 }

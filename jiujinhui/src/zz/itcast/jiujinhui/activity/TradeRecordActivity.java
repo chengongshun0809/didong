@@ -60,7 +60,7 @@ public class TradeRecordActivity extends BaseActivity {
 				fragmentsList));
 		tabs.setViewPager(pager);
 		tabs.setShouldExpand(true);
-	    pager.setOffscreenPageLimit(4);
+	   // pager.setOffscreenPageLimit(4);
 	}
 
 	public class MypagerAdapter extends FragmentStatePagerAdapter {

@@ -101,7 +101,7 @@ public class TradeBuyFragment extends BaseFragment {
 												listview.removeFooterView(footer);
 												listview.setSelection(sclectId);
 												visitService(CurrentpageNum);
-
+												
 												//bt_Msg.setText("加载更多");
 						 						Log.e("kobe", "lebron");
 
@@ -150,10 +150,12 @@ public class TradeBuyFragment extends BaseFragment {
     public void onResume() {
     	// TODO Auto-generated method stub
     	super.onResume();
-    	if (list.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
-			list.clear();
+    	if (orderlist.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
+    		orderlist.clear();
 		}
-    	visitService(1);
+    	CurrentpageNum=1;
+    	visitService(CurrentpageNum);
+    	listview.setSelection(0);
     }
       
      
@@ -186,7 +188,7 @@ public class TradeBuyFragment extends BaseFragment {
 						iStream = connection.getInputStream();
 						String infojson = NetUtils.readString(iStream);
 						JSONObject jsonObject = new JSONObject(infojson);
-						// Log.e("我靠快快快快快快快", jsonObject.toString());
+						
 						parseJson(jsonObject);
 
 						++CurrentpageNum;
@@ -414,7 +416,7 @@ public class TradeBuyFragment extends BaseFragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		stopThread = false;
+		
 		/*
 		 * data.clear(); handler.removeMessages(2); handler.removeMessages(1);
 		 */
@@ -423,13 +425,14 @@ public class TradeBuyFragment extends BaseFragment {
 		handler.removeMessages(2);
         handler.removeMessages(1);
         list.clear();
-        
+        listview.setSelection(0);
 	}
     @Override
     public void onDetach() {
     	// TODO Auto-generated method stub
     	super.onDetach();
     	 list.clear();
+    	 listview.setSelection(0);
     }
 
 }

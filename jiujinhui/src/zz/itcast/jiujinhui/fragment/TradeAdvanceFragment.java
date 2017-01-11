@@ -153,7 +153,9 @@ public class TradeAdvanceFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		visitService(1);
+		CurrentpageNum=1;
+		visitService(CurrentpageNum);
+		listview.setSelection(0);
 	}
 	int CurrentpageNum = 1;
 	private void visitService(int page) {
@@ -413,6 +415,8 @@ public class TradeAdvanceFragment extends BaseFragment {
 		stopThread=false;
 		handler.removeMessages(2);
         handler.removeMessages(1);
+        list.clear();
+        listview.setSelection(0);
 	}
 	
 }

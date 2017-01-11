@@ -301,9 +301,10 @@ public class TradeTihuoFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
-	/*	data.clear();
+		listview.setSelection(0);
+	
 		handler.removeMessages(2);
-        handler.removeMessages(1);*/
+        handler.removeMessages(1);
 	}
 
 }

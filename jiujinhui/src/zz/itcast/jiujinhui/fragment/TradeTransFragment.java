@@ -299,9 +299,10 @@ public class TradeTransFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread=false;
-		/*data.clear();
+		
 		handler.removeMessages(2);
-        handler.removeMessages(1);*/
+        handler.removeMessages(1);
+        listview.setSelection(0);
 	}
 
 }
