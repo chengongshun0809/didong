@@ -726,6 +726,7 @@ public class TradeServiceActivity extends BaseActivity {
 
 			private int trans_num;
 			private String totalprice;
+			private Dialog dialog_wait_trans;
 
 			@Override
 			public void onClick(View v) {
@@ -740,6 +741,7 @@ public class TradeServiceActivity extends BaseActivity {
 						Toast.makeText(getApplicationContext(), "操作频繁", 0)
 								.show();
 					} else {
+						
 						new Thread(new Runnable() {
 
 							private InputStream iStream;
@@ -767,7 +769,6 @@ public class TradeServiceActivity extends BaseActivity {
 										// handler.sendEmptyMessage(3);
 										// Log.e("hahahhahh", infojson);
 										parseJson_trans(infojson);
-										rb_zhuanrang_service.setEnabled(true);
 										Log.e("sssssssssss", "hahah");
 									}
 
@@ -952,6 +953,7 @@ public class TradeServiceActivity extends BaseActivity {
 			private long secondTime;
 			private long firstTime;
 			private String pricesale;
+			private Dialog dialog_wait_sale;
 
 			@Override
 			public void onClick(View v) {
@@ -981,7 +983,7 @@ public class TradeServiceActivity extends BaseActivity {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-
+								
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
@@ -1007,7 +1009,6 @@ public class TradeServiceActivity extends BaseActivity {
 														.getInputStream();
 												String infojson = NetUtils
 														.readString(iStream);
-												
 												parseJson_sale(infojson);
 											
 											}
@@ -1112,7 +1113,7 @@ public class TradeServiceActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 
 		LayoutInflater inflater = LayoutInflater.from(this);
-		View view = (View) inflater.inflate(R.layout.buy_service, null);
+		 View view = (View) inflater.inflate(R.layout.buy_service, null);
 		// 增加
 		product_ordsubmit_count_sub = (ImageView) view
 				.findViewById(R.id.product_ordsubmit_count_sub);
@@ -1159,6 +1160,7 @@ public class TradeServiceActivity extends BaseActivity {
 			private String num_buy;
 			private String total_price;
 			private String buy_priceString;
+			private Dialog dialog_wait;
 
 			@Override
 			public void onClick(View v) {
@@ -1179,7 +1181,7 @@ public class TradeServiceActivity extends BaseActivity {
 								Toast.makeText(getApplicationContext(), "操作频繁",
 										0).show();
 							} else {
-
+								
 								new Thread(new Runnable() {
 
 									private InputStream iStream;
@@ -1214,7 +1216,6 @@ public class TradeServiceActivity extends BaseActivity {
 
 												// Log.e("sssssssssss",
 												// "hahah");
-												rb_buy_service.setEnabled(true);
 											}
 
 										} catch (Exception e) {

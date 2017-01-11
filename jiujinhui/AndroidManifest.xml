@@ -77,7 +77,7 @@
         <activity android:name="zz.itcast.jiujinhui.activity.WoyaorengouActivity"></activity>
        <activity android:name="zz.itcast.jiujinhui.activity.RengouSuccessActivity"></activity>
        <activity android:name="zz.itcast.jiujinhui.activity.Rengou_detai_tihuolActivity"></activity> 
-       
+       <activity android:name="zz.itcast.jiujinhui.activity.ChedanSuccessActivity"></activity>
        
        
        

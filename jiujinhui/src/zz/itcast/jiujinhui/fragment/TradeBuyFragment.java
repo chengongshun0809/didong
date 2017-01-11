@@ -150,6 +150,9 @@ public class TradeBuyFragment extends BaseFragment {
     public void onResume() {
     	// TODO Auto-generated method stub
     	super.onResume();
+    	if (list.size() > 0) {// 必须将原来的数据清空,否则会将上一次的数据累加
+			list.clear();
+		}
     	visitService(1);
     }
       

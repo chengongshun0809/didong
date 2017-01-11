@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.PublicKey;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +21,13 @@ import org.json.JSONObject;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import zz.itcast.jiujinhui.R;
+import zz.itcast.jiujinhui.activity.ChedanSuccessActivity;
+import zz.itcast.jiujinhui.activity.TradeServiceActivity;
 import zz.itcast.jiujinhui.res.NetUtils;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -40,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TradeAllFragment extends BaseFragment {
 
@@ -139,7 +146,18 @@ public class TradeAllFragment extends BaseFragment {
 				listview.setVisibility(View.GONE);
 				tv_null.setVisibility(View.VISIBLE);
 				break;
+			case 3:
+//				Intent intent=new Intent(getActivity(),ChedanSuccessActivity.class);
+//				startActivity(intent);
+				//visitService(1);
+				Toast.makeText(getActivity(), "撤单成功", 0).show();
+				
+				
+				break;
 
+			case 4:
+				Toast.makeText(getActivity(), "撤单失败,请稍后重试", 0).show();
+				break;
 			default:
 				break;
 			}
@@ -254,6 +272,7 @@ public class TradeAllFragment extends BaseFragment {
 
 				Message message = handler.obtainMessage();
 				message.what = 1;
+				
 				handler.sendMessage(message);
 
 			}
@@ -271,6 +290,12 @@ public class TradeAllFragment extends BaseFragment {
 		private String undonenum;
 
 		private List<Map<String, Object>> list = null;
+
+		private String danhaos_chedan;
+
+		private String time;
+
+		private SimpleDateFormat sdf;
 
 		// 需要显示的数据，不应该使用new初始化,向上回滚的时候会出问题
 		public ListViewAdapter(List<Map<String, Object>> list) {
@@ -302,12 +327,14 @@ public class TradeAllFragment extends BaseFragment {
 			adapter.notifyDataSetChanged();
 
 		}
+		 ViewHolder holder=null ;
 
+		private long dingdantime;
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 
-			ViewHolder holder = null;
+			
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = inflater.inflate(R.layout.trade_record_detail,
@@ -327,7 +354,10 @@ public class TradeAllFragment extends BaseFragment {
 						.findViewById(R.id.tv_weichengjiao);
 				holder.tv_weichengjiao_num = (TextView) convertView
 						.findViewById(R.id.tv_weichengjiao_num);
-
+				holder.rl_chedanLayout = (RelativeLayout) convertView
+						.findViewById(R.id.Rl_chedan);
+				holder.bt_chedan = (Button) convertView
+						.findViewById(R.id.bt_chedan);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -354,6 +384,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.msg_chengjiao.setText("全部成交");
 
 				break;
+				
 			case 3:
 				if (undonenum_int == 0) {
 					holder.tv_dan_state.setText("卖出完成");
@@ -361,12 +392,118 @@ public class TradeAllFragment extends BaseFragment {
 					holder.tv_weichengjiao.setVisibility(View.GONE);
 					holder.tv_weichengjiao_num.setVisibility(View.GONE);
 					holder.msg_chengjiao.setText("全部成交");
+					holder.rl_chedanLayout.setVisibility(View.GONE);
 				} else {
 					holder.tv_dan_state.setText("卖出中");
 					holder.msg_chengjiao.setVisibility(View.GONE);
 					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setText(undonenum);
+					holder.rl_chedanLayout.setVisibility(View.VISIBLE);
+				danhaos_chedan = list.get(position).get("danhao")
+							+ "";
+
+				time = list.get(position).get("date") + "";
+				Log.e("time", time);
+				sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				
+				try {
+					dingdantime = sdf.parse(time)
+							.getTime();
+				} catch (ParseException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				holder.bt_chedan.setTag(position);
+					holder.bt_chedan.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							if (TradeServiceActivity.isSingle()) {
+								Toast.makeText(getActivity(), "操作频繁", 0).show();
+							} else {
+								 int pos=Integer.parseInt(v.getTag().toString());
+								try {
+								
+									
+									
+									
+									Date date = new Date();
+									long newTime = date.getTime();
+									if ((newTime - dingdantime) > 900000) {
+										holder.rl_chedanLayout.setVisibility(View.GONE);
+										list.remove(pos);
+										adapter.notifyDataSetChanged();
+										new Thread(new Runnable() {
+
+											private InputStream iStream;
+
+											@Override
+											public void run() {
+
+												String url_chedan = "https://www.4001149114.com/NLJJ/ddapp/dealputcancel?oid="+danhaos_chedan;
+
+												try {
+													HttpsURLConnection connection = NetUtils
+															.httpsconnNoparm(
+																	url_chedan,
+																	"POST");
+
+													int code = connection
+															.getResponseCode();
+													if (code == 200) {
+														iStream = connection
+																.getInputStream();
+														String infojson = NetUtils
+																.readString(iStream);
+														handler.sendEmptyMessage(3);
+														//parsechedan(infojson);
+
+													}
+
+												} catch (Exception e) {
+													// TODO Auto-generated catch
+													// block
+													e.printStackTrace();
+												} finally {
+													if (iStream != null) {
+														try {
+															iStream.close();
+														} catch (IOException e) {
+															// TODO
+															// Auto-generated
+															// catch
+															// block
+															e.printStackTrace();
+														}
+													}
+
+												}
+
+							 				}
+
+											
+										}).start();
+
+									} else {
+										Toast.makeText(getActivity(),
+												"卖出15分钟之后,才能撤单!", 0).show();
+									}
+
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+							}
+
+						}
+					});
+
+					
+					
+					
 				}
 
 				break;
@@ -421,6 +558,7 @@ public class TradeAllFragment extends BaseFragment {
 					holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 					holder.tv_weichengjiao_num.setText(undonenum);
+					holder.rl_chedanLayout.setVisibility(View.GONE);
 				}
 
 				break;
@@ -439,7 +577,7 @@ public class TradeAllFragment extends BaseFragment {
 				holder.tv_weichengjiao.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setVisibility(View.VISIBLE);
 				holder.tv_weichengjiao_num.setText(undonenum);
-
+				holder.rl_chedanLayout.setVisibility(View.GONE);
 				break;
 
 			default:
@@ -459,6 +597,8 @@ public class TradeAllFragment extends BaseFragment {
 			TextView tv_num;
 			TextView tv_weichengjiao;
 			TextView tv_weichengjiao_num;
+			RelativeLayout rl_chedanLayout;
+			Button bt_chedan;
 		}
 
 	}
@@ -497,7 +637,7 @@ public class TradeAllFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		stopThread = false;
-		
+		handler.removeMessages(3);
 	
 		handler.removeMessages(2);
         handler.removeMessages(1);

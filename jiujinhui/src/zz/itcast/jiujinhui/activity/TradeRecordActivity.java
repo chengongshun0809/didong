@@ -60,15 +60,15 @@ public class TradeRecordActivity extends BaseActivity {
 				fragmentsList));
 		tabs.setViewPager(pager);
 		tabs.setShouldExpand(true);
-		pager.setOffscreenPageLimit(7);
+	    pager.setOffscreenPageLimit(4);
 	}
 
 	public class MypagerAdapter extends FragmentStatePagerAdapter {
-		private ArrayList<Fragment> fragmentsList;
+		private ArrayList<Fragment> fragmentslist=null;
 
 		public MypagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
 			super(fm);
-			this.fragmentsList = fragments;
+			this.fragmentslist = fragments;
 		}
 
 		public MypagerAdapter(FragmentManager fm) {
@@ -87,7 +87,7 @@ public class TradeRecordActivity extends BaseActivity {
 		@Override
 		public Fragment getItem(int position) {
 			// TODO Auto-generated method stub
-			return fragmentsList.get(position);
+			return fragmentslist.get(position);
 		}
          @Override
         public int getItemPosition(Object object) {

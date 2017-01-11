@@ -8,11 +8,14 @@ import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,6 +63,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 
 	};
 	private String addressString;
+	private Dialog dialog_wait_tihuo;
 
 	@Override
 	public void initData() {
@@ -98,7 +102,7 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 		case R.id.tihuo:
 			addressString = et_address.getText().toString().trim();
 			if (!TextUtils.isEmpty(addressString)) {
-
+				
 				new Thread(new Runnable() {
 
 					private InputStream iStream;
@@ -128,6 +132,8 @@ public class Rengou_detai_tihuolActivity extends BaseActivity {
 								parseJson_rengou_tihuo(infojson);
 
 								Log.e("sssssssssss", "hahah");
+							}else {
+								
 							}
 
 						} catch (Exception e) {

@@ -58,9 +58,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/detile_shape_corners"
-            android:src="@drawable/jiu"
-            
-             />
+            android:src="@drawable/jiu" />
 
         <TextView
             android:id="@+id/name_pro"
@@ -81,30 +79,27 @@
             android:text="全部成交"
             android:textColor="#666999" />
 
-       
-            <TextView
-                android:visibility="gone" 
-                android:id="@+id/tv_weichengjiao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="15dp"
-                android:text="未成交x"
-                android:textColor="#666999" />
+        <TextView
+            android:id="@+id/tv_weichengjiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="15dp"
+            android:text="未成交x"
+            android:textColor="#666999"
+            android:visibility="gone" />
 
-            <TextView
-                
-                android:visibility="gone" 
-                android:id="@+id/tv_weichengjiao_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="15dp"
-                android:text="1"
-                android:textColor="#666999" />
-      
+        <TextView
+            android:id="@+id/tv_weichengjiao_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:text="1"
+            android:textColor="#666999"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <View
@@ -120,47 +115,71 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_centerVertical="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            
             android:text="2016-12-07 17:59:39" />
 
-        
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="55dp"
+            android:text="623564658.00 " />
 
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               android:layout_centerVertical="true"
-               android:layout_alignParentRight="true"
-                android:layout_marginRight="55dp"
-                android:text="623564658.00 " />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="38dp"
+            android:text="共" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="38dp"
-                android:text="共" />
+        <TextView
+            android:id="@+id/tvnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="99" />
 
-            <TextView
-                android:id="@+id/tvnum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:text="99" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:text="瓶" />
-       
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="瓶" />
     </RelativeLayout>
+ <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/igray" />
+    
+    <RelativeLayout
+        android:id="@+id/Rl_chedan"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:visibility="gone"
+         >
 
+        <Button
+            android:id="@+id/bt_chedan"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/chedan_shape_corners"
+            android:text="撤 单"
+            android:layout_marginBottom="5dp"
+            android:textColor="#3366cc" />
+    </RelativeLayout>
+ <View
+        android:layout_width="fill_parent"
+        android:layout_height="4dp"
+        android:background="@color/igray" />
+    
 </LinearLayout>
