@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 public class DateTest {
 
@@ -16,7 +17,7 @@ public class DateTest {
 	private static long nowtime;
         
 	@SuppressLint("SimpleDateFormat") 
-	public  boolean isNowDate(Date  date) {
+	public  boolean isNowDate(Date  date,Calendar cal ) {
 		boolean flag=false;
 		//Date date = new Date();
 		nowtime = date.getTime();
@@ -48,11 +49,12 @@ public class DateTest {
 			long start44 = sdf.parse(start4).getTime();
 			long timeEnd44 = sdf.parse(timeEnd4).getTime();
 			// 判断是周几
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(new Date());
+			
+			//cal.setTime(date); 
 			int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
-			if (week == 0 && week == 6) {
-				if (start44 <= nowtime && nowtime <= timeEnd44) {
+			Log.e("sfa", week+"");
+			if (week == 0||week == 6) {
+				if (start33 <= nowtime && nowtime <= timeEnd33) {
 					
 					flag=true;
 				} else {

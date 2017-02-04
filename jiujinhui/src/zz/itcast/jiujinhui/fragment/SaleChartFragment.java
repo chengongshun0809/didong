@@ -29,8 +29,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,15 +56,15 @@ public class SaleChartFragment extends BaseFragment {
 				adapter = new MyAdapter();
 				listView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
-				
+
 				handler.sendEmptyMessage(1);
 			case 1:
-				
+
 				handler.removeMessages(1);
 				scrolllistview();
 				handler.sendEmptyMessageDelayed(1, 1000);
-				
-				break; 
+
+				break;
 			default:
 				break;
 			}
@@ -70,8 +72,8 @@ public class SaleChartFragment extends BaseFragment {
 		};
 
 	};
-	//禁止listview手动滑动
-     
+	// 禁止listview手动滑动
+
 	private JSONArray jsonArraylist;
 
 	private String createtime;
@@ -97,18 +99,17 @@ public class SaleChartFragment extends BaseFragment {
 	private MyAdapter adapter;
 
 	private List<Map<String, Object>> data = null;
-	
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
 		dgid = getActivity().getIntent().getStringExtra("dealdgid");
 		unionid = sp.getString("unionid", null);
-	
+
 		// 获取数据
 		new Thread(new Runnable() {
 
-			private InputStream iStream=null;
+			private InputStream iStream = null;
 
 			@Override
 			public void run() {
@@ -128,23 +129,23 @@ public class SaleChartFragment extends BaseFragment {
 							JSONObject jsonObject = new JSONObject(infojson);
 							// Log.e("ssssssssss", jsonObject.toString());
 							parseJson(jsonObject);
-							stopThread=true;
+							stopThread = true;
 
 						}
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}finally{
-						if (iStream!=null) {
+					} finally {
+						if (iStream != null) {
 							try {
 								iStream.close();
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-							}	
+							}
 						}
-						
+
 					}
 
 				}
@@ -153,49 +154,44 @@ public class SaleChartFragment extends BaseFragment {
 		// listView.invalidate();
 		data = new ArrayList<Map<String, Object>>();
 		// 禁止listView手动滚动
-      listView.setOnTouchListener(new OnTouchListener() {
-		
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			// TODO Auto-generated method stub
-			switch (event.getAction()) {
-			
-           case MotionEvent.ACTION_MOVE:
-        	   return true;
-        	   
-			default:
-				break;
+		listView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				switch (event.getAction()) {
+
+				case MotionEvent.ACTION_MOVE:
+					return true;
+
+				default:
+					break;
+				}
+
+				return true;
 			}
-			
-			
-			return true;
-		}
-	});
+		});
 	}
-   
+
 	protected void scrolllistview() {
 		// TODO Auto-generated method stub
 		// int totaloff = listView.getMeasuredHeight();
-		
-		if (index <3 * data.size()) {
+
+		if (index < 3 * data.size()) {
 			listView.smoothScrollBy(10, 0);
+
 			index += 1;
-			
+
 		} else {
-			
 			listView.smoothScrollToPosition(0);
 			index = 0;
-			
+
 		}
-			
-		
-		
 	}
 
 	// listview自动滚动
 
 	// 刷新数据
-	
 
 	protected void parseJson(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
@@ -229,16 +225,19 @@ public class SaleChartFragment extends BaseFragment {
 		}
 
 	}
+
 	LayoutInflater inflater;
+
 	@Override
 	public void initView(View view) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this, view);
-		
+
 		sp = getActivity().getSharedPreferences("user", 0);
-		/*Message message = handler.obtainMessage();
-		message.what = 1;
-		handler.sendMessage(message);*/
+		/*
+		 * Message message = handler.obtainMessage(); message.what = 1;
+		 * handler.sendMessage(message);
+		 */
 		inflater = getActivity().getLayoutInflater();
 	}
 
@@ -251,9 +250,6 @@ public class SaleChartFragment extends BaseFragment {
 	}
 
 	public class MyAdapter extends BaseAdapter {
-
-		
-		
 
 		@Override
 		public int getCount() {
@@ -278,7 +274,7 @@ public class SaleChartFragment extends BaseFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			ViewHolder holder = null;
-			
+
 			// 如果缓存
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -343,7 +339,7 @@ public class SaleChartFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		stopThread = false;
 		handler.removeMessages(0);
-        handler.removeMessages(1);
+		handler.removeMessages(1);
 		super.onDestroy();
 
 	}

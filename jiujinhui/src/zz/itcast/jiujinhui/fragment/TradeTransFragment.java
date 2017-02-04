@@ -174,7 +174,7 @@ public class TradeTransFragment extends BaseFragment {
 						iStream = connection.getInputStream();
 						String infojson = NetUtils.readString(iStream);
 						JSONObject jsonObject = new JSONObject(infojson);
-						Log.e("我靠快快快快快快快", jsonObject.toString());
+						
 						parseJson(jsonObject);
 
 						++CurrentpageNum;

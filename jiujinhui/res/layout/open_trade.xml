@@ -63,10 +63,7 @@
            
     </LinearLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/igray" />
+    
 
    
     <RelativeLayout
@@ -74,9 +71,9 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        
+         android:background="#ff9900"
         android:layout_marginTop="5dp"
-        android:background="#00000000"
+      
         android:gravity="center"
         android:orientation="horizontal" >
 

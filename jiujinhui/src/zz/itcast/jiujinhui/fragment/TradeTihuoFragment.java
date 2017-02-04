@@ -105,7 +105,7 @@ public class TradeTihuoFragment extends BaseFragment {
 												visitService(CurrentpageNum);
 
 												// bt_Msg.setText("加载更多");
-												Log.e("kobe", "lebron");
+												//Log.e("kobe", "lebron");
 
 											}
 										}, 2000);
@@ -147,7 +147,7 @@ public class TradeTihuoFragment extends BaseFragment {
 		CurrentpageNum = 1;
 		visitService(CurrentpageNum);
 		listview.setSelection(0);
-
+		  
 	}
 
 	private void visitService(int page) {
@@ -175,7 +175,7 @@ public class TradeTihuoFragment extends BaseFragment {
 						iStream = connection.getInputStream();
 						String infojson = NetUtils.readString(iStream);
 						JSONObject jsonObject = new JSONObject(infojson);
-						Log.e("我靠快快快快快快快", jsonObject.toString());
+						
 						parseJson(jsonObject);
 
 						++CurrentpageNum;

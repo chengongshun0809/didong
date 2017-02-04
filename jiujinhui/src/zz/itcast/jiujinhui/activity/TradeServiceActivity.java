@@ -554,8 +554,10 @@ public class TradeServiceActivity extends BaseActivity {
 			// 获取系统当前时间
 
 			Date date = new Date();
+			Calendar cal = Calendar.getInstance();
+			Log.e("ssss", cal.get(Calendar.DAY_OF_WEEK) - 1+"");
 			DateTest dateTest = new DateTest();
-			boolean flag = dateTest.isNowDate(date);
+			boolean flag = dateTest.isNowDate(date,cal);
 			if (flag == true) {
 				// 符合交易时间
 				showBuyDialog();
@@ -587,7 +589,8 @@ public class TradeServiceActivity extends BaseActivity {
 
 			DateTest dateT = new DateTest();
 			Date date2 = new Date();
-			boolean flag1 = dateT.isNowDate(date2);
+			Calendar cal1 = Calendar.getInstance();
+			boolean flag1 = dateT.isNowDate(date2,cal1);
 			if (flag1 == true) {
 				// 符合交易时间
 				if (leftgoodassets > 0) {
@@ -634,7 +637,8 @@ public class TradeServiceActivity extends BaseActivity {
 		case R.id.rb_zhuanrang_service:
 			DateTest datet = new DateTest();
 			Date date3 = new Date();
-			boolean flag2 = datet.isNowDate(date3);
+			Calendar cal2 = Calendar.getInstance();
+			boolean flag2 = datet.isNowDate(date3,cal2);
 			if (flag2 == true) {
 				// 符合交易时间
 				if (leftgoodassets > 0) {

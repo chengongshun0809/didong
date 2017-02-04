@@ -3,6 +3,7 @@ package zz.itcast.jiujinhui.fragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -262,7 +263,8 @@ boolean stopThread = false;
 			}*/
 			DateTest date = new DateTest();
 			Date date2=new Date();
-			boolean flag2 = date.isNowDate(date2);
+			Calendar cal = Calendar.getInstance();
+			boolean flag2 = date.isNowDate(date2,cal);
 			if (flag2 == true) {
 				// 符合交易时间
 				Intent intent4 = new Intent(getActivity(),
